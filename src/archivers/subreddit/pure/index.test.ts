@@ -1,9 +1,8 @@
 import { getTopThreePosts } from ".";
 
 describe("Subreddit pure tests", () => {
-  it("gets all fields correctly", async () => {
-    const dummyFetch = async () => {
-      return [
+  it("gets all fields correctly", () => {
+    const dummyData = [
         {
           data: {
             title: "foo",
@@ -12,9 +11,8 @@ describe("Subreddit pure tests", () => {
           }
         },
       ];
-    };
 
-    expect(await getTopThreePosts(dummyFetch)).toEqual([
+    expect(getTopThreePosts(dummyData)).toEqual([
       {
         title: "foo",
         score: 4,
@@ -23,9 +21,8 @@ describe("Subreddit pure tests", () => {
     ]);
   });
 
-  it("limits to 3 posts", async () => {
-    const dummyFetch = async () => {
-      return [
+  it("limits to 3 posts", () => {
+    const dummyData = [
         {
           data: {
             title: "foo",
@@ -62,8 +59,7 @@ describe("Subreddit pure tests", () => {
           }
         },
       ];
-    };
 
-    expect((await getTopThreePosts(dummyFetch)).length).toBe(3);
+    expect(getTopThreePosts(dummyData).length).toBe(3);
   });
 });

@@ -1,12 +1,9 @@
 import { SubredditData } from "../types";
 
-export async function getTopThreePosts(
-  fetchFunction: () => Promise<{ data: Record<string, string | number>}[]>
-): Promise<SubredditData[]> {
-  const rawData = await fetchFunction();
+export function getTopThreePosts(redditPostsData: { data: Record<string, string | number>}[]): SubredditData[] {
   const res: SubredditData[] = [];
   
-  for (const entry of rawData) {
+  for (const entry of redditPostsData) {
     res.push({
       title: entry.data["title"] as string,
       score: entry.data["score"] as number,

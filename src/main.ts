@@ -1,11 +1,13 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-import archiveSubreddit from "./archivers/subreddit";
+import sendMagicLink from "./magicLinkSender";
 
 async function main() {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    await archiveSubreddit("javascript");
+    if (!process.env.MONGO_URI) {
+      return
+    }
+    mongoose.connect(process.env.MONGO_URI);
     console.log("done");
   } catch (e) {
     console.error(e);
