@@ -12,6 +12,7 @@ import homeController from "./routes/Home";
 import itemCrudController from "./routes/ItemCrud";
 import emailWatcher from "./email/watcher";
 import archiveWatcher from "./archivers/watcher";
+import startScheduler from "./scheduler";
 
 if (!process.env.MONGO_URI) {
   console.error("MONGO_URI not set");
@@ -46,3 +47,4 @@ app.listen(port, () => {
 
 emailWatcher()
 archiveWatcher()
+startScheduler()
