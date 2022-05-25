@@ -8,7 +8,9 @@ export default async function archiveSubreddit(subreddit: string) {
     `https://www.reddit.com/r/${subreddit}/top.json`
   );
 
-  const topThreePosts: SubredditData[] = getTopThreePosts(redditPostsData.data.data.children);
+  const topThreePosts: SubredditData[] = getTopThreePosts(
+    redditPostsData.data.data.children
+  );
   const newSubredditItem: { type: string; data: MongoSubredditData } = {
     type: MONGO_TYPES.SUBREDDIT,
     data: {

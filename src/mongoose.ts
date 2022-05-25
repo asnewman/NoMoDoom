@@ -4,7 +4,7 @@ import { SubredditData } from "./archivers/subreddit/types";
 const MONGO_TYPES = {
   SUBREDDIT: "SUBREDDIT",
   USER: "USER",
-  SUBSCRIPTION: "SUBSCRIPTION"
+  SUBSCRIPTION: "SUBSCRIPTION",
 };
 
 interface MongoSubredditData {
@@ -18,6 +18,8 @@ interface MongoUserData {
   tokenExpiration: number;
   signedInWithToken: boolean;
   email: string;
+  frequency: 1;
+  lastSent: number;
 }
 
 interface MongoSubscriptionData {
@@ -33,4 +35,10 @@ const ItemSchema = new Schema({
 
 const Item = mongoose.model("Item", ItemSchema);
 
-export { Item, MONGO_TYPES, MongoSubredditData, MongoUserData, MongoSubscriptionData };
+export {
+  Item,
+  MONGO_TYPES,
+  MongoSubredditData,
+  MongoUserData,
+  MongoSubscriptionData,
+};

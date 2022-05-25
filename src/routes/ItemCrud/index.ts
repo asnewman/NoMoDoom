@@ -1,4 +1,4 @@
-import { Item, MongoSubscriptionData, MONGO_TYPES } from "../mongoose";
+import { Item, MongoSubscriptionData, MONGO_TYPES } from "../../mongoose";
 
 async function itemCrudController(req: any, res: any) {
   try {
@@ -20,8 +20,8 @@ async function itemCrudController(req: any, res: any) {
       case "REMOVE_SUBREDDIT_SUBSCRIPTION": {
         await Item.deleteOne({
           "data.email": req.email,
-          "data.subservice": data.subreddit
-        })
+          "data.subservice": data.subreddit,
+        });
         return res.status(200).send();
       }
       default:

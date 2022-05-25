@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
-import { Item, MongoUserData, MONGO_TYPES } from "../mongoose";
-import randomString from "../helpers/randomString";
+import { Item, MongoUserData, MONGO_TYPES } from "../../mongoose";
+import randomString from "../../helpers/randomString";
 
 async function createLoginLinkController(req: any, res: any) {
   try {
@@ -16,6 +16,8 @@ async function createLoginLinkController(req: any, res: any) {
         signedInWithToken: false,
         token: "",
         tokenExpiration: 0,
+        frequency: 1,
+        lastSent: 0,
       };
       user = new Item({
         type: MONGO_TYPES.USER,

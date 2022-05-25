@@ -1,5 +1,5 @@
-import randomString from "../helpers/randomString";
-import { Item, MongoUserData, MONGO_TYPES } from "../mongoose";
+import randomString from "../../helpers/randomString";
+import { Item, MongoUserData, MONGO_TYPES } from "../../mongoose";
 
 async function loginController(req: any, res: any) {
   try {
@@ -9,7 +9,6 @@ async function loginController(req: any, res: any) {
       "data.token": token,
     });
 
-    console.log(user);
     if (!user) return res.send("Failed - auth token not found");
 
     const userData: MongoUserData = user.data;
@@ -23,7 +22,7 @@ async function loginController(req: any, res: any) {
     user.markModified("data");
     await user.save();
     res.cookie("token", user.data.token);
-    return res.send("Success");
+    return res.redirect("/");
   } catch (e) {
     console.error(e);
     return res.send("Failed");

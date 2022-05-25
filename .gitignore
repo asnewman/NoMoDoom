@@ -102,3 +102,5 @@ dist
 
 # TernJS port file
 .tern-portgit@github.com:asnewman/NoMoDoom.git
+
+.idea

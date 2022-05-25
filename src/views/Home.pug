@@ -24,7 +24,8 @@ script.
       const newSubredditNode = document.createElement("p")
       newSubredditNode.appendChild(document.createTextNode(inputVal))
       newSubredditContainer.appendChild(newSubredditNode)
-      const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`, value: "Remove"})
+      const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`})
+      removeBtn.appendChild(document.createTextNode("Remove"));
       newSubredditContainer.appendChild(removeBtn)
       subdiv.appendChild(newSubredditContainer)
     })

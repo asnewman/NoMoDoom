@@ -3,14 +3,14 @@ import { getTopThreePosts } from ".";
 describe("Subreddit pure tests", () => {
   it("gets all fields correctly", () => {
     const dummyData = [
-        {
-          data: {
-            title: "foo",
-            score: 4,
-            permalink: "/r/javascript",
-          }
+      {
+        data: {
+          title: "foo",
+          score: 4,
+          permalink: "/r/javascript",
         },
-      ];
+      },
+    ];
 
     expect(getTopThreePosts(dummyData)).toEqual([
       {
@@ -23,42 +23,42 @@ describe("Subreddit pure tests", () => {
 
   it("limits to 3 posts", () => {
     const dummyData = [
-        {
-          data: {
-            title: "foo",
-            score: 4,
-            permalink: "/r/javascript",
-          }
+      {
+        data: {
+          title: "foo",
+          score: 4,
+          permalink: "/r/javascript",
         },
-        {
-          data: {
-            title: "foo",
-            score: 4,
-            permalink: "/r/javascript",
-          }
+      },
+      {
+        data: {
+          title: "foo",
+          score: 4,
+          permalink: "/r/javascript",
         },
-        {
-          data: {
-            title: "foo",
-            score: 4,
-            permalink: "/r/javascript",
-          }
+      },
+      {
+        data: {
+          title: "foo",
+          score: 4,
+          permalink: "/r/javascript",
         },
-        {
-          data: {
-            title: "foo",
-            score: 4,
-            permalink: "/r/javascript",
-          }
+      },
+      {
+        data: {
+          title: "foo",
+          score: 4,
+          permalink: "/r/javascript",
         },
-        {
-          data: {
-            title: "foo",
-            score: 4,
-            permalink: "/r/javascript",
-          }
+      },
+      {
+        data: {
+          title: "foo",
+          score: 4,
+          permalink: "/r/javascript",
         },
-      ];
+      },
+    ];
 
     expect(getTopThreePosts(dummyData).length).toBe(3);
   });

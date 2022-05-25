@@ -1,4 +1,4 @@
-import { Item, MongoSubscriptionData, MONGO_TYPES } from "../mongoose";
+import { Item, MongoSubscriptionData, MONGO_TYPES } from "../../mongoose";
 
 async function homeController(req: any, res: any) {
   try {
@@ -12,10 +12,9 @@ async function homeController(req: any, res: any) {
         (s: { type: string; data: MongoSubscriptionData }) => s.data.subservice
       ),
     });
-  }
-  catch(e) {
+  } catch (e) {
     console.error(e);
-    return res.send(e)
+    return res.send(e);
   }
 }
 

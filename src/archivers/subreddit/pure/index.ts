@@ -1,8 +1,10 @@
 import { SubredditData } from "../types";
 
-export function getTopThreePosts(redditPostsData: { data: Record<string, string | number>}[]): SubredditData[] {
+export function getTopThreePosts(
+  redditPostsData: { data: Record<string, string | number> }[]
+): SubredditData[] {
   const res: SubredditData[] = [];
-  
+
   for (const entry of redditPostsData) {
     res.push({
       title: entry.data["title"] as string,
