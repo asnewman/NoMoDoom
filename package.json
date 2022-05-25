@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon src/main.ts",
+    "start": "node main.js",
+    "dev": "nodemon src/main.ts",
     "lint": "prettier src --write",
     "test": "jest test"
   },
