@@ -2,7 +2,7 @@
   "name": "nomodoom",
   "version": "1.0.0",
   "description": "",
-  "main": "build/main.js",
+  "main": "src/main.ts",
   "scripts": {
     "start": "ts-node src/main.ts",
     "dev": "nodemon src/main.ts",
