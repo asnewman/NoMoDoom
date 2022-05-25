@@ -2,7 +2,7 @@
   "name": "nomodoom",
   "version": "1.0.0",
   "description": "",
-  "main": "main.ts",
+  "main": "main.js",
   "scripts": {
     "start": "nodemon src/main.ts",
     "lint": "prettier src --write",
