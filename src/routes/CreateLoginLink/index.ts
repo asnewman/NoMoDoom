@@ -54,7 +54,7 @@ async function sendMail(email: string, token: string) {
     from: '"Kozukai Habit" <ash@kozukaihabit.com>', // sender address
     to: email,
     subject: "Login link", // Subject line
-    text: `Use this link to login in: http://localhost:3000/login?token=${token}. Don't share this link with anyone.`,
+    text: `Use this link to login in: ${process.env.BASE_URL}/login?token=${token}. Don't share this link with anyone.`,
   });
 }
 

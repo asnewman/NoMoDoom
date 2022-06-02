@@ -5,10 +5,10 @@ import { generateArchiveEvents, generateEmailEvents } from "./pure";
 
 function start() {
   if (process.env.IS_LOCAL !== "true") {
-    cron.schedule("50 22 * * *", () => {
+    cron.schedule(process.env.ARCHIVE_CRON || "", () => {
       sendArchivingEvents();
     });
-    cron.schedule("0 23 * * *", () => {
+    cron.schedule(process.env.EMAIL_CRON || "", () => {
       sendEmailEvents();
     });
   }

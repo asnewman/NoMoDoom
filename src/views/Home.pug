@@ -1,58 +1,61 @@
-script.
-  function add() {
-    const inputVal = document.querySelector("#newSubredditInput").value
-    
-    if (inputVal === "") return
+extends Base
+block content
+  p Welcome, #{email}.
+  input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
+  button(onclick="add()") Add
+  p Your subreddit subscriptions (you'll receive a digest every day):
+  each subreddit of subreddits
+    div(id=`${subreddit}-div`)
+      p #{subreddit}
+      button(onclick=`remove("${subreddit}")`) Remove
+  div(id="subscriptions")
 
-    const subdiv = document.querySelector("#subscriptions")
+  script.
+    function add() {
+      const inputVal = document.querySelector("#newSubredditInput").value
+      
+      if (inputVal === "") return
 
-    if (subdiv.textContent.includes(inputVal)) return
+      const subdiv = document.querySelector("#subscriptions")
 
-    fetch("/api/item-crud", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        query: "ADD_SUBREDDIT_SUBSCRIPTION",
-        data: {
-          subreddit: inputVal
-        }
+      if (subdiv.textContent.includes(inputVal)) return
+
+      fetch("/api/item-crud", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: "ADD_SUBREDDIT_SUBSCRIPTION",
+          data: {
+            subreddit: inputVal
+          }
+        })
+      }).then(() => {
+        const newSubredditContainer = document.createElement("div", { id: `#${inputVal}-div` })
+        const newSubredditNode = document.createElement("p")
+        newSubredditNode.appendChild(document.createTextNode(inputVal))
+        newSubredditContainer.appendChild(newSubredditNode)
+        const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`})
+        removeBtn.appendChild(document.createTextNode("Remove"));
+        newSubredditContainer.appendChild(removeBtn)
+        subdiv.appendChild(newSubredditContainer)
       })
-    }).then(() => {
-      const newSubredditContainer = document.createElement("div", { id: `#${inputVal}-div` })
-      const newSubredditNode = document.createElement("p")
-      newSubredditNode.appendChild(document.createTextNode(inputVal))
-      newSubredditContainer.appendChild(newSubredditNode)
-      const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`})
-      removeBtn.appendChild(document.createTextNode("Remove"));
-      newSubredditContainer.appendChild(removeBtn)
-      subdiv.appendChild(newSubredditContainer)
-    })
-  }
+    }
 
-  function remove(subreddit) {
-    fetch("/api/item-crud", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        query: "REMOVE_SUBREDDIT_SUBSCRIPTION",
-        data: {
-          subreddit: subreddit
-        }
+    function remove(subreddit) {
+      fetch("/api/item-crud", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: "REMOVE_SUBREDDIT_SUBSCRIPTION",
+          data: {
+            subreddit: subreddit
+          }
+        })
+      }).then(() => {
+        document.querySelector(`#${subreddit}-div`).remove()
       })
-    }).then(() => {
-      document.querySelector(`#${subreddit}-div`).remove()
-    })
-  }
-p Welcome, #{email}.
-input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
-button(onclick="add()") Add
-p Your subreddit subscriptions (you'll receive a digest every 2 days):
-each subreddit of subreddits
-  div(id=`${subreddit}-div`)
-    p #{subreddit}
-    button(onclick=`remove("${subreddit}")`) Remove
-div(id="subscriptions")
+    }
