@@ -23,7 +23,7 @@ if (!process.env.MONGO_URI) {
 }
 mongoose_1.default.connect(process.env.MONGO_URI);
 var app = (0, express_1.default)();
-var port = 3000;
+var port = process.env.PORT || 3000;
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use((0, cookie_parser_1.default)());
