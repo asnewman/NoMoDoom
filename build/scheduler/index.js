@@ -45,10 +45,10 @@ var mongoose_1 = require("../mongoose");
 var pure_1 = require("./pure");
 function start() {
     if (process.env.IS_LOCAL !== "true") {
-        node_cron_1.default.schedule("50 22 * * *", function () {
+        node_cron_1.default.schedule(process.env.ARCHIVE_CRON || "", function () {
             sendArchivingEvents();
         });
-        node_cron_1.default.schedule("0 23 * * *", function () {
+        node_cron_1.default.schedule(process.env.EMAIL_CRON || "", function () {
             sendEmailEvents();
         });
     }

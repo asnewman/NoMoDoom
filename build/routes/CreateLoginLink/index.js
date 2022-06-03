@@ -111,7 +111,7 @@ function sendMail(email, token) {
                             from: '"Kozukai Habit" <ash@kozukaihabit.com>',
                             to: email,
                             subject: "Login link",
-                            text: "Use this link to login in: http://localhost:3000/login?token=".concat(token, ". Don't share this link with anyone."),
+                            text: "Use this link to login in: ".concat(process.env.BASE_URL, "/login?token=").concat(token, ". Don't share this link with anyone."),
                         })];
                 case 1:
                     _a.sent();
