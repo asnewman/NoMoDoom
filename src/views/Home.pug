@@ -1,6 +1,7 @@
 extends Base
 block content
   p Welcome, #{email}.
+  button(onclick="logout()") Logout
   input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
   button(onclick="add()") Add
   p Your subreddit subscriptions (you'll receive a digest every day):
@@ -58,4 +59,9 @@ block content
       }).then(() => {
         document.querySelector(`#${subreddit}-div`).remove()
       })
+    }
+
+    function logout() {
+      document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      location.reload()
     }

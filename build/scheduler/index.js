@@ -47,10 +47,10 @@ function start() {
     if (process.env.IS_LOCAL !== "true") {
         node_cron_1.default.schedule(process.env.ARCHIVE_CRON || "", function () {
             sendArchivingEvents();
-        });
+        }, { timezone: "America/Los_Angeles" });
         node_cron_1.default.schedule(process.env.EMAIL_CRON || "", function () {
             sendEmailEvents();
-        });
+        }, { timezone: "America/Los_Angeles" });
     }
 }
 function sendArchivingEvents() {
