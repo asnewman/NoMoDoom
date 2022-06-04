@@ -24,6 +24,10 @@ async function emailUser(email: string) {
       "data.email": email,
     });
 
+  if (subscriptions.length === 0) {
+    return
+  }
+
   const emailData = await generateEmailData(
     user,
     subscriptions,
