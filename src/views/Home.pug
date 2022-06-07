@@ -1,16 +1,17 @@
 extends Base
 block content
-  p Welcome, #{email}.
-  button(onclick="logout()") Logout
+  h1 nomodoom
+  p(style="display: inline") Welcome, #{email}.
+  button(onclick="logout()" style="margin-left: 10px") Logout
+  h2 Your subreddit subscriptions (you'll receive a digest every day):
   input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
   button(onclick="add()") Add
-  p Your subreddit subscriptions (you'll receive a digest every day):
-  each subreddit of subreddits
-    div(id=`${subreddit}-div`)
-      p #{subreddit}
-      button(onclick=`remove("${subreddit}")`) Remove
   div(id="subscriptions")
-
+    each subreddit of subreddits
+      div(id=`${subreddit}-div`)
+        p #{subreddit}
+        button(onclick=`remove("${subreddit}")`) Remove
+  
   script.
     function add() {
       const inputVal = document.querySelector("#newSubredditInput").value
@@ -18,6 +19,8 @@ block content
       if (inputVal === "") return
 
       const subdiv = document.querySelector("#subscriptions")
+
+      console.log(subdiv.textContent)
 
       if (subdiv.textContent.includes(inputVal)) return
 
@@ -41,6 +44,7 @@ block content
         removeBtn.appendChild(document.createTextNode("Remove"));
         newSubredditContainer.appendChild(removeBtn)
         subdiv.appendChild(newSubredditContainer)
+        document.querySelector("#newSubredditInput").value = ""
       })
     }
 

@@ -6,7 +6,7 @@ export default async function (req: any, res: any, next: any) {
     type: MONGO_TYPES.USER,
     "data.token": token,
   });
-
+  
   if (user && user.data.tokenExpiration > Date.now()) {
     req.email = user.data.email;
     next();
