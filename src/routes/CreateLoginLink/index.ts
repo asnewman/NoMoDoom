@@ -23,6 +23,8 @@ async function createLoginLinkController(req: any, res: any) {
         type: MONGO_TYPES.USER,
         data: mongoUserData,
       });
+
+      console.info("New user signed up! " + email)
     }
 
     user.data.token = randomString(20);
