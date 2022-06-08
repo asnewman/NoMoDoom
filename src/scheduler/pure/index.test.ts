@@ -34,6 +34,35 @@ describe("generateArchiveEvents tests", () => {
       },
     ]);
   });
+
+  test("disregard duplicates correctly", () => {
+    const dummySubscriptions: { type: string; data: MongoSubscriptionData }[] =
+      [
+        {
+          type: "",
+          data: {
+            service: "reddit",
+            subservice: "javascript",
+            email: "test@email.com",
+          },
+        },
+        {
+          type: "",
+          data: {
+            service: "reddit",
+            subservice: "javascript",
+            email: "test@email.com",
+          },
+        },
+      ];
+
+    expect(generateArchiveEvents(dummySubscriptions)).toEqual([
+      {
+        service: "reddit",
+        subservice: "javascript",
+      }
+    ]);
+  });
 });
 
 describe("generateEmailEvents tests", () => {

@@ -5,6 +5,7 @@ import {
   MongoSubscriptionData,
 } from "../mongoose";
 import { generateEmailData } from "./pure";
+import moment from 'moment-timezone';
 
 async function emailUser(email: string) {
   const user = await Item.findOne(
@@ -68,7 +69,7 @@ async function emailUser(email: string) {
   await transporter.sendMail({
     from: '"nomodoom" <ash@kozukaihabit.com>', // sender address
     to: email,
-    subject: "nomodoom digest", // Subject line
+    subject: `nomodoom digest ${moment().tz('America/Los_Angeles').format('MMMM Do YYYY')}`, // Subject line
     html: emailText
   });
 
