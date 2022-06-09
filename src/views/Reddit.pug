@@ -1,9 +1,9 @@
 extends Base
 block content
-  h1 nomodoom
   p(style="display: inline") Welcome, #{email}.
   button(onclick="logout()" style="margin-left: 10px") Logout
-  h2 Your subreddit subscriptions (you'll receive a digest every day):
+  h2 Your subreddit subscriptions:
+  p You'll receive the top 3 posts of each subreddit daily.
   input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
   button(onclick="add()") Add
   div(id="subscriptions")
