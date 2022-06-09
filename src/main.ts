@@ -9,6 +9,7 @@ import createLoginLinkController from "./routes/CreateLoginLink";
 import loginController from "./routes/Login";
 import authCheck from "./middleware/authCheck";
 import homeController from "./routes/Home";
+import homeController from "./routes/Reddit";
 import itemCrudController from "./routes/ItemCrud";
 import emailWatcher from "./email/watcher";
 import archiveWatcher from "./archivers/watcher";
@@ -32,6 +33,8 @@ app.set("view engine", "pug");
 
 app.get("/", authCheck, homeController);
 
+app.get("/reddit", authCheck, redditController);
+
 app.get("/create-link", (_req: any, res: any) => {
   res.render("CreateLink");
 });
@@ -40,6 +43,8 @@ app.post("/create-link", createLoginLinkController);
 app.get("/login", loginController);
 
 app.post("/api/item-crud", authCheck, itemCrudController);
+
+app.get("/services", (_req: any, res: any) => { res.render("Services")})
 
 app.listen(port, () => {
   console.log("started");

@@ -1,0 +1,29 @@
+extends Base
+block content
+	h1 nomodoom
+	p(style="display: inline") Welcome, #{email}.
+	button(onclick="logout()" style="margin-left: 10px") Logout
+	h2 Services
+	p These are the different services you can subscribe to:
+	div(class="service")
+		img(src="https://www.redditinc.com/assets/images/site/reddit-logo.png" alt="reddit logo")
+		p Reddit
+		small Free
+	div(class="service")
+		img(src="https://boldlist.net/img/hacker-news-logo.jpg" alt="hacker news logo")
+		p Hacker News
+		small Free
+	style.
+		.service {
+			width: 100px;
+			display: inline-block;
+			background-color: #161F27;
+			padding: 10px 20px 20px;
+			cursor: pointer;
+			margin-right: 20px;
+		}
+
+		.service img {
+			height: 50px;
+			width: 50px;
+		}
