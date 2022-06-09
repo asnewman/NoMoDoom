@@ -1,0 +1,71 @@
+extends Base
+block content
+  p(style="display: inline") Welcome, #{email}.
+  button(onclick="logout()" style="margin-left: 10px") Logout
+  h2 Your subreddit subscriptions:
+  p You'll receive the top 3 posts of each subreddit daily.
+  input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
+  button(onclick="add()") Add
+  div(id="subscriptions")
+    each subreddit of subreddits
+      div(id=`${subreddit}-div`)
+        p #{subreddit}
+        button(onclick=`remove("${subreddit}")`) Remove
+  
+  script.
+    function add() {
+      const inputVal = document.querySelector("#newSubredditInput").value
+      
+      if (inputVal === "") return
+
+      const subdiv = document.querySelector("#subscriptions")
+
+      console.log(subdiv.textContent)
+
+      if (subdiv.textContent.includes(inputVal)) return
+
+      fetch("/api/item-crud", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: "ADD_SUBREDDIT_SUBSCRIPTION",
+          data: {
+            subreddit: inputVal
+          }
+        })
+      }).then(() => {
+        const newSubredditContainer = document.createElement("div", { id: `#${inputVal}-div` })
+        const newSubredditNode = document.createElement("p")
+        newSubredditNode.appendChild(document.createTextNode(inputVal))
+        newSubredditContainer.appendChild(newSubredditNode)
+        const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`})
+        removeBtn.appendChild(document.createTextNode("Remove"));
+        newSubredditContainer.appendChild(removeBtn)
+        subdiv.appendChild(newSubredditContainer)
+        document.querySelector("#newSubredditInput").value = ""
+      })
+    }
+
+    function remove(subreddit) {
+      fetch("/api/item-crud", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: "REMOVE_SUBREDDIT_SUBSCRIPTION",
+          data: {
+            subreddit: subreddit
+          }
+        })
+      }).then(() => {
+        document.querySelector(`#${subreddit}-div`).remove()
+      })
+    }
+
+    function logout() {
+      document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      location.reload()
+    }

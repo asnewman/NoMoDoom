@@ -1,71 +1,42 @@
 extends Base
 block content
-  h1 nomodoom
-  p(style="display: inline") Welcome, #{email}.
-  button(onclick="logout()" style="margin-left: 10px") Logout
-  h2 Your subreddit subscriptions (you'll receive a digest every day):
-  input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")
-  button(onclick="add()") Add
-  div(id="subscriptions")
-    each subreddit of subreddits
-      div(id=`${subreddit}-div`)
-        p #{subreddit}
-        button(onclick=`remove("${subreddit}")`) Remove
-  
-  script.
-    function add() {
-      const inputVal = document.querySelector("#newSubredditInput").value
-      
-      if (inputVal === "") return
+	p(style="display: inline") Welcome, #{email}.
+	button(onclick="logout()" style="margin-left: 10px") Logout
+	h2 Services
+	p These are the different services you can subscribe to:
+	a(class="service" href="/reddit")
+		img(src="https://www.redditinc.com/assets/images/site/reddit-logo.png" alt="reddit logo")
+		p Reddit
+		small Free
+	a(class="service")
+		img(src="https://boldlist.net/img/hacker-news-logo.jpg" alt="hacker news logo")
+		p Hacker News
+		small Coming soon
+	a(class="service")
+		img(src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_play_button_icon_%282013%E2%80%932017%29.svg" alt="youtube logo")
+		p Youtube
+		small Coming soon
+	a(class="service")
+		img(src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Twitter-logo.svg" alt="youtube logo")
+		p Twitter
+		small Coming soon
+	style.
+		.service {
+			width: 100px;
+			display: inline-block;
+			background-color: #161F27;
+			padding: 10px 20px 20px;
+			cursor: pointer;
+			margin-right: 20px;
+			text-decoration: none;
+			color: white;
+		}
 
-      const subdiv = document.querySelector("#subscriptions")
+		.service:hover {
+			text-decoration: none;
+		}
 
-      console.log(subdiv.textContent)
-
-      if (subdiv.textContent.includes(inputVal)) return
-
-      fetch("/api/item-crud", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: "ADD_SUBREDDIT_SUBSCRIPTION",
-          data: {
-            subreddit: inputVal
-          }
-        })
-      }).then(() => {
-        const newSubredditContainer = document.createElement("div", { id: `#${inputVal}-div` })
-        const newSubredditNode = document.createElement("p")
-        newSubredditNode.appendChild(document.createTextNode(inputVal))
-        newSubredditContainer.appendChild(newSubredditNode)
-        const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`})
-        removeBtn.appendChild(document.createTextNode("Remove"));
-        newSubredditContainer.appendChild(removeBtn)
-        subdiv.appendChild(newSubredditContainer)
-        document.querySelector("#newSubredditInput").value = ""
-      })
-    }
-
-    function remove(subreddit) {
-      fetch("/api/item-crud", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: "REMOVE_SUBREDDIT_SUBSCRIPTION",
-          data: {
-            subreddit: subreddit
-          }
-        })
-      }).then(() => {
-        document.querySelector(`#${subreddit}-div`).remove()
-      })
-    }
-
-    function logout() {
-      document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      location.reload()
-    }
+		.service img {
+			height: 50px;
+			width: 50px;
+		}
