@@ -59,9 +59,8 @@ async function emailUser(email: string) {
   emailData.subreddits.forEach(subreddit => {
     emailText += `<b>/r/${subreddit.name}:</b><br/><hr/>"`
     subreddit.posts.forEach((post) => {
-      emailText += `<b>${post.title}</b><br/>`
-      emailText += `<a href=${post.url}>Link</a><br/>`
-      emailText += `Score: ${post.score}<br/>`
+      emailText += `<a href=${post.url}>${post.title}</a><br/>`
+      emailText += `Score: ${post.score}<br/><br/>`
     });
     emailText += "</br>"
   });
