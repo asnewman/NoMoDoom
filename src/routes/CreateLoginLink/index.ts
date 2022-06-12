@@ -33,8 +33,18 @@ async function createLoginLinkController(req: any, res: any) {
     user.markModified("data");
     await user.save();
 
-    await sendMail(email, user.data.token);
-    res.send("Success - please check your email");
+    if (process.env.IS_LOCAL === "true") {
+      user.data.signedInWithToken = true;
+      user.data.token = randomString(20);
+      user.markModified("data");
+      await user.save();
+      res.cookie("token", user.data.token);
+      return res.redirect("/");
+    }
+    else {
+      await sendMail(email, user.data.token);
+      return res.send("Success - please check your email");
+    }
   } catch (e) {
     console.error(e);
     res.send("Failed");
