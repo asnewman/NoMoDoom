@@ -34,6 +34,7 @@ async function createLoginLinkController(req: any, res: any) {
     await user.save();
 
     if (process.env.IS_LOCAL === "true") {
+      console.log("bypassing auth")
       user.data.signedInWithToken = true;
       user.data.token = randomString(20);
       user.markModified("data");

@@ -14,6 +14,7 @@ import itemCrudController from "./routes/ItemCrud";
 import emailWatcher from "./email/watcher";
 import archiveWatcher from "./archivers/watcher";
 import startScheduler from "./scheduler";
+import hackernewsController from "./routes/Hackernews";
 
 if (!process.env.MONGO_URI) {
   console.error("MONGO_URI not set");
@@ -34,6 +35,8 @@ app.set("view engine", "pug");
 app.get("/", authCheck, homeController);
 
 app.get("/reddit", authCheck, redditController);
+
+app.get("/hackernews", authCheck, hackernewsController);
 
 app.get("/create-link", (_req: any, res: any) => {
   res.render("CreateLink");

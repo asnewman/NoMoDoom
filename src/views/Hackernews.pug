@@ -1,0 +1,40 @@
+extends Base
+block content
+  unless isSubscribed
+    h2 You are not subscribe to Hacker News
+    button(class="hackernewsSubscriptionToggle" onclick="subscribe()") Subscribe
+  unless !isSubscribed
+    h2 You are subscribe to Hacker News
+    button(class="hackernewsSubscriptionToggle" onclick="unsubscribe()") Unsubscribe
+  script.
+    function subscribe() {
+      const btn = document.querySelector(".hackernewsSubscriptionToggle")
+
+      btn.disabled = true
+
+      fetch("/api/item-crud", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: "ADD_HACKERNEWS_SUBSCRIPTION"
+        })
+      }).then(() => location.reload())
+    }
+
+    function unsubscribe() {
+      const btn = document.querySelector(".hackernewsSubscriptionToggle")
+
+      btn.disabled = true
+      fetch("/api/item-crud", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: "REMOVE_HACKERNEWS_SUBSCRIPTION"
+        })
+      }).then(() => location.reload())
+    }
+    
