@@ -57,7 +57,7 @@ async function emailUser(email: string) {
 
   let emailText = "Here is your nomodoom email digest:<br/><br/>"
   emailData.subreddits.forEach(subreddit => {
-    emailText += `<b>/r/${subreddit.name}:</b><br/><hr/>"`
+    emailText += `<b>/r/${subreddit.name}:</b><br/><hr/>`
     subreddit.posts.forEach((post) => {
       emailText += `<a href=${post.url}>${post.title}</a><br/>`
       emailText += `Score: ${post.score}<br/><br/>`

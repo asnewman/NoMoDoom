@@ -5,7 +5,9 @@ async function redditController(req: any, res: any) {
     const subscriptions = await Item.find({
       type: MONGO_TYPES.SUBSCRIPTION,
       "data.email": req.email,
+      "data.service": "reddit"
     });
+
     return res.render("Reddit", {
       email: req.email,
       subreddits: subscriptions.map(

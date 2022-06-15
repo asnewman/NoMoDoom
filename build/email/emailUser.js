@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var nodemailer_1 = __importDefault(require("nodemailer"));
 var mongoose_1 = require("../mongoose");
 var pure_1 = require("./pure");
+var moment_timezone_1 = __importDefault(require("moment-timezone"));
 function emailUser(email) {
     return __awaiter(this, void 0, void 0, function () {
         var user, subscriptions, emailData, transporter, emailText;
@@ -63,6 +64,9 @@ function emailUser(email) {
                         })];
                 case 2:
                     subscriptions = _a.sent();
+                    if (subscriptions.length === 0) {
+                        return [2 /*return*/];
+                    }
                     return [4 /*yield*/, (0, pure_1.generateEmailData)(user, subscriptions, function (subreddits, gtTimestamp) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 return [2 /*return*/, mongoose_1.Item.find({
@@ -89,18 +93,17 @@ function emailUser(email) {
                     });
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     emailData.subreddits.forEach(function (subreddit) {
-                        emailText += "<b>/r/".concat(subreddit.name, ":</b><br/><hr/>\"");
+                        emailText += "<b>/r/".concat(subreddit.name, ":</b><br/><hr/>");
                         subreddit.posts.forEach(function (post) {
-                            emailText += "<b>".concat(post.title, "</b><br/>");
-                            emailText += "<a href=".concat(post.url, ">Link</a><br/>");
-                            emailText += "Score: ".concat(post.score, "<br/>");
+                            emailText += "<a href=".concat(post.url, ">").concat(post.title, "</a><br/>");
+                            emailText += "Score: ".concat(post.score, "<br/><br/>");
                         });
                         emailText += "</br>";
                     });
                     return [4 /*yield*/, transporter.sendMail({
                             from: '"nomodoom" <ash@kozukaihabit.com>',
                             to: email,
-                            subject: "nomodoom digest",
+                            subject: "nomodoom digest ".concat((0, moment_timezone_1.default)().tz('America/Los_Angeles').format('MMMM Do YYYY')),
                             html: emailText
                         })];
                 case 4:

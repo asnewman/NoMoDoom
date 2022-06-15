@@ -104,3 +104,4 @@ dist
 .tern-portgit@github.com:asnewman/NoMoDoom.git
 
 .idea
+.DS_Store

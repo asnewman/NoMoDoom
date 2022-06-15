@@ -25,6 +25,25 @@ async function itemCrudController(req: any, res: any) {
         });
         return res.status(200).send();
       }
+      case "ADD_HACKERNEWS_SUBSCRIPTION": {
+        const newSubscriptionItemData: MongoSubscriptionData = {
+          service: "hackernews",
+          email: req.email,
+        };
+        await new Item({
+          type: MONGO_TYPES.SUBSCRIPTION,
+          data: newSubscriptionItemData,
+        }).save();
+        console.info(`New hackernews subscription! ${req.email}`)
+        return res.status(200).send();
+      }
+      case "REMOVE_HACKERNEWS_SUBSCRIPTION": {
+        await Item.deleteOne({
+          "data.email": req.email,
+          "data.service": "hackernews",
+        });
+        return res.status(200).send();
+      }
       default:
         break;
     }
