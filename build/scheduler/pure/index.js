@@ -16,6 +16,9 @@ function generateArchiveEvents(subscriptions) {
             res.push(eventData);
         }
     });
+    res.push({
+        service: "hackernews"
+    });
     return res;
 }
 exports.generateArchiveEvents = generateArchiveEvents;

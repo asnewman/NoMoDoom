@@ -36,44 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendEmailEvents = exports.sendArchivingEvents = void 0;
-var amqp_1 = require("../amqp");
-var mongoose_1 = require("../mongoose");
-var pure_1 = require("./pure");
-function sendArchivingEvents() {
-    var _this = this;
-    (0, amqp_1.getChannel)().then(function (channel) { return __awaiter(_this, void 0, void 0, function () {
-        var subscriptions;
+function default_1(req, res, next) {
+    return __awaiter(this, void 0, void 0, function () {
+        var password;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose_1.Item.find({ type: mongoose_1.MONGO_TYPES.SUBSCRIPTION })];
-                case 1:
-                    subscriptions = _a.sent();
-                    (0, pure_1.generateArchiveEvents)(subscriptions).forEach(function (eventData) {
-                        channel.sendToQueue("archive", Buffer.from(JSON.stringify(eventData)));
-                    });
-                    return [2 /*return*/];
+            password = req.body.password;
+            if (password === process.env.SCHEDULER_PASSWORD) {
+                next();
             }
-        });
-    }); });
-}
-exports.sendArchivingEvents = sendArchivingEvents;
-function sendEmailEvents() {
-    var _this = this;
-    (0, amqp_1.getChannel)().then(function (channel) { return __awaiter(_this, void 0, void 0, function () {
-        var users;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose_1.Item.find({ type: mongoose_1.MONGO_TYPES.USER })];
-                case 1:
-                    users = _a.sent();
-                    (0, pure_1.generateEmailEvents)(users, Date.now()).forEach(function (emailData) {
-                        channel.sendToQueue("email", Buffer.from(JSON.stringify(emailData)));
-                    });
-                    return [2 /*return*/];
+            else {
+                return [2 /*return*/, res.status(403).send()];
             }
+            return [2 /*return*/];
         });
-    }); });
+    });
 }
-exports.sendEmailEvents = sendEmailEvents;
-//# sourceMappingURL=index.js.map
+exports.default = default_1;
+//# sourceMappingURL=schedulerAuthCheck.js.map

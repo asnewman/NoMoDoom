@@ -32,6 +32,32 @@ describe("generateArchiveEvents tests", function () {
             },
         ]);
     });
+    test("disregard duplicates correctly", function () {
+        var dummySubscriptions = [
+            {
+                type: "",
+                data: {
+                    service: "reddit",
+                    subservice: "javascript",
+                    email: "test@email.com",
+                },
+            },
+            {
+                type: "",
+                data: {
+                    service: "reddit",
+                    subservice: "javascript",
+                    email: "test@email.com",
+                },
+            },
+        ];
+        expect((0, index_1.generateArchiveEvents)(dummySubscriptions)).toEqual([
+            {
+                service: "reddit",
+                subservice: "javascript",
+            }
+        ]);
+    });
 });
 describe("generateEmailEvents tests", function () {
     test("generates correctly", function () {

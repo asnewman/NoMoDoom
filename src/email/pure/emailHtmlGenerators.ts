@@ -14,7 +14,7 @@ function generateHackernewsHtml(data: HackerNewsArchiveData[]) {
 function generateRedditHtml(data: MongoSubredditData[]) {
   let redditText = "Here is your nomodoom email digest:<br/><br/>"
   data.forEach(subreddit => {
-    redditText += `<b>/r/${subreddit.name}:</b><br/><hr/>"`
+    redditText += `<b>/r/${subreddit.subreddit}:</b><br/><hr/>"`
     subreddit.topPosts.forEach(post => {
       redditText += `<a href=${post.url}>${post.title}</a><br/>`
       redditText += `Score: ${post.score}<br/><br/>`

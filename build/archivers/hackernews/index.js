@@ -35,75 +35,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var axios_1 = __importDefault(require("axios"));
 var mongoose_1 = require("../../mongoose");
-function itemCrudController(req, res) {
+var pure_1 = require("./pure");
+function archiveHackernews() {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, query, data, _b, newSubscriptionItemData, newSubscriptionItemData, e_1;
+        var htmls, i, _a, _b, posts, archiveData, _i, posts_1, post;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    _c.trys.push([0, 11, , 12]);
-                    _a = req.body, query = _a.query, data = _a.data;
-                    _b = query;
-                    switch (_b) {
-                        case "ADD_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 1];
-                        case "REMOVE_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 3];
-                        case "ADD_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 5];
-                        case "REMOVE_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 7];
-                    }
-                    return [3 /*break*/, 9];
+                    htmls = [];
+                    i = 1;
+                    _c.label = 1;
                 case 1:
-                    newSubscriptionItemData = {
-                        service: "reddit",
-                        subservice: data.subreddit,
-                        email: req.email,
-                    };
-                    return [4 /*yield*/, new mongoose_1.Item({
-                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                            data: newSubscriptionItemData,
-                        }).save()];
+                    if (!(i <= 7)) return [3 /*break*/, 5];
+                    _b = (_a = htmls).push;
+                    return [4 /*yield*/, axios_1.default.get("https://news.ycombinator.com/best?p=".concat(i))];
                 case 2:
+                    _b.apply(_a, [(_c.sent()).data]);
+                    return [4 /*yield*/, (new Promise(function (resolve) {
+                            setTimeout(function () { return resolve(null); }, 1000);
+                        }))];
+                case 3:
                     _c.sent();
-                    console.info("New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit));
-                    return [2 /*return*/, res.status(200).send()];
-                case 3: return [4 /*yield*/, mongoose_1.Item.deleteOne({
-                        "data.email": req.email,
-                        "data.subservice": data.subreddit,
-                    })];
+                    _c.label = 4;
                 case 4:
-                    _c.sent();
-                    return [2 /*return*/, res.status(200).send()];
+                    i++;
+                    return [3 /*break*/, 1];
                 case 5:
-                    newSubscriptionItemData = {
-                        service: "hackernews",
-                        email: req.email,
+                    posts = (0, pure_1.getTopPostsForDay)(htmls, Date.now());
+                    archiveData = {
+                        datetime: Date.now(),
+                        data: []
                     };
-                    return [4 /*yield*/, new mongoose_1.Item({
-                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                            data: newSubscriptionItemData,
-                        }).save()];
+                    for (_i = 0, posts_1 = posts; _i < posts_1.length; _i++) {
+                        post = posts_1[_i];
+                        archiveData.data.push({ title: post.title, score: post.score, link: post.link });
+                    }
+                    return [4 /*yield*/, mongoose_1.Item.create({
+                            type: mongoose_1.MONGO_TYPES.ARCHIVE,
+                            data: archiveData
+                        })];
                 case 6:
                     _c.sent();
-                    console.info("New hackernews subscription! ".concat(req.email));
-                    return [2 /*return*/, res.status(200).send()];
-                case 7: return [4 /*yield*/, mongoose_1.Item.deleteOne({
-                        "data.email": req.email,
-                        "data.service": "hackernews",
-                    })];
-                case 8:
-                    _c.sent();
-                    return [2 /*return*/, res.status(200).send()];
-                case 9: return [3 /*break*/, 10];
-                case 10: return [2 /*return*/, res.status(404).send("Query not found")];
-                case 11:
-                    e_1 = _c.sent();
-                    console.error(e_1);
-                    return [2 /*return*/, res.status(400).send(e_1)];
-                case 12: return [2 /*return*/];
+                    return [2 /*return*/];
             }
         });
     });
 }
-exports.default = itemCrudController;
+exports.default = archiveHackernews;
 //# sourceMappingURL=index.js.map

@@ -29,6 +29,7 @@ var MONGO_TYPES = {
     SUBREDDIT: "SUBREDDIT",
     USER: "USER",
     SUBSCRIPTION: "SUBSCRIPTION",
+    ARCHIVE: "ARCHIVE"
 };
 exports.MONGO_TYPES = MONGO_TYPES;
 var ItemSchema = new mongoose_1.Schema({

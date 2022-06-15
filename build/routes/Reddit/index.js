@@ -36,44 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendEmailEvents = exports.sendArchivingEvents = void 0;
-var amqp_1 = require("../amqp");
-var mongoose_1 = require("../mongoose");
-var pure_1 = require("./pure");
-function sendArchivingEvents() {
-    var _this = this;
-    (0, amqp_1.getChannel)().then(function (channel) { return __awaiter(_this, void 0, void 0, function () {
-        var subscriptions;
+var mongoose_1 = require("../../mongoose");
+function redditController(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var subscriptions, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose_1.Item.find({ type: mongoose_1.MONGO_TYPES.SUBSCRIPTION })];
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, mongoose_1.Item.find({
+                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
+                            "data.email": req.email,
+                            "data.service": "reddit"
+                        })];
                 case 1:
                     subscriptions = _a.sent();
-                    (0, pure_1.generateArchiveEvents)(subscriptions).forEach(function (eventData) {
-                        channel.sendToQueue("archive", Buffer.from(JSON.stringify(eventData)));
-                    });
-                    return [2 /*return*/];
+                    return [2 /*return*/, res.render("Reddit", {
+                            email: req.email,
+                            subreddits: subscriptions.map(function (s) { return s.data.subservice; }),
+                        })];
+                case 2:
+                    e_1 = _a.sent();
+                    console.error(e_1);
+                    return [2 /*return*/, res.send(e_1)];
+                case 3: return [2 /*return*/];
             }
         });
-    }); });
+    });
 }
-exports.sendArchivingEvents = sendArchivingEvents;
-function sendEmailEvents() {
-    var _this = this;
-    (0, amqp_1.getChannel)().then(function (channel) { return __awaiter(_this, void 0, void 0, function () {
-        var users;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose_1.Item.find({ type: mongoose_1.MONGO_TYPES.USER })];
-                case 1:
-                    users = _a.sent();
-                    (0, pure_1.generateEmailEvents)(users, Date.now()).forEach(function (emailData) {
-                        channel.sendToQueue("email", Buffer.from(JSON.stringify(emailData)));
-                    });
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-}
-exports.sendEmailEvents = sendEmailEvents;
+exports.default = redditController;
 //# sourceMappingURL=index.js.map

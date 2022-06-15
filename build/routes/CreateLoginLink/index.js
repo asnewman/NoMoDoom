@@ -48,7 +48,7 @@ function createLoginLinkController(req, res) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
+                    _a.trys.push([0, 7, , 8]);
                     email = req.body.email;
                     return [4 /*yield*/, mongoose_1.Item.findOne({
                             type: mongoose_1.MONGO_TYPES.USER,
@@ -69,6 +69,7 @@ function createLoginLinkController(req, res) {
                             type: mongoose_1.MONGO_TYPES.USER,
                             data: mongoUserData,
                         });
+                        console.info("New user signed up! " + email);
                     }
                     user.data.token = (0, randomString_1.default)(20);
                     (user.data.tokenExpiration = Date.now() + 7200000),
@@ -77,17 +78,27 @@ function createLoginLinkController(req, res) {
                     return [4 /*yield*/, user.save()];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, sendMail(email, user.data.token)];
+                    if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 4];
+                    console.log("bypassing auth");
+                    user.data.signedInWithToken = true;
+                    user.data.token = (0, randomString_1.default)(20);
+                    user.markModified("data");
+                    return [4 /*yield*/, user.save()];
                 case 3:
                     _a.sent();
-                    res.send("Success - please check your email");
-                    return [3 /*break*/, 5];
-                case 4:
+                    res.cookie("token", user.data.token);
+                    return [2 /*return*/, res.redirect("/")];
+                case 4: return [4 /*yield*/, sendMail(email, user.data.token)];
+                case 5:
+                    _a.sent();
+                    return [2 /*return*/, res.send("Success - please check your email")];
+                case 6: return [3 /*break*/, 8];
+                case 7:
                     e_1 = _a.sent();
                     console.error(e_1);
                     res.send("Failed");
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
