@@ -21,6 +21,10 @@ function generateArchiveEvents(
     }
   });
 
+  res.push({
+    service: "hackernews"
+  });
+
   return res;
 }
 
