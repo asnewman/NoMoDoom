@@ -12,10 +12,9 @@ import schedulerAuthCheck from "./middleware/schedulerAuthCheck";
 import homeController from "./routes/Home";
 import redditController from "./routes/Reddit";
 import itemCrudController from "./routes/ItemCrud";
-import emailWatcher from "./email/watcher";
-import archiveWatcher from "./archivers/watcher";
 import hackernewsController from "./routes/Hackernews";
-import { sendArchivingEvents, sendEmailEvents } from "./scheduler";
+import archiveController from "./routes/Archive";
+import emailController from "./routes/Email";
 
 if (!process.env.MONGO_URI) {
   console.error("MONGO_URI not set");
@@ -25,9 +24,6 @@ mongoose.connect(process.env.MONGO_URI);
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-emailWatcher()
-archiveWatcher()
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -51,8 +47,8 @@ app.get("/login", loginController);
 
 app.post("/api/item-crud", authCheck, itemCrudController);
 
-app.post("/api/schedule-archives", schedulerAuthCheck, (_req, res) => {sendArchivingEvents(); res.send()})
-app.post("/api/schedule-emails", schedulerAuthCheck, (_req, res) => {sendEmailEvents(); res.send()})
+app.post("/api/schedule-archives", schedulerAuthCheck, archiveController)
+app.post("/api/schedule-emails", schedulerAuthCheck, emailController)
 
 app.listen(port, () => {
   console.log("I am awake");
