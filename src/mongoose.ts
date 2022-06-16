@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { SubredditData } from "./archivers/subreddit/types";
+import { SubredditData } from "./routes/Archive/archivers/subreddit/types";
 
 const MONGO_TYPES = {
   SUBREDDIT: "SUBREDDIT",
