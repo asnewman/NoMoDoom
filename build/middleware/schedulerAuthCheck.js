@@ -40,7 +40,7 @@ function default_1(req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
         var password;
         return __generator(this, function (_a) {
-            password = req.body.password;
+            password = req.get("password");
             if (password === process.env.SCHEDULER_PASSWORD) {
                 next();
             }
