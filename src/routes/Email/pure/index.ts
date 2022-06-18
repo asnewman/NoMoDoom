@@ -1,4 +1,8 @@
-import { MongoSubredditData, MongoSubscriptionData, MongoUserData } from "../../../mongoose";
+import {
+  MongoSubredditData,
+  MongoSubscriptionData,
+  MongoUserData,
+} from "../../../mongoose";
 import { SubredditData } from "../../Archive/archivers/subreddit/types";
 
 interface EmailData {

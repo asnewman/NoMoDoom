@@ -47,7 +47,7 @@ function hackernewsController(req, res) {
                     return [4 /*yield*/, mongoose_1.Item.findOne({
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                             "data.email": req.email,
-                            "data.service": "hackernews"
+                            "data.service": "hackernews",
                         })];
                 case 1:
                     subscription = _a.sent();

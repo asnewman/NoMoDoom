@@ -35,6 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -44,25 +55,26 @@ var mongoose_1 = require("../../../../mongoose");
 var pure_1 = require("./pure");
 function archiveHackernews() {
     return __awaiter(this, void 0, void 0, function () {
-        var htmls, i, _a, _b, posts, archiveData, _i, posts_1, post;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var htmls, i, _a, _b, posts, archiveData, posts_1, posts_1_1, post;
+        var e_1, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
                     htmls = [];
                     i = 1;
-                    _c.label = 1;
+                    _d.label = 1;
                 case 1:
                     if (!(i <= 7)) return [3 /*break*/, 5];
                     _b = (_a = htmls).push;
                     return [4 /*yield*/, axios_1.default.get("https://news.ycombinator.com/best?p=".concat(i))];
                 case 2:
-                    _b.apply(_a, [(_c.sent()).data]);
-                    return [4 /*yield*/, (new Promise(function (resolve) {
+                    _b.apply(_a, [(_d.sent()).data]);
+                    return [4 /*yield*/, new Promise(function (resolve) {
                             setTimeout(function () { return resolve(null); }, 1000);
-                        }))];
+                        })];
                 case 3:
-                    _c.sent();
-                    _c.label = 4;
+                    _d.sent();
+                    _d.label = 4;
                 case 4:
                     i++;
                     return [3 /*break*/, 1];
@@ -70,18 +82,31 @@ function archiveHackernews() {
                     posts = (0, pure_1.getTopPostsForDay)(htmls, Date.now());
                     archiveData = {
                         datetime: Date.now(),
-                        data: []
+                        data: [],
                     };
-                    for (_i = 0, posts_1 = posts; _i < posts_1.length; _i++) {
-                        post = posts_1[_i];
-                        archiveData.data.push({ title: post.title, score: post.score, link: post.link });
+                    try {
+                        for (posts_1 = __values(posts), posts_1_1 = posts_1.next(); !posts_1_1.done; posts_1_1 = posts_1.next()) {
+                            post = posts_1_1.value;
+                            archiveData.data.push({
+                                title: post.title,
+                                score: post.score,
+                                link: post.link,
+                            });
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (posts_1_1 && !posts_1_1.done && (_c = posts_1.return)) _c.call(posts_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
                     }
                     return [4 /*yield*/, mongoose_1.Item.create({
                             type: mongoose_1.MONGO_TYPES.ARCHIVE,
-                            data: archiveData
+                            data: archiveData,
                         })];
                 case 6:
-                    _c.sent();
+                    _d.sent();
                     return [2 /*return*/];
             }
         });

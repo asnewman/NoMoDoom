@@ -5,7 +5,7 @@ const MONGO_TYPES = {
   SUBREDDIT: "SUBREDDIT",
   USER: "USER",
   SUBSCRIPTION: "SUBSCRIPTION",
-  ARCHIVE: "ARCHIVE"
+  ARCHIVE: "ARCHIVE",
 };
 
 interface HackerNewsArchiveData {

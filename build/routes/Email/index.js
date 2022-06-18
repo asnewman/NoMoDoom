@@ -48,7 +48,9 @@ function emailController(_req, res) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.Item.find({ type: mongoose_1.MONGO_TYPES.USER })];
+                    return [4 /*yield*/, mongoose_1.Item.find({
+                            type: mongoose_1.MONGO_TYPES.USER,
+                        })];
                 case 1:
                     users = _a.sent();
                     promises_1 = [];

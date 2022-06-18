@@ -47,8 +47,8 @@ app.get("/login", loginController);
 
 app.post("/api/item-crud", authCheck, itemCrudController);
 
-app.post("/api/schedule-archives", schedulerAuthCheck, archiveController)
-app.post("/api/schedule-emails", schedulerAuthCheck, emailController)
+app.post("/api/schedule-archives", schedulerAuthCheck, archiveController);
+app.post("/api/schedule-emails", schedulerAuthCheck, emailController);
 
 app.listen(port, () => {
   console.log("I am awake");
