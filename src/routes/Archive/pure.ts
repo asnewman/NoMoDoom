@@ -1,1 +1,0 @@
-async function archiveSubscriptions(subscriptions: MongoSubscription[], );

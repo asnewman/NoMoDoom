@@ -50,7 +50,6 @@ async function emailUser(email: string) {
   });
 
   let emailText = "Here is your nomodoom email digest:<br/><br/>";
-  
 
   await transporter.sendMail({
     from: '"nomodoom" <ash@kozukaihabit.com>', // sender address

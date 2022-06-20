@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Item, MongoArchiveData, MONGO_TYPES } from "../../../../mongoose";
+import { Item, MongoArchive, MongoArchiveHackernewsData, MONGO_TYPES } from "../../../../mongoose";
 import { getTopPostsForDay } from "./pure";
 
 export default async function archiveHackernews() {
@@ -15,11 +15,13 @@ export default async function archiveHackernews() {
   }
 
   const posts = getTopPostsForDay(htmls, Date.now());
-  const archiveData: MongoArchiveData = {
+  
+
+  const archiveData: MongoArchiveHackernewsData = {
     type: "hackernews",
     datetime: Date.now(),
     data: [],
-  };
+  }
   for (const post of posts) {
     archiveData.data.push({
       title: post.title,
@@ -28,8 +30,10 @@ export default async function archiveHackernews() {
     });
   }
 
-  await Item.create({
+  const archive: MongoArchive = {
     type: MONGO_TYPES.ARCHIVE,
-    data: archiveData,
-  });
+    data: archiveData
+  };
+
+  await Item.create(archive);
 }

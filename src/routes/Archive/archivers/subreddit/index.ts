@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Item, MongoSubredditData, MONGO_TYPES, SubredditPost } from "../../../../mongoose";
+import {
+  Item,
+  MongoSubredditData,
+  MONGO_TYPES,
+  SubredditPost,
+} from "../../../../mongoose";
 import { getTopThreePosts } from "./pure";
 
 export default async function archiveSubreddit(subreddit: string) {

@@ -9,20 +9,20 @@ const MONGO_TYPES = {
 } as const;
 
 interface MongoBase {
-  type: (keyof typeof MONGO_TYPES)
+  type: keyof typeof MONGO_TYPES;
 }
 
 interface MongoSubscription extends MongoBase {
-  type: "SUBSCRIPTION",
+  type: "SUBSCRIPTION";
   data: {
     service: "reddit" | "hackernews";
     subservice?: string;
     email: string;
-  }
+  };
 }
 
 interface MongoUser extends MongoBase {
-  type: "USER",
+  type: "USER";
   data: {
     token: string;
     tokenExpiration: number;
@@ -30,16 +30,16 @@ interface MongoUser extends MongoBase {
     email: string;
     frequency: 1;
     lastSent: number;
-  }
+  };
 }
 
 interface MongoArchive extends MongoBase {
-  type: "ARCHIVE",
-  data: MongoArchiveHackernewsData | MongoArchiveSubredditData
+  type: "ARCHIVE";
+  data: MongoArchiveHackernewsData | MongoArchiveSubredditData;
 }
 
 interface MongoArchiveHackernewsData {
-  type: "hackernews",
+  type: "hackernews";
   datetime: number; // epoch
   data: {
     title: string;
@@ -49,7 +49,7 @@ interface MongoArchiveHackernewsData {
 }
 
 interface MongoArchiveSubredditData {
-  type: "subreddit",
+  type: "subreddit";
   subreddit: string;
   datetime: number; // epoch
   topPosts: SubredditPost[];
@@ -73,6 +73,7 @@ export {
   MONGO_TYPES,
   MongoSubscription,
   MongoArchive,
+  MongoArchiveHackernewsData,
   MongoUser,
-  SubredditPost
+  SubredditPost,
 };
