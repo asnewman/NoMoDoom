@@ -12,7 +12,7 @@ function generateHackernewsHtml(data: HackerNewsArchiveData[]) {
 }
 
 function generateRedditHtml(data: MongoSubredditData[]) {
-  let redditText = "Here is your nomodoom email digest:<br/><br/>";
+  let redditText = "<h2>Reddit</h2>";
   data.forEach((subreddit) => {
     redditText += `<b>/r/${subreddit.subreddit}:</b><br/><hr/>"`;
     subreddit.topPosts.forEach((post) => {

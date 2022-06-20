@@ -1,16 +1,19 @@
 import {
+    HackerNewsArchiveData,
+  MongoArchiveData,
   MongoSubredditData,
   MongoSubscriptionData,
   MongoUserData,
+  SubredditPost,
 } from "../../../mongoose";
-import { SubredditData } from "../../Archive/archivers/subreddit/types";
 
 interface EmailData {
   email: string;
   subreddits: {
     name: string;
-    posts: SubredditData[];
+    posts: SubredditPost[];
   }[];
+  hackernews: HackerNewsArchiveData[]
 }
 
 async function generateEmailData(
@@ -20,24 +23,35 @@ async function generateEmailData(
     subreddits: string[],
     gtTimestamp: number
   ) => Promise<{ type: string; data: MongoSubredditData }[]>
+  getHackernewsArchive: () => Promise<{ type: string, data: MongoArchiveData}>
 ) {
-  const subreddits: string[] = subscriptions
-    .map((subscription) => subscription.data.subservice)
-    .filter((subservice) => subservice !== undefined) as string[];
-
-  const archives = await getSubredditArchives(subreddits, user.data.lastSent);
-
   const res: EmailData = {
     email: user.data.email,
     subreddits: [],
+    hackernews: [],
   };
 
-  archives.forEach((archive) => {
+  const subreddits: string[] = 
+    subscriptions.filter(subscription => subscription.data.service === "reddit")
+    .map((subscription) => subscription.data.subservice)
+    .filter((subservice) => subservice !== undefined) as string[];
+
+  const subredditArchives = await getSubredditArchives(subreddits, user.data.lastSent);
+
+  subredditArchives.forEach((archive) => {
     res.subreddits.push({
       name: archive.data.subreddit,
       posts: archive.data.topPosts,
     });
   });
+
+  const isSubscribedToHackernews = subscriptions
+    .find(subscription => subscription.data.service === "hackernews")
+
+  if (isSubscribedToHackernews) {
+    const hackernewsArchive = await getHackernewsArchive();
+    res.hackernews = hackernewsArchive.data;
+  }
 
   return res;
 }

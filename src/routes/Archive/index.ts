@@ -1,9 +1,10 @@
-import { Item, MongoSubscriptionData, MONGO_TYPES } from "../../mongoose";
+import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
+import archiveHackernews from "./archivers/hackernews";
 import archiveSubreddit from "./archivers/subreddit";
 
 async function archiveController(_req: any, res: any) {
   try {
-    const subscriptions: { type: string; data: MongoSubscriptionData }[] =
+    const subscriptions: MongoSubscription[] =
       await Item.find({ type: MONGO_TYPES.SUBSCRIPTION });
 
     const promises: Promise<any>[] = [];
@@ -18,6 +19,8 @@ async function archiveController(_req: any, res: any) {
           promises.push(archiveSubreddit(subreddit));
         }
       });
+
+    archiveHackernews()
 
     await Promise.all(promises);
 

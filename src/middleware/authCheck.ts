@@ -1,8 +1,8 @@
-import { Item, MONGO_TYPES } from "../mongoose";
+import { Item, MongoUser, MONGO_TYPES } from "../mongoose";
 
 export default async function (req: any, res: any, next: any) {
   const { token } = req.cookies;
-  const user = await Item.findOne({
+  const user: MongoUser | null = await Item.findOne({
     type: MONGO_TYPES.USER,
     "data.token": token,
   });

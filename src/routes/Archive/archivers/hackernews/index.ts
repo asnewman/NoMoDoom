@@ -16,6 +16,7 @@ export default async function archiveHackernews() {
 
   const posts = getTopPostsForDay(htmls, Date.now());
   const archiveData: MongoArchiveData = {
+    type: "hackernews",
     datetime: Date.now(),
     data: [],
   };

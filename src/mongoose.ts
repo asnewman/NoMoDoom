@@ -6,38 +6,59 @@ const MONGO_TYPES = {
   USER: "USER",
   SUBSCRIPTION: "SUBSCRIPTION",
   ARCHIVE: "ARCHIVE",
-};
+} as const;
 
-interface HackerNewsArchiveData {
-  title: string;
-  score: number;
-  link: string;
+interface MongoBase {
+  type: (keyof typeof MONGO_TYPES)
 }
 
-interface MongoArchiveData {
+interface MongoSubscription extends MongoBase {
+  type: "SUBSCRIPTION",
+  data: {
+    service: "reddit" | "hackernews";
+    subservice?: string;
+    email: string;
+  }
+}
+
+interface MongoUser extends MongoBase {
+  type: "USER",
+  data: {
+    token: string;
+    tokenExpiration: number;
+    signedInWithToken: boolean;
+    email: string;
+    frequency: 1;
+    lastSent: number;
+  }
+}
+
+interface MongoArchive extends MongoBase {
+  type: "ARCHIVE",
+  data: MongoArchiveHackernewsData | MongoArchiveSubredditData
+}
+
+interface MongoArchiveHackernewsData {
+  type: "hackernews",
   datetime: number; // epoch
-  data: HackerNewsArchiveData[];
+  data: {
+    title: string;
+    score: number;
+    link: string;
+  }[];
 }
 
-interface MongoSubredditData {
+interface MongoArchiveSubredditData {
+  type: "subreddit",
   subreddit: string;
   datetime: number; // epoch
-  topPosts: SubredditData[];
+  topPosts: SubredditPost[];
 }
 
-interface MongoUserData {
-  token: string;
-  tokenExpiration: number;
-  signedInWithToken: boolean;
-  email: string;
-  frequency: 1;
-  lastSent: number;
-}
-
-interface MongoSubscriptionData {
-  service: string;
-  subservice?: string;
-  email: string;
+interface SubredditPost {
+  title: string;
+  score: number;
+  url: string;
 }
 
 const ItemSchema = new Schema({
@@ -50,9 +71,8 @@ const Item = mongoose.model("Item", ItemSchema);
 export {
   Item,
   MONGO_TYPES,
-  HackerNewsArchiveData,
-  MongoArchiveData,
-  MongoSubredditData,
-  MongoUserData,
-  MongoSubscriptionData,
+  MongoSubscription,
+  MongoArchive,
+  MongoUser,
+  SubredditPost
 };
