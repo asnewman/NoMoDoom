@@ -5,41 +5,41 @@ describe("getTopPostsForDay", function () {
     it("gets correctly", function () {
         expect((0, _1.getTopPostsForDay)([html1, html2], 1655073357596).toString()).toBe([
             {
-                title: 'US moves closer to recalling Tesla’s self-driving software',
+                title: "US moves closer to recalling Tesla’s self-driving software",
                 score: 498,
-                link: 'https://news.ycombinator.com/item?id=31706955',
-                date: new Date("2022-06-12T01:39:48.000Z")
+                link: "https://news.ycombinator.com/item?id=31706955",
+                date: new Date("2022-06-12T01:39:48.000Z"),
             },
             {
-                title: 'Shortsightedness has become an epidemic',
+                title: "Shortsightedness has become an epidemic",
                 score: 465,
-                link: 'https://news.ycombinator.com/item?id=31711990',
-                date: new Date("2022-06-12T13:17:34.000Z")
+                link: "https://news.ycombinator.com/item?id=31711990",
+                date: new Date("2022-06-12T13:17:34.000Z"),
             },
             {
-                title: 'AirPlay and Touch Bar = Network Disaster',
+                title: "AirPlay and Touch Bar = Network Disaster",
                 score: 411,
-                link: 'https://news.ycombinator.com/item?id=31706283',
-                date: new Date("2022-06-12T00:31:03.000Z")
+                link: "https://news.ycombinator.com/item?id=31706283",
+                date: new Date("2022-06-12T00:31:03.000Z"),
             },
             {
                 title: "Ask HN: What's the coolest website you know?",
                 score: 388,
-                link: 'https://news.ycombinator.com/item?id=31708366',
-                date: new Date("2022-06-12T04:02:16.000Z")
+                link: "https://news.ycombinator.com/item?id=31708366",
+                date: new Date("2022-06-12T04:02:16.000Z"),
             },
             {
-                title: 'Ask HN: Is there a TV on the market without “Smart TV” features?',
+                title: "Ask HN: Is there a TV on the market without “Smart TV” features?",
                 score: 372,
-                link: 'https://news.ycombinator.com/item?id=31706835',
-                date: new Date("2022-06-12T01:28:18.000Z")
+                link: "https://news.ycombinator.com/item?id=31706835",
+                date: new Date("2022-06-12T01:28:18.000Z"),
             },
             {
-                title: 'Lilium achieves first main wing transition for all-electric aircraft [video]',
+                title: "Lilium achieves first main wing transition for all-electric aircraft [video]",
                 score: 296,
-                link: 'https://news.ycombinator.com/item?id=31715067',
-                date: new Date("2022-06-12T22:10:35.000Z")
-            }
+                link: "https://news.ycombinator.com/item?id=31715067",
+                date: new Date("2022-06-12T22:10:35.000Z"),
+            },
         ].toString());
     });
 });

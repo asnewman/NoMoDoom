@@ -88,8 +88,8 @@ function emailUser(email) {
                         secure: false,
                         auth: {
                             user: process.env.EMAIL,
-                            pass: process.env.EMAIL_PASS
-                        }
+                            pass: process.env.EMAIL_PASS,
+                        },
                     });
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     emailData.subreddits.forEach(function (subreddit) {
@@ -103,8 +103,10 @@ function emailUser(email) {
                     return [4 /*yield*/, transporter.sendMail({
                             from: '"nomodoom" <ash@kozukaihabit.com>',
                             to: email,
-                            subject: "nomodoom digest ".concat((0, moment_timezone_1.default)().tz('America/Los_Angeles').format('MMMM Do YYYY')),
-                            html: emailText
+                            subject: "nomodoom digest ".concat((0, moment_timezone_1.default)()
+                                .tz("America/Los_Angeles")
+                                .format("MMMM Do YYYY")),
+                            html: emailText,
                         })];
                 case 4:
                     _a.sent();

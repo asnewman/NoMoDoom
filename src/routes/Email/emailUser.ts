@@ -1,18 +1,12 @@
 import nodemailer from "nodemailer";
-import {
-  Item,
-  MONGO_TYPES,
-  MongoSubscriptionData,
-} from "../../mongoose";
+import { Item, MONGO_TYPES, MongoSubscriptionData } from "../../mongoose";
 import { generateEmailData } from "./pure";
-import moment from 'moment-timezone';
+import moment from "moment-timezone";
 
 async function emailUser(email: string) {
-  const user = await Item.findOne(
-    {
-      "data.email": email,
-    }
-  );
+  const user = await Item.findOne({
+    "data.email": email,
+  });
 
   if (!user) {
     console.error("Email not found: ", email);
@@ -26,7 +20,7 @@ async function emailUser(email: string) {
     });
 
   if (subscriptions.length === 0) {
-    return
+    return;
   }
 
   const emailData = await generateEmailData(
@@ -51,30 +45,32 @@ async function emailUser(email: string) {
     secure: false,
     auth: {
       user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS
-    }
+      pass: process.env.EMAIL_PASS,
+    },
   });
 
-  let emailText = "Here is your nomodoom email digest:<br/><br/>"
-  emailData.subreddits.forEach(subreddit => {
-    emailText += `<b>/r/${subreddit.name}:</b><br/><hr/>`
+  let emailText = "Here is your nomodoom email digest:<br/><br/>";
+  emailData.subreddits.forEach((subreddit) => {
+    emailText += `<b>/r/${subreddit.name}:</b><br/><hr/>`;
     subreddit.posts.forEach((post) => {
-      emailText += `<a href=${post.url}>${post.title}</a><br/>`
-      emailText += `Score: ${post.score}<br/><br/>`
+      emailText += `<a href=${post.url}>${post.title}</a><br/>`;
+      emailText += `Score: ${post.score}<br/><br/>`;
     });
-    emailText += "</br>"
+    emailText += "</br>";
   });
 
   await transporter.sendMail({
     from: '"nomodoom" <ash@kozukaihabit.com>', // sender address
     to: email,
-    subject: `nomodoom digest ${moment().tz('America/Los_Angeles').format('MMMM Do YYYY')}`, // Subject line
-    html: emailText
+    subject: `nomodoom digest ${moment()
+      .tz("America/Los_Angeles")
+      .format("MMMM Do YYYY")}`, // Subject line
+    html: emailText,
   });
 
   user.data.lastSent = Date.now();
   user.markModified("data");
-  await user.save()
+  await user.save();
 }
 
 export default emailUser;

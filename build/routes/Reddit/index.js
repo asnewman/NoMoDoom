@@ -47,7 +47,7 @@ function redditController(req, res) {
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                             "data.email": req.email,
-                            "data.service": "reddit"
+                            "data.service": "reddit",
                         })];
                 case 1:
                     subscriptions = _a.sent();

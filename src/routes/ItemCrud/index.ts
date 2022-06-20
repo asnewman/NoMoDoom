@@ -15,7 +15,9 @@ async function itemCrudController(req: any, res: any) {
           type: MONGO_TYPES.SUBSCRIPTION,
           data: newSubscriptionItemData,
         }).save();
-        console.info(`New subreddit subscription! ${req.email} ${data.subreddit}`)
+        console.info(
+          `New subreddit subscription! ${req.email} ${data.subreddit}`
+        );
         return res.status(200).send();
       }
       case "REMOVE_SUBREDDIT_SUBSCRIPTION": {
@@ -34,7 +36,7 @@ async function itemCrudController(req: any, res: any) {
           type: MONGO_TYPES.SUBSCRIPTION,
           data: newSubscriptionItemData,
         }).save();
-        console.info(`New hackernews subscription! ${req.email}`)
+        console.info(`New hackernews subscription! ${req.email}`);
         return res.status(200).send();
       }
       case "REMOVE_HACKERNEWS_SUBSCRIPTION": {

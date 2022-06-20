@@ -35,6 +35,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -43,7 +68,7 @@ var mongoose_1 = require("../../mongoose");
 var subreddit_1 = __importDefault(require("./archivers/subreddit"));
 function archiveController(_req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var subscriptions, promises_1, e_1;
+        var subscriptions, promises_1, subreddits, uniqueSubreddits, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -52,9 +77,13 @@ function archiveController(_req, res) {
                 case 1:
                     subscriptions = _a.sent();
                     promises_1 = [];
-                    subscriptions.forEach(function (subscription) {
-                        if (subscription.data.service === "reddit" && subscription.data.subservice) {
-                            promises_1.push((0, subreddit_1.default)(subscription.data.subservice));
+                    subreddits = subscriptions
+                        .filter(function (subscriptions) { return subscriptions.data.service === "reddit" && subscriptions.data.subservice; })
+                        .map(function (subscription) { return subscription.data.subservice; });
+                    uniqueSubreddits = __spreadArray([], __read(new Set(subreddits)), false);
+                    uniqueSubreddits.forEach(function (subreddit) {
+                        if (subreddit) {
+                            promises_1.push((0, subreddit_1.default)(subreddit));
                         }
                     });
                     return [4 /*yield*/, Promise.all(promises_1)];

@@ -24,7 +24,7 @@ async function createLoginLinkController(req: any, res: any) {
         data: mongoUserData,
       });
 
-      console.info("New user signed up! " + email)
+      console.info("New user signed up! " + email);
     }
 
     user.data.token = randomString(20);
@@ -34,15 +34,14 @@ async function createLoginLinkController(req: any, res: any) {
     await user.save();
 
     if (process.env.IS_LOCAL === "true") {
-      console.log("bypassing auth")
+      console.log("bypassing auth");
       user.data.signedInWithToken = true;
       user.data.token = randomString(20);
       user.markModified("data");
       await user.save();
       res.cookie("token", user.data.token);
       return res.redirect("/");
-    }
-    else {
+    } else {
       await sendMail(email, user.data.token);
       return res.send("Success - please check your email");
     }

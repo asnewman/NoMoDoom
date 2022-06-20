@@ -5,7 +5,7 @@ async function hackernewsController(req: any, res: any) {
     const subscription = await Item.findOne({
       type: MONGO_TYPES.SUBSCRIPTION,
       "data.email": req.email,
-      "data.service": "hackernews"
+      "data.service": "hackernews",
     });
     return res.render("Hackernews", {
       email: req.email,
