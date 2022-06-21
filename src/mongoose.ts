@@ -1,8 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { SubredditData } from "./routes/Archive/archivers/subreddit/types";
 
 const MONGO_TYPES = {
-  SUBREDDIT: "SUBREDDIT",
   USER: "USER",
   SUBSCRIPTION: "SUBSCRIPTION",
   ARCHIVE: "ARCHIVE",
@@ -74,6 +72,7 @@ export {
   MongoSubscription,
   MongoArchive,
   MongoArchiveHackernewsData,
+  MongoArchiveSubredditData,
   MongoUser,
   SubredditPost,
 };

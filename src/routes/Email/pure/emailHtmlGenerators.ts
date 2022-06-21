@@ -1,8 +1,8 @@
-import { HackerNewsArchiveData, MongoSubredditData } from "../../../mongoose";
+import { MongoArchiveHackernewsData, MongoArchiveSubredditData } from "../../../mongoose";
 
-function generateHackernewsHtml(data: HackerNewsArchiveData[]) {
+function generateHackernewsHtml(data: MongoArchiveHackernewsData) {
   let hackernewsText = "<h2>Hacker News</h2>";
-  data.forEach((post) => {
+  data.data.forEach((post) => {
     hackernewsText += `<a href=${post.link}>${post.title}</a><br/>`;
     hackernewsText += `Score: ${post.score}<br/><br/>`;
     hackernewsText += "</br>";
@@ -11,7 +11,7 @@ function generateHackernewsHtml(data: HackerNewsArchiveData[]) {
   return hackernewsText;
 }
 
-function generateRedditHtml(data: MongoSubredditData[]) {
+function generateRedditHtml(data: MongoArchiveSubredditData[]) {
   let redditText = "<h2>Reddit</h2>";
   data.forEach((subreddit) => {
     redditText += `<b>/r/${subreddit.subreddit}:</b><br/><hr/>"`;

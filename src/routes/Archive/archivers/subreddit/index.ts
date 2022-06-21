@@ -1,7 +1,8 @@
 import axios from "axios";
 import {
   Item,
-  MongoSubredditData,
+  MongoArchive,
+  MongoArchiveSubredditData,
   MONGO_TYPES,
   SubredditPost,
 } from "../../../../mongoose";
@@ -12,17 +13,19 @@ export default async function archiveSubreddit(subreddit: string) {
     `https://www.reddit.com/r/${subreddit}/top.json`
   );
 
-  const topThreePosts: SubredditPost[] = getTopThreePosts(
+  const topPosts: SubredditPost[] = getTopThreePosts(
     redditPostsData.data.data.children
   );
-  const newSubredditItem: { type: string; data: MongoSubredditData } = {
-    type: MONGO_TYPES.SUBREDDIT,
-    data: {
-      subreddit,
-      datetime: new Date().getTime(),
-      topPosts: topThreePosts,
-    },
+  const newArchiveItemData: MongoArchiveSubredditData = {
+    type: "subreddit",
+    subreddit,
+    datetime: new Date().getTime(),
+    topPosts
+  }
+  const newArchiveItem: MongoArchive = {
+    type: MONGO_TYPES.ARCHIVE,
+    data: newArchiveItemData,
   };
 
-  await new Item(newSubredditItem).save();
+  await new Item(newArchiveItem).save();
 }

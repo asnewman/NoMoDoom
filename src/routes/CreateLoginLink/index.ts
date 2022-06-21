@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { Item, MongoUserData, MONGO_TYPES } from "../../mongoose";
+import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import randomString from "../../helpers/randomString";
 
 async function createLoginLinkController(req: any, res: any) {
@@ -11,17 +11,20 @@ async function createLoginLinkController(req: any, res: any) {
     });
 
     if (!user) {
-      const mongoUserData: MongoUserData = {
-        email,
-        signedInWithToken: false,
-        token: "",
-        tokenExpiration: 0,
-        frequency: 1,
-        lastSent: 0,
+      const mongoUser: MongoUser = {
+        type: MONGO_TYPES.USER,
+        data: {
+          email,
+          signedInWithToken: false,
+          token: "",
+          tokenExpiration: 0,
+          frequency: 1,
+          lastSent: 0,
+        }
       };
       user = new Item({
         type: MONGO_TYPES.USER,
-        data: mongoUserData,
+        data: mongoUser,
       });
 
       console.info("New user signed up! " + email);

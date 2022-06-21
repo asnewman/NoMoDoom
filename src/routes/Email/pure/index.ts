@@ -1,9 +1,9 @@
 import {
-    HackerNewsArchiveData,
-  MongoArchiveData,
-  MongoSubredditData,
-  MongoSubscriptionData,
-  MongoUserData,
+  MongoArchive,
+  MongoArchiveHackernewsData,
+  MongoArchiveSubredditData,
+  MongoSubscription,
+  MongoUser,
   SubredditPost,
 } from "../../../mongoose";
 
@@ -13,22 +13,22 @@ interface EmailData {
     name: string;
     posts: SubredditPost[];
   }[];
-  hackernews: HackerNewsArchiveData[]
+  hackernews: MongoArchiveHackernewsData | null
 }
 
 async function generateEmailData(
-  user: { type: string; data: MongoUserData },
-  subscriptions: { type: string; data: MongoSubscriptionData }[],
+  user: MongoUser,
+  subscriptions: MongoSubscription[],
   getSubredditArchives: (
     subreddits: string[],
     gtTimestamp: number
-  ) => Promise<{ type: string; data: MongoSubredditData }[]>
-  getHackernewsArchive: () => Promise<{ type: string, data: MongoArchiveData}>
+  ) => Promise<MongoArchive[]>,
+  getHackernewsArchive: () => Promise<MongoArchive>
 ) {
   const res: EmailData = {
     email: user.data.email,
     subreddits: [],
-    hackernews: [],
+    hackernews: null,
   };
 
   const subreddits: string[] = 
@@ -39,9 +39,10 @@ async function generateEmailData(
   const subredditArchives = await getSubredditArchives(subreddits, user.data.lastSent);
 
   subredditArchives.forEach((archive) => {
+    const subredditData = (archive.data as MongoArchiveSubredditData)
     res.subreddits.push({
-      name: archive.data.subreddit,
-      posts: archive.data.topPosts,
+      name: subredditData.subreddit,
+      posts: subredditData.topPosts,
     });
   });
 
@@ -50,7 +51,7 @@ async function generateEmailData(
 
   if (isSubscribedToHackernews) {
     const hackernewsArchive = await getHackernewsArchive();
-    res.hackernews = hackernewsArchive.data;
+    res.hackernews = (hackernewsArchive.data as MongoArchiveHackernewsData);
   }
 
   return res;
