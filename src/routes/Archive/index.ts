@@ -17,6 +17,7 @@ async function archiveController(_req: any, res: any) {
 
     res.send("Success");
   } catch (e) {
+    console.error(e)
     res.status(400).send(`Error archiving: ${e}`);
   }
 }

@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
+import { Item, MongoArchive, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 import moment from "moment-timezone";
 import {generateHackernewsHtml, generateRedditHtml} from "./pure/emailHtmlGenerators";
 
@@ -38,7 +38,7 @@ async function emailUser(email: string) {
     .map((subscription) => subscription.data.subservice)
     .filter((subservice) => subservice !== undefined) as string[];
 
-  const subredditData = await Item.find({
+  const subredditData: MongoArchive[] = await Item.find({
         type: MONGO_TYPES.ARCHIVE,
         "data.type": "subreddit",
         "data.datetime": {

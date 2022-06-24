@@ -22,10 +22,7 @@ async function createLoginLinkController(req: any, res: any) {
           lastSent: 0,
         }
       };
-      user = new Item({
-        type: MONGO_TYPES.USER,
-        data: mongoUser,
-      });
+      user = new Item(mongoUser);
 
       console.info("New user signed up! " + email);
     }
