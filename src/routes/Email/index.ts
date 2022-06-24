@@ -1,9 +1,9 @@
-import { Item, MongoUserData, MONGO_TYPES } from "../../mongoose";
+import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import emailUser from "./emailUser";
 
 async function emailController(_req: any, res: any) {
   try {
-    const users: { type: string; data: MongoUserData }[] = await Item.find({
+    const users: MongoUser[] = await Item.find({
       type: MONGO_TYPES.USER,
     });
 

@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
-import { Item, MongoArchive, MongoSubscription, MONGO_TYPES } from "../../mongoose";
-import { generateEmailData } from "./pure";
+import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 import moment from "moment-timezone";
 import {generateHackernewsHtml, generateRedditHtml} from "./pure/emailHtmlGenerators";
 
