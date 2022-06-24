@@ -34,7 +34,7 @@ function getTopPostsForDay(bestPages, currentDatetime) {
             posts.push({
                 title: title,
                 score: parseInt(scores[idx]),
-                link: "".concat(links[idx]),
+                link: "https://news.ycombinator.com/".concat(links[idx]),
                 date: new Date(dates[idx]),
             });
         });

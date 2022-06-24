@@ -35,40 +35,60 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongoose_1 = require("../../mongoose");
-var hackernews_1 = __importDefault(require("./archivers/hackernews"));
-var subreddit_1 = __importDefault(require("./archivers/subreddit"));
-var pure_1 = require("./pure");
-function archiveController(_req, res) {
+exports.archiveSubscriptions = void 0;
+function archiveSubscriptions(subscriptions, archiveSubreddit, archiveHackernews) {
     return __awaiter(this, void 0, void 0, function () {
-        var subscriptions, e_1;
+        var subreddits, uniqueSubreddits, promises;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.Item.find({
-                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                        })];
+                    subreddits = subscriptions
+                        .filter(function (subscriptions) {
+                        return subscriptions.data.service === "reddit" &&
+                            subscriptions.data.subservice;
+                    })
+                        .map(function (subscription) { return subscription.data.subservice; });
+                    uniqueSubreddits = __spreadArray([], __read(new Set(subreddits)), false);
+                    promises = [];
+                    uniqueSubreddits.forEach(function (subreddit) {
+                        if (subreddit) {
+                            promises.push(archiveSubreddit(subreddit));
+                        }
+                    });
+                    promises.push(archiveHackernews());
+                    return [4 /*yield*/, Promise.all(promises)];
                 case 1:
-                    subscriptions = _a.sent();
-                    return [4 /*yield*/, (0, pure_1.archiveSubscriptions)(subscriptions, subreddit_1.default, hackernews_1.default)];
-                case 2:
                     _a.sent();
-                    res.send("Success");
-                    return [3 /*break*/, 4];
-                case 3:
-                    e_1 = _a.sent();
-                    console.error(e_1);
-                    res.status(400).send("Error archiving: ".concat(e_1));
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [2 /*return*/];
             }
         });
     });
 }
-exports.default = archiveController;
+exports.archiveSubscriptions = archiveSubscriptions;
 //# sourceMappingURL=index.js.map

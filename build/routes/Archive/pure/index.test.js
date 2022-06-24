@@ -35,40 +35,69 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongoose_1 = require("../../mongoose");
-var hackernews_1 = __importDefault(require("./archivers/hackernews"));
-var subreddit_1 = __importDefault(require("./archivers/subreddit"));
-var pure_1 = require("./pure");
-function archiveController(_req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var subscriptions, e_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.Item.find({
-                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                        })];
-                case 1:
-                    subscriptions = _a.sent();
-                    return [4 /*yield*/, (0, pure_1.archiveSubscriptions)(subscriptions, subreddit_1.default, hackernews_1.default)];
-                case 2:
-                    _a.sent();
-                    res.send("Success");
-                    return [3 /*break*/, 4];
-                case 3:
-                    e_1 = _a.sent();
-                    console.error(e_1);
-                    res.status(400).send("Error archiving: ".concat(e_1));
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
+var _1 = require(".");
+describe("archiveSubscription", function () {
+    it("dedupes properly", function () {
+        var archivedSubreddits = [];
+        var archiveSubreddit = function (subreddit) { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                archivedSubreddits.push(subreddit);
+                return [2 /*return*/];
+            });
+        }); };
+        var didArchiveHackernews = false;
+        var archiveHackernews = function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                didArchiveHackernews = true;
+                return [2 /*return*/];
+            });
+        }); };
+        (0, _1.archiveSubscriptions)(dummySubscriptions, archiveSubreddit, archiveHackernews);
+        expect(archivedSubreddits[0]).toBe("javascript");
+        expect(archivedSubreddits[1]).toBe("photography");
+        expect(archivedSubreddits.length).toBe(2);
+        expect(didArchiveHackernews).toBe(true);
     });
-}
-exports.default = archiveController;
-//# sourceMappingURL=index.js.map
+});
+var dummySubscriptions = [
+    {
+        type: "SUBSCRIPTION",
+        data: {
+            service: "reddit",
+            subservice: "javascript",
+            email: "example@mail.com",
+        }
+    },
+    {
+        type: "SUBSCRIPTION",
+        data: {
+            service: "reddit",
+            subservice: "javascript",
+            email: "example@mail.com",
+        }
+    },
+    {
+        type: "SUBSCRIPTION",
+        data: {
+            service: "reddit",
+            subservice: "photography",
+            email: "example@mail.com",
+        }
+    },
+    {
+        type: "SUBSCRIPTION",
+        data: {
+            service: "hackernews",
+            email: "example@mail.com",
+        }
+    },
+    {
+        type: "SUBSCRIPTION",
+        data: {
+            service: "hackernews",
+            email: "example@mail.com",
+        }
+    },
+];
+//# sourceMappingURL=index.test.js.map
