@@ -1,4 +1,4 @@
-import { Item, MongoSubscriptionData, MONGO_TYPES } from "../../mongoose";
+import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 
 async function redditController(req: any, res: any) {
   try {
@@ -11,7 +11,7 @@ async function redditController(req: any, res: any) {
     return res.render("Reddit", {
       email: req.email,
       subreddits: subscriptions.map(
-        (s: { type: string; data: MongoSubscriptionData }) => s.data.subservice
+        (s: MongoSubscription) => s.data.subservice
       ),
     });
   } catch (e) {

@@ -41,12 +41,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var nodemailer_1 = __importDefault(require("nodemailer"));
 var mongoose_1 = require("../../mongoose");
-var pure_1 = require("./pure");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
+var emailHtmlGenerators_1 = require("./pure/emailHtmlGenerators");
 function emailUser(email) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, subscriptions, emailData, transporter, emailText;
-        var _this = this;
+        var user, subscriptions, transporter, subreddits, subredditData, hackernewsData, emailText, isSubscribedToHackernews;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, mongoose_1.Item.findOne({
@@ -67,21 +66,6 @@ function emailUser(email) {
                     if (subscriptions.length === 0) {
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, (0, pure_1.generateEmailData)(user, subscriptions, function (subreddits, gtTimestamp) { return __awaiter(_this, void 0, void 0, function () {
-                            return __generator(this, function (_a) {
-                                return [2 /*return*/, mongoose_1.Item.find({
-                                        type: mongoose_1.MONGO_TYPES.SUBREDDIT,
-                                        "data.datetime": {
-                                            $gt: gtTimestamp,
-                                        },
-                                        "data.subreddit": {
-                                            $in: subreddits,
-                                        },
-                                    })];
-                            });
-                        }); })];
-                case 3:
-                    emailData = _a.sent();
                     transporter = nodemailer_1.default.createTransport({
                         host: "mail.privateemail.com",
                         port: 587,
@@ -91,15 +75,39 @@ function emailUser(email) {
                             pass: process.env.EMAIL_PASS,
                         },
                     });
+                    subreddits = subscriptions.filter(function (subscription) { return subscription.data.service === "reddit"; })
+                        .map(function (subscription) { return subscription.data.subservice; })
+                        .filter(function (subservice) { return subservice !== undefined; });
+                    return [4 /*yield*/, mongoose_1.Item.find({
+                            type: mongoose_1.MONGO_TYPES.ARCHIVE,
+                            "data.type": "subreddit",
+                            "data.datetime": {
+                                $gt: user.data.lastSent,
+                            },
+                            "data.subreddit": {
+                                $in: subreddits,
+                            },
+                        })];
+                case 3:
+                    subredditData = _a.sent();
+                    return [4 /*yield*/, mongoose_1.Item.findOne({
+                            type: mongoose_1.MONGO_TYPES.ARCHIVE,
+                            "data.type": "hackernews",
+                            "data.datetime": {
+                                $gt: user.data.lastSent,
+                            }
+                        })];
+                case 4:
+                    hackernewsData = _a.sent();
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
-                    emailData.subreddits.forEach(function (subreddit) {
-                        emailText += "<b>/r/".concat(subreddit.name, ":</b><br/><hr/>");
-                        subreddit.posts.forEach(function (post) {
-                            emailText += "<a href=".concat(post.url, ">").concat(post.title, "</a><br/>");
-                            emailText += "Score: ".concat(post.score, "<br/><br/>");
-                        });
-                        emailText += "</br>";
-                    });
+                    if (subredditData.length > 0) {
+                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData);
+                    }
+                    isSubscribedToHackernews = subscriptions
+                        .find(function (subscription) { return subscription.data.service === "hackernews"; });
+                    if (isSubscribedToHackernews) {
+                        emailText += (0, emailHtmlGenerators_1.generateHackernewsHtml)(hackernewsData);
+                    }
                     return [4 /*yield*/, transporter.sendMail({
                             from: '"nomodoom" <ash@kozukaihabit.com>',
                             to: email,
@@ -108,12 +116,12 @@ function emailUser(email) {
                                 .format("MMMM Do YYYY")),
                             html: emailText,
                         })];
-                case 4:
+                case 5:
                     _a.sent();
                     user.data.lastSent = Date.now();
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 5:
+                case 6:
                     _a.sent();
                     return [2 /*return*/];
             }

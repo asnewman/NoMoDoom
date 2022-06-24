@@ -1,9 +1,9 @@
-import { SubredditData } from "../types";
+import { SubredditPost } from "../../../../../mongoose";
 
 export function getTopThreePosts(
   redditPostsData: { data: Record<string, string | number> }[]
-): SubredditData[] {
-  const res: SubredditData[] = [];
+): SubredditPost[] {
+  const res: SubredditPost[] = [];
 
   for (const entry of redditPostsData) {
     res.push({

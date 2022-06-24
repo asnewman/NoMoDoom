@@ -26,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MONGO_TYPES = exports.Item = void 0;
 var mongoose_1 = __importStar(require("mongoose"));
 var MONGO_TYPES = {
-    SUBREDDIT: "SUBREDDIT",
     USER: "USER",
     SUBSCRIPTION: "SUBSCRIPTION",
     ARCHIVE: "ARCHIVE",

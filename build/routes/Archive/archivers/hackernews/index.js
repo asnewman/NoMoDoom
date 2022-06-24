@@ -55,7 +55,7 @@ var mongoose_1 = require("../../../../mongoose");
 var pure_1 = require("./pure");
 function archiveHackernews() {
     return __awaiter(this, void 0, void 0, function () {
-        var htmls, i, _a, _b, posts, archiveData, posts_1, posts_1_1, post;
+        var htmls, i, _a, _b, posts, archiveData, posts_1, posts_1_1, post, archive;
         var e_1, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
@@ -64,7 +64,7 @@ function archiveHackernews() {
                     i = 1;
                     _d.label = 1;
                 case 1:
-                    if (!(i <= 7)) return [3 /*break*/, 5];
+                    if (!(i <= 3)) return [3 /*break*/, 5];
                     _b = (_a = htmls).push;
                     return [4 /*yield*/, axios_1.default.get("https://news.ycombinator.com/best?p=".concat(i))];
                 case 2:
@@ -81,6 +81,7 @@ function archiveHackernews() {
                 case 5:
                     posts = (0, pure_1.getTopPostsForDay)(htmls, Date.now());
                     archiveData = {
+                        type: "hackernews",
                         datetime: Date.now(),
                         data: [],
                     };
@@ -101,10 +102,11 @@ function archiveHackernews() {
                         }
                         finally { if (e_1) throw e_1.error; }
                     }
-                    return [4 /*yield*/, mongoose_1.Item.create({
-                            type: mongoose_1.MONGO_TYPES.ARCHIVE,
-                            data: archiveData,
-                        })];
+                    archive = {
+                        type: mongoose_1.MONGO_TYPES.ARCHIVE,
+                        data: archiveData
+                    };
+                    return [4 /*yield*/, mongoose_1.Item.create(archive)];
                 case 6:
                     _d.sent();
                     return [2 /*return*/];

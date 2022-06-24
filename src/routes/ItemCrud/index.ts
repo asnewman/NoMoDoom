@@ -1,4 +1,4 @@
-import { Item, MongoSubscriptionData, MONGO_TYPES } from "../../mongoose";
+import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 
 async function itemCrudController(req: any, res: any) {
   try {
@@ -6,7 +6,7 @@ async function itemCrudController(req: any, res: any) {
 
     switch (query) {
       case "ADD_SUBREDDIT_SUBSCRIPTION": {
-        const newSubscriptionItemData: MongoSubscriptionData = {
+        const newSubscriptionItemData: MongoSubscription["data"] = {
           service: "reddit",
           subservice: data.subreddit,
           email: req.email,
@@ -28,7 +28,7 @@ async function itemCrudController(req: any, res: any) {
         return res.status(200).send();
       }
       case "ADD_HACKERNEWS_SUBSCRIPTION": {
-        const newSubscriptionItemData: MongoSubscriptionData = {
+        const newSubscriptionItemData: MongoSubscription["data"] = {
           service: "hackernews",
           email: req.email,
         };

@@ -18,8 +18,6 @@ block content
 
       const subdiv = document.querySelector("#subscriptions")
 
-      console.log(subdiv.textContent)
-
       if (subdiv.textContent.includes(inputVal)) return
 
       fetch("/api/item-crud", {

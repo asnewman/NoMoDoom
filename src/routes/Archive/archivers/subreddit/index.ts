@@ -1,24 +1,31 @@
 import axios from "axios";
-import { Item, MongoSubredditData, MONGO_TYPES } from "../../../../mongoose";
+import {
+  Item,
+  MongoArchive,
+  MongoArchiveSubredditData,
+  MONGO_TYPES,
+  SubredditPost,
+} from "../../../../mongoose";
 import { getTopThreePosts } from "./pure";
-import { SubredditData } from "./types";
 
 export default async function archiveSubreddit(subreddit: string) {
   const redditPostsData = await axios.get(
     `https://www.reddit.com/r/${subreddit}/top.json`
   );
 
-  const topThreePosts: SubredditData[] = getTopThreePosts(
+  const topPosts: SubredditPost[] = getTopThreePosts(
     redditPostsData.data.data.children
   );
-  const newSubredditItem: { type: string; data: MongoSubredditData } = {
-    type: MONGO_TYPES.SUBREDDIT,
-    data: {
-      subreddit,
-      datetime: new Date().getTime(),
-      topPosts: topThreePosts,
-    },
+  const newArchiveItemData: MongoArchiveSubredditData = {
+    type: "subreddit",
+    subreddit,
+    datetime: new Date().getTime(),
+    topPosts
+  }
+  const newArchiveItem: MongoArchive = {
+    type: MONGO_TYPES.ARCHIVE,
+    data: newArchiveItemData,
   };
 
-  await new Item(newSubredditItem).save();
+  await new Item(newArchiveItem).save();
 }

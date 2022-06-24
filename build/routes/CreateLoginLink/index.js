@@ -44,7 +44,7 @@ var mongoose_1 = require("../../mongoose");
 var randomString_1 = __importDefault(require("../../helpers/randomString"));
 function createLoginLinkController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var email, user, mongoUserData, e_1;
+        var email, user, mongoUser, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -57,18 +57,18 @@ function createLoginLinkController(req, res) {
                 case 1:
                     user = _a.sent();
                     if (!user) {
-                        mongoUserData = {
-                            email: email,
-                            signedInWithToken: false,
-                            token: "",
-                            tokenExpiration: 0,
-                            frequency: 1,
-                            lastSent: 0,
-                        };
-                        user = new mongoose_1.Item({
+                        mongoUser = {
                             type: mongoose_1.MONGO_TYPES.USER,
-                            data: mongoUserData,
-                        });
+                            data: {
+                                email: email,
+                                signedInWithToken: false,
+                                token: "",
+                                tokenExpiration: 0,
+                                frequency: 1,
+                                lastSent: 0,
+                            }
+                        };
+                        user = new mongoose_1.Item(mongoUser);
                         console.info("New user signed up! " + email);
                     }
                     user.data.token = (0, randomString_1.default)(20);

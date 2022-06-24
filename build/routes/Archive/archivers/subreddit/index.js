@@ -44,22 +44,24 @@ var mongoose_1 = require("../../../../mongoose");
 var pure_1 = require("./pure");
 function archiveSubreddit(subreddit) {
     return __awaiter(this, void 0, void 0, function () {
-        var redditPostsData, topThreePosts, newSubredditItem;
+        var redditPostsData, topPosts, newArchiveItemData, newArchiveItem;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios_1.default.get("https://www.reddit.com/r/".concat(subreddit, "/top.json"))];
                 case 1:
                     redditPostsData = _a.sent();
-                    topThreePosts = (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children);
-                    newSubredditItem = {
-                        type: mongoose_1.MONGO_TYPES.SUBREDDIT,
-                        data: {
-                            subreddit: subreddit,
-                            datetime: new Date().getTime(),
-                            topPosts: topThreePosts,
-                        },
+                    topPosts = (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children);
+                    newArchiveItemData = {
+                        type: "subreddit",
+                        subreddit: subreddit,
+                        datetime: new Date().getTime(),
+                        topPosts: topPosts
                     };
-                    return [4 /*yield*/, new mongoose_1.Item(newSubredditItem).save()];
+                    newArchiveItem = {
+                        type: mongoose_1.MONGO_TYPES.ARCHIVE,
+                        data: newArchiveItemData,
+                    };
+                    return [4 /*yield*/, new mongoose_1.Item(newArchiveItem).save()];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];
