@@ -1,7 +1,7 @@
 extends Base
 block content
-  p(style="display: inline") Welcome, #{email}.
-  button(onclick="logout()" style="margin-left: 10px") Logout
+  p Welcome, #{email}
+  button(onclick="logout()") Logout
   h2 Services
   p These are the different services you can subscribe to:
   a(class="service" href="/reddit")
@@ -28,6 +28,7 @@ block content
       padding: 10px 20px 20px;
       cursor: pointer;
       margin-right: 20px;
+      margin-bottom: 20px;
       text-decoration: none;
       color: white;
     }
