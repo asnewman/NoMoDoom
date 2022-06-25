@@ -18,7 +18,7 @@ function generateRedditHtml(archives: MongoArchive[]) {
   let redditText = "<h2>Reddit</h2>";
   archives.forEach((archive) => {
     const subredditData: MongoArchiveSubredditData = archive.data as MongoArchiveSubredditData;
-    redditText += `<b>/r/${subredditData.subreddit}:</b><br/><hr/>"`;
+    redditText += `<b>/r/${subredditData.subreddit}:</b><br/><hr/>`;
     subredditData.topPosts.forEach((post) => {
       redditText += `<a href=${post.url}>${post.title}</a><br/>`;
       redditText += `Score: ${post.score}<br/><br/>`;
