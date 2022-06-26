@@ -43,6 +43,7 @@ var nodemailer_1 = __importDefault(require("nodemailer"));
 var mongoose_1 = require("../../mongoose");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var emailHtmlGenerators_1 = require("./pure/emailHtmlGenerators");
+var logger_1 = __importDefault(require("../../helpers/logger"));
 function emailUser(email) {
     return __awaiter(this, void 0, void 0, function () {
         var user, subscriptions, transporter, subreddits, subredditData, hackernewsData, emailText, isSubscribedToHackernews;
@@ -54,7 +55,7 @@ function emailUser(email) {
                 case 1:
                     user = _a.sent();
                     if (!user) {
-                        console.error("Email not found: ", email);
+                        logger_1.default.error("Email not found: ", email);
                         return [2 /*return*/];
                     }
                     return [4 /*yield*/, mongoose_1.Item.find({

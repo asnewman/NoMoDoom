@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = __importDefault(require("../../helpers/logger"));
 var mongoose_1 = require("../../mongoose");
 var hackernews_1 = __importDefault(require("./archivers/hackernews"));
 var subreddit_1 = __importDefault(require("./archivers/subreddit"));
@@ -62,7 +63,7 @@ function archiveController(_req, res) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_1 = _a.sent();
-                    console.error(e_1);
+                    logger_1.default.error(e_1);
                     res.status(400).send("Error archiving: ".concat(e_1));
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];

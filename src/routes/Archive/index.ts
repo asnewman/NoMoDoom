@@ -1,3 +1,4 @@
+import logger from "../../helpers/logger";
 import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 import archiveHackernews from "./archivers/hackernews";
 import archiveSubreddit from "./archivers/subreddit";
@@ -17,7 +18,7 @@ async function archiveController(_req: any, res: any) {
 
     res.send("Success");
   } catch (e) {
-    console.error(e)
+    logger.error(e)
     res.status(400).send(`Error archiving: ${e}`);
   }
 }

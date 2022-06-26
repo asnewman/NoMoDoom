@@ -35,7 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = __importDefault(require("../../helpers/logger"));
 var mongoose_1 = require("../../mongoose");
 function itemCrudController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -65,7 +69,7 @@ function itemCrudController(req, res) {
                         }).save()];
                 case 2:
                     _c.sent();
-                    console.info("New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit));
+                    logger_1.default.info("New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit));
                     return [2 /*return*/, res.status(200).send()];
                 case 3: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,
@@ -85,7 +89,7 @@ function itemCrudController(req, res) {
                         }).save()];
                 case 6:
                     _c.sent();
-                    console.info("New hackernews subscription! ".concat(req.email));
+                    logger_1.default.info("New hackernews subscription! ".concat(req.email));
                     return [2 /*return*/, res.status(200).send()];
                 case 7: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,
@@ -98,7 +102,7 @@ function itemCrudController(req, res) {
                 case 10: return [2 /*return*/, res.status(404).send("Query not found")];
                 case 11:
                     e_1 = _c.sent();
-                    console.error(e_1);
+                    logger_1.default.error(e_1);
                     return [2 /*return*/, res.status(400).send(e_1)];
                 case 12: return [2 /*return*/];
             }

@@ -1,3 +1,4 @@
+import logger from "../../helpers/logger";
 import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 
 async function redditController(req: any, res: any) {
@@ -15,7 +16,7 @@ async function redditController(req: any, res: any) {
       ),
     });
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     return res.send(e);
   }
 }

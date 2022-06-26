@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import randomString from "../../helpers/randomString";
+import logger from "../../helpers/logger";
 
 async function createLoginLinkController(req: any, res: any) {
   try {
@@ -24,7 +25,7 @@ async function createLoginLinkController(req: any, res: any) {
       };
       user = new Item(mongoUser);
 
-      console.info("New user signed up! " + email);
+      logger.info("New user signed up! " + email);
     }
 
     user.data.token = randomString(20);
@@ -34,7 +35,7 @@ async function createLoginLinkController(req: any, res: any) {
     await user.save();
 
     if (process.env.IS_LOCAL === "true") {
-      console.log("bypassing auth");
+      logger.info("bypassing auth");
       user.data.signedInWithToken = true;
       user.data.token = randomString(20);
       user.markModified("data");
@@ -46,7 +47,7 @@ async function createLoginLinkController(req: any, res: any) {
       return res.send("Success - please check your email");
     }
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     res.send("Failed");
   }
 }
