@@ -35,7 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = __importDefault(require("../../helpers/logger"));
 var mongoose_1 = require("../../mongoose");
 function hackernewsController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -57,7 +61,7 @@ function hackernewsController(req, res) {
                         })];
                 case 2:
                     e_1 = _a.sent();
-                    console.error(e_1);
+                    logger_1.default.error(e_1);
                     return [2 /*return*/, res.send(e_1)];
                 case 3: return [2 /*return*/];
             }

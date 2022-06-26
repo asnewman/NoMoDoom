@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import { Item, MongoArchive, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 import moment from "moment-timezone";
 import {generateHackernewsHtml, generateRedditHtml} from "./pure/emailHtmlGenerators";
+import logger from "../../helpers/logger";
 
 async function emailUser(email: string) {
   const user = await Item.findOne({
@@ -9,7 +10,7 @@ async function emailUser(email: string) {
   });
 
   if (!user) {
-    console.error("Email not found: ", email);
+    logger.error("Email not found: ", email);
     return;
   }
 

@@ -19,8 +19,9 @@ var ItemCrud_1 = __importDefault(require("./routes/ItemCrud"));
 var Hackernews_1 = __importDefault(require("./routes/Hackernews"));
 var Archive_1 = __importDefault(require("./routes/Archive"));
 var Email_1 = __importDefault(require("./routes/Email"));
+var logger_1 = __importDefault(require("./helpers/logger"));
 if (!process.env.MONGO_URI) {
-    console.error("MONGO_URI not set");
+    logger_1.default.error("MONGO_URI not set");
     (0, process_1.exit)(1);
 }
 mongoose_1.default.connect(process.env.MONGO_URI);
@@ -43,6 +44,6 @@ app.post("/api/item-crud", authCheck_1.default, ItemCrud_1.default);
 app.post("/api/schedule-archives", schedulerAuthCheck_1.default, Archive_1.default);
 app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.default);
 app.listen(port, function () {
-    console.log("I am awake");
+    logger_1.default.info("I am awake");
 });
 //# sourceMappingURL=main.js.map

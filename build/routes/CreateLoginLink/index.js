@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var nodemailer_1 = __importDefault(require("nodemailer"));
 var mongoose_1 = require("../../mongoose");
 var randomString_1 = __importDefault(require("../../helpers/randomString"));
+var logger_1 = __importDefault(require("../../helpers/logger"));
 function createLoginLinkController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var email, user, mongoUser, e_1;
@@ -69,7 +70,7 @@ function createLoginLinkController(req, res) {
                             }
                         };
                         user = new mongoose_1.Item(mongoUser);
-                        console.info("New user signed up! " + email);
+                        logger_1.default.info("New user signed up! " + email);
                     }
                     user.data.token = (0, randomString_1.default)(20);
                     (user.data.tokenExpiration = Date.now() + 7200000),
@@ -79,7 +80,7 @@ function createLoginLinkController(req, res) {
                 case 2:
                     _a.sent();
                     if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 4];
-                    console.log("bypassing auth");
+                    logger_1.default.info("bypassing auth");
                     user.data.signedInWithToken = true;
                     user.data.token = (0, randomString_1.default)(20);
                     user.markModified("data");
@@ -95,7 +96,7 @@ function createLoginLinkController(req, res) {
                 case 6: return [3 /*break*/, 8];
                 case 7:
                     e_1 = _a.sent();
-                    console.error(e_1);
+                    logger_1.default.error(e_1);
                     res.send("Failed");
                     return [3 /*break*/, 8];
                 case 8: return [2 /*return*/];

@@ -15,9 +15,10 @@ import itemCrudController from "./routes/ItemCrud";
 import hackernewsController from "./routes/Hackernews";
 import archiveController from "./routes/Archive";
 import emailController from "./routes/Email";
+import logger from "./helpers/logger";
 
 if (!process.env.MONGO_URI) {
-  console.error("MONGO_URI not set");
+  logger.error("MONGO_URI not set");
   exit(1);
 }
 mongoose.connect(process.env.MONGO_URI);
@@ -51,5 +52,5 @@ app.post("/api/schedule-archives", schedulerAuthCheck, archiveController);
 app.post("/api/schedule-emails", schedulerAuthCheck, emailController);
 
 app.listen(port, () => {
-  console.log("I am awake");
+  logger.info("I am awake");
 });

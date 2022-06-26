@@ -40,6 +40,7 @@
     "node-html-parser": "^5.3.3",
     "nodemailer": "^6.7.5",
     "pug": "^3.0.2",
-    "ts-node": "^10.7.0"
+    "ts-node": "^10.7.0",
+    "winston": "^3.8.0"
   }
 }

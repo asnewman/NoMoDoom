@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = __importDefault(require("../../helpers/logger"));
 var randomString_1 = __importDefault(require("../../helpers/randomString"));
 var mongoose_1 = require("../../mongoose");
 function loginController(req, res) {
@@ -71,7 +72,7 @@ function loginController(req, res) {
                     return [2 /*return*/, res.redirect("/")];
                 case 3:
                     e_1 = _a.sent();
-                    console.error(e_1);
+                    logger_1.default.error(e_1);
                     return [2 /*return*/, res.send("Failed")];
                 case 4: return [2 /*return*/];
             }

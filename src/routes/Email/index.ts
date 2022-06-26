@@ -1,3 +1,4 @@
+import logger from "../../helpers/logger";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import emailUser from "./emailUser";
 
@@ -16,7 +17,7 @@ async function emailController(_req: any, res: any) {
 
     res.send("Success");
   } catch (e) {
-    console.error(e)
+    logger.error(e)
     res.status(400).send(`Error archiving: ${e}`);
   }
 }
