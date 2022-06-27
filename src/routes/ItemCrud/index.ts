@@ -16,7 +16,7 @@ async function itemCrudController(req: any, res: any) {
           type: MONGO_TYPES.SUBSCRIPTION,
           data: newSubscriptionItemData,
         }).save();
-        logger.info(
+        logger.log("info", 
           `New subreddit subscription! ${req.email} ${data.subreddit}`
         );
         return res.status(200).send();
@@ -37,7 +37,7 @@ async function itemCrudController(req: any, res: any) {
           type: MONGO_TYPES.SUBSCRIPTION,
           data: newSubscriptionItemData,
         }).save();
-        logger.info(`New hackernews subscription! ${req.email}`);
+        logger.log("info", `New hackernews subscription! ${req.email}`);
         return res.status(200).send();
       }
       case "REMOVE_HACKERNEWS_SUBSCRIPTION": {

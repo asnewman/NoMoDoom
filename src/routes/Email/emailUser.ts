@@ -50,13 +50,13 @@ async function emailUser(email: string) {
         },
       })
  
-  const hackernewsData =  await Item.findOne({
+  const hackernewsData =  (await Item.find({
         type: MONGO_TYPES.ARCHIVE,
         "data.type": "hackernews",
         "data.datetime": {
           $gt: user.data.lastSent,
         }
-      })
+      }).sort({"data.datetime": -1}).limit(1))[0]
 
 
   let emailText = "Here is your nomodoom email digest:<br/><br/>";
@@ -79,6 +79,8 @@ async function emailUser(email: string) {
       .format("MMMM Do YYYY")}`, // Subject line
     html: emailText,
   });
+
+  logger.log("info", `Email sent to ${email}`)
 
   user.data.lastSent = Date.now();
   user.markModified("data");

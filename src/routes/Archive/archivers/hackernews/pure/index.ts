@@ -34,7 +34,7 @@ function getTopPostsForDay(bestPages: string[], currentDatetime: number) {
     });
   }
 
-  return posts.filter((a) => a.date.getTime() > currentDatetime - DAY);
+  return posts.filter((a) => a.date.getTime() > currentDatetime - DAY).sort((a, b) => b.score - a.score);
 }
 
 export { getTopPostsForDay };

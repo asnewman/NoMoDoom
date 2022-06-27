@@ -4,14 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var winston_1 = __importDefault(require("winston"));
-var papertrail = new winston_1.default.transports.Http({
-    host: 'logs.collector.solarwinds.com',
-    path: '/v1/log',
-    auth: { username: String(''), password: 'AgHXp3HD6ZAzUPUf_wTgaipAJRIc' },
-    ssl: true,
+var winston_logzio_1 = __importDefault(require("winston-logzio"));
+var logzioWinstonTransport = new winston_logzio_1.default({
+    level: 'info',
+    name: 'winston_logzio',
+    token: process.env.LOGZIO_TOKEN || "",
+    host: 'listener.logz.io',
 });
-var logger = process.env.IS_LOCAL === "true" ? console : winston_1.default.createLogger({
-    transports: [papertrail],
+var transports = [new winston_1.default.transports.Console()];
+if (process.env.IS_LOCAL === "false") {
+    transports.push(logzioWinstonTransport);
+}
+var logger = winston_1.default.createLogger({
+    format: winston_1.default.format.simple(),
+    transports: transports,
 });
 exports.default = logger;
 //# sourceMappingURL=logger.js.map

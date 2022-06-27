@@ -1,14 +1,19 @@
 import winston from 'winston';
+import LogzioWinstonTransport from 'winston-logzio';
 
-const papertrail = new winston.transports.Http({
-  host: 'logs.collector.solarwinds.com',
-  path: '/v1/log',
-  auth: { username: String('') as string, password: process.env.PAPERTRAIL_TOKEN },
-  ssl: true,
+const logzioWinstonTransport = new LogzioWinstonTransport({
+  level: 'info',
+  name: 'winston_logzio',
+  token: process.env.LOGZIO_TOKEN || "",
+  host: 'listener.logz.io',
 });
-
-const logger = process.env.IS_LOCAL === "true" ? console :  winston.createLogger({
-  transports: [papertrail],
+const transports: winston.transport[] = [new winston.transports.Console()]
+if (process.env.IS_LOCAL === "false") {
+  transports.push(logzioWinstonTransport)
+}
+const logger = winston.createLogger({
+    format: winston.format.simple(),
+    transports,
 });
 
 export default logger;

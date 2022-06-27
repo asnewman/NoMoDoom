@@ -52,5 +52,5 @@ app.post("/api/schedule-archives", schedulerAuthCheck, archiveController);
 app.post("/api/schedule-emails", schedulerAuthCheck, emailController);
 
 app.listen(port, () => {
-  logger.info("I am awake");
+  logger.log("info", "I am awake");
 });
