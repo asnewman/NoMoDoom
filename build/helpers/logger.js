@@ -19,5 +19,6 @@ var logger = winston_1.default.createLogger({
     format: winston_1.default.format.simple(),
     transports: transports,
 });
+logger.log('info', 'Deployed hello!');
 exports.default = logger;
 //# sourceMappingURL=logger.js.map

@@ -16,4 +16,6 @@ const logger = winston.createLogger({
     transports,
 });
 
+logger.log('info', 'Deployed hello!');
+
 export default logger;
