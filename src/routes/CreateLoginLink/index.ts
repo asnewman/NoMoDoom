@@ -25,7 +25,7 @@ async function createLoginLinkController(req: any, res: any) {
       };
       user = new Item(mongoUser);
 
-      logger.info("New user signed up! " + email);
+      logger.log("info", "New user signed up! " + email);
     }
 
     user.data.token = randomString(20);
@@ -35,7 +35,7 @@ async function createLoginLinkController(req: any, res: any) {
     await user.save();
 
     if (process.env.IS_LOCAL === "true") {
-      logger.info("bypassing auth");
+      logger.log("info", "bypassing auth");
       user.data.signedInWithToken = true;
       user.data.token = randomString(20);
       user.markModified("data");

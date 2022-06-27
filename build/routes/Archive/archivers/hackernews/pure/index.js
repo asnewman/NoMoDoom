@@ -52,7 +52,7 @@ function getTopPostsForDay(bestPages, currentDatetime) {
         }
         finally { if (e_1) throw e_1.error; }
     }
-    return posts.filter(function (a) { return a.date.getTime() > currentDatetime - DAY; });
+    return posts.filter(function (a) { return a.date.getTime() > currentDatetime - DAY; }).sort(function (a, b) { return b.score - a.score; });
 }
 exports.getTopPostsForDay = getTopPostsForDay;
 //# sourceMappingURL=index.js.map

@@ -44,6 +44,6 @@ app.post("/api/item-crud", authCheck_1.default, ItemCrud_1.default);
 app.post("/api/schedule-archives", schedulerAuthCheck_1.default, Archive_1.default);
 app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.default);
 app.listen(port, function () {
-    logger_1.default.info("I am awake");
+    logger_1.default.log("info", "I am awake");
 });
 //# sourceMappingURL=main.js.map

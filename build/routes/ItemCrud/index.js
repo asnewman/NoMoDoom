@@ -69,7 +69,7 @@ function itemCrudController(req, res) {
                         }).save()];
                 case 2:
                     _c.sent();
-                    logger_1.default.info("New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit));
+                    logger_1.default.log("info", "New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit));
                     return [2 /*return*/, res.status(200).send()];
                 case 3: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,
@@ -89,7 +89,7 @@ function itemCrudController(req, res) {
                         }).save()];
                 case 6:
                     _c.sent();
-                    logger_1.default.info("New hackernews subscription! ".concat(req.email));
+                    logger_1.default.log("info", "New hackernews subscription! ".concat(req.email));
                     return [2 /*return*/, res.status(200).send()];
                 case 7: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,

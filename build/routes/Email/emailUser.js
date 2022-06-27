@@ -91,15 +91,15 @@ function emailUser(email) {
                         })];
                 case 3:
                     subredditData = _a.sent();
-                    return [4 /*yield*/, mongoose_1.Item.findOne({
+                    return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.ARCHIVE,
                             "data.type": "hackernews",
                             "data.datetime": {
                                 $gt: user.data.lastSent,
                             }
-                        })];
+                        }).sort({ "data.datetime": -1 }).limit(1)];
                 case 4:
-                    hackernewsData = _a.sent();
+                    hackernewsData = (_a.sent())[0];
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     if (subredditData.length > 0) {
                         emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData);
@@ -119,6 +119,7 @@ function emailUser(email) {
                         })];
                 case 5:
                     _a.sent();
+                    logger_1.default.log("info", "Email sent to ".concat(email));
                     user.data.lastSent = Date.now();
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];

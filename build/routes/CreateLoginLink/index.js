@@ -70,7 +70,7 @@ function createLoginLinkController(req, res) {
                             }
                         };
                         user = new mongoose_1.Item(mongoUser);
-                        logger_1.default.info("New user signed up! " + email);
+                        logger_1.default.log("info", "New user signed up! " + email);
                     }
                     user.data.token = (0, randomString_1.default)(20);
                     (user.data.tokenExpiration = Date.now() + 7200000),
@@ -80,7 +80,7 @@ function createLoginLinkController(req, res) {
                 case 2:
                     _a.sent();
                     if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 4];
-                    logger_1.default.info("bypassing auth");
+                    logger_1.default.log("info", "bypassing auth");
                     user.data.signedInWithToken = true;
                     user.data.token = (0, randomString_1.default)(20);
                     user.markModified("data");
