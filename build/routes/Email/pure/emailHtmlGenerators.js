@@ -42,7 +42,7 @@ function generateRedditHtml(archives) {
     var redditText = "<h2>Reddit</h2>";
     archives.forEach(function (archive) {
         var subredditData = archive.data;
-        redditText += "<b>/r/".concat(subredditData.subreddit, ":</b><br/><hr/>\"");
+        redditText += "<b>/r/".concat(subredditData.subreddit, ":</b><br/><hr/>");
         subredditData.topPosts.forEach(function (post) {
             redditText += "<a href=".concat(post.url, ">").concat(post.title, "</a><br/>");
             redditText += "Score: ".concat(post.score, "<br/><br/>");
