@@ -16,6 +16,6 @@ const logger = winston.createLogger({
     transports,
 });
 
-logger.log('info', `Deployed hello! ${process.env.IS_LOCAL} ${process.env.IS_LOCAL === "false"} process.env.LOGZIO_TOKEN`);
+logger.log('info', `Deployed hello! ${process.env.IS_LOCAL} ${process.env.IS_LOCAL === "false"} ${process.env.LOGZIO_TOKEN}`);
 
 export default logger;
