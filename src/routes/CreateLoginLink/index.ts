@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import randomString from "../../helpers/randomString";
 import log from "../../helpers/logger";
-import { sendPushover } from "../../helpers/pushover";
 
 async function createLoginLinkController(req: any, res: any) {
   try {
@@ -27,7 +26,6 @@ async function createLoginLinkController(req: any, res: any) {
       user = new Item(mongoUser);
 
       await log("info", "New user signed up! " + email);
-      await sendPushover("New user signed up! " + email);
     }
 
     user.data.token = randomString(20);
