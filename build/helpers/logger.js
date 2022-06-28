@@ -19,6 +19,8 @@ var logger = winston_1.default.createLogger({
     format: winston_1.default.format.simple(),
     transports: transports,
 });
-logger.log('info', "Deployed hello! ".concat(process.env.IS_LOCAL, " ").concat(process.env.IS_LOCAL === "false", " ").concat(process.env.LOGZIO_TOKEN));
+logger.on('finish', function () {
+    console.log("all logged");
+});
 exports.default = logger;
 //# sourceMappingURL=logger.js.map
