@@ -32,11 +32,13 @@ block content
           }
         })
       }).then(() => {
-        const newSubredditContainer = document.createElement("div", { id: `#${inputVal}-div` })
+        const newSubredditContainer = document.createElement("div")
+        newSubredditContainer.setAttribute("id", `${inputVal}-div`)
         const newSubredditNode = document.createElement("p")
         newSubredditNode.appendChild(document.createTextNode(inputVal))
         newSubredditContainer.appendChild(newSubredditNode)
-        const removeBtn = document.createElement("button", { onclick: `remove("${inputVal}")`})
+        const removeBtn = document.createElement("button")
+        removeBtn.setAttribute("onclick", `remove("${inputVal}")`)
         removeBtn.appendChild(document.createTextNode("Remove"));
         newSubredditContainer.appendChild(removeBtn)
         subdiv.appendChild(newSubredditContainer)
