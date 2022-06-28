@@ -1,4 +1,4 @@
-import logger from "../../helpers/logger";
+import log from "../../helpers/logger";
 import randomString from "../../helpers/randomString";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 
@@ -25,7 +25,7 @@ async function loginController(req: any, res: any) {
     res.cookie("token", user.data.token);
     return res.redirect("/");
   } catch (e) {
-    logger.error(e);
+    await log("error", e);
     return res.send("Failed");
   }
 }

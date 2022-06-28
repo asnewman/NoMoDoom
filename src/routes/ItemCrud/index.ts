@@ -1,4 +1,4 @@
-import logger from "../../helpers/logger";
+import log from "../../helpers/logger";
 import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 
 async function itemCrudController(req: any, res: any) {
@@ -16,7 +16,7 @@ async function itemCrudController(req: any, res: any) {
           type: MONGO_TYPES.SUBSCRIPTION,
           data: newSubscriptionItemData,
         }).save();
-        logger.log("info", 
+        await log("info", 
           `New subreddit subscription! ${req.email} ${data.subreddit}`
         );
         return res.status(200).send();
@@ -37,7 +37,7 @@ async function itemCrudController(req: any, res: any) {
           type: MONGO_TYPES.SUBSCRIPTION,
           data: newSubscriptionItemData,
         }).save();
-        logger.log("info", `New hackernews subscription! ${req.email}`);
+        await log("info", `New hackernews subscription! ${req.email}`);
         return res.status(200).send();
       }
       case "REMOVE_HACKERNEWS_SUBSCRIPTION": {
@@ -52,7 +52,7 @@ async function itemCrudController(req: any, res: any) {
     }
     return res.status(404).send("Query not found");
   } catch (e) {
-    logger.error(e);
+    await log("error", e);
     return res.status(400).send(e);
   }
 }

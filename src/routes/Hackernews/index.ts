@@ -1,4 +1,4 @@
-import logger from "../../helpers/logger";
+import log from "../../helpers/logger";
 import { Item, MONGO_TYPES } from "../../mongoose";
 
 async function hackernewsController(req: any, res: any) {
@@ -13,7 +13,7 @@ async function hackernewsController(req: any, res: any) {
       isSubscribed: Boolean(subscription),
     });
   } catch (e) {
-    logger.error(e);
+    await log("error", e);
     return res.send(e);
   }
 }

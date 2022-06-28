@@ -48,7 +48,7 @@ function loginController(req, res) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 3, , 5]);
                     token = req.query.token;
                     return [4 /*yield*/, mongoose_1.Item.findOne({
                             type: mongoose_1.MONGO_TYPES.USER,
@@ -72,9 +72,11 @@ function loginController(req, res) {
                     return [2 /*return*/, res.redirect("/")];
                 case 3:
                     e_1 = _a.sent();
-                    logger_1.default.error(e_1);
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 4:
+                    _a.sent();
                     return [2 /*return*/, res.send("Failed")];
-                case 4: return [2 /*return*/];
+                case 5: return [2 /*return*/];
             }
         });
     });

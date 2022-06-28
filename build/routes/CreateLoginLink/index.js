@@ -50,7 +50,7 @@ function createLoginLinkController(req, res) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 9, , 10]);
+                    _a.trys.push([0, 11, , 13]);
                     email = req.body.email;
                     return [4 /*yield*/, mongoose_1.Item.findOne({
                             type: mongoose_1.MONGO_TYPES.USER,
@@ -58,7 +58,7 @@ function createLoginLinkController(req, res) {
                         })];
                 case 1:
                     user = _a.sent();
-                    if (!!user) return [3 /*break*/, 3];
+                    if (!!user) return [3 /*break*/, 4];
                     mongoUser = {
                         type: mongoose_1.MONGO_TYPES.USER,
                         data: {
@@ -71,40 +71,46 @@ function createLoginLinkController(req, res) {
                         }
                     };
                     user = new mongoose_1.Item(mongoUser);
-                    logger_1.default.log("info", "New user signed up! " + email);
-                    return [4 /*yield*/, (0, pushover_1.sendPushover)("New user signed up! " + email)];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New user signed up! " + email)];
                 case 2:
                     _a.sent();
-                    _a.label = 3;
+                    return [4 /*yield*/, (0, pushover_1.sendPushover)("New user signed up! " + email)];
                 case 3:
+                    _a.sent();
+                    _a.label = 4;
+                case 4:
                     user.data.token = (0, randomString_1.default)(20);
                     (user.data.tokenExpiration = Date.now() + 7200000),
                         (user.data.signedInWithToken = false);
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 4:
+                case 5:
                     _a.sent();
-                    if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 6];
-                    logger_1.default.log("info", "bypassing auth");
+                    if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 8];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "bypassing auth")];
+                case 6:
+                    _a.sent();
                     user.data.signedInWithToken = true;
                     user.data.token = (0, randomString_1.default)(20);
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 5:
+                case 7:
                     _a.sent();
                     res.cookie("token", user.data.token);
                     return [2 /*return*/, res.redirect("/")];
-                case 6: return [4 /*yield*/, sendMail(email, user.data.token)];
-                case 7:
+                case 8: return [4 /*yield*/, sendMail(email, user.data.token)];
+                case 9:
                     _a.sent();
                     return [2 /*return*/, res.send("Success - please check your email")];
-                case 8: return [3 /*break*/, 10];
-                case 9:
+                case 10: return [3 /*break*/, 13];
+                case 11:
                     e_1 = _a.sent();
-                    logger_1.default.error(e_1);
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 12:
+                    _a.sent();
                     res.send("Failed");
-                    return [3 /*break*/, 10];
-                case 10: return [2 /*return*/];
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });

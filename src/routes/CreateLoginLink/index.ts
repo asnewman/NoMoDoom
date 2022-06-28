@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import randomString from "../../helpers/randomString";
-import logger from "../../helpers/logger";
+import log from "../../helpers/logger";
 import { sendPushover } from "../../helpers/pushover";
 
 async function createLoginLinkController(req: any, res: any) {
@@ -26,7 +26,7 @@ async function createLoginLinkController(req: any, res: any) {
       };
       user = new Item(mongoUser);
 
-      logger.log("info", "New user signed up! " + email);
+      await log("info", "New user signed up! " + email);
       await sendPushover("New user signed up! " + email);
     }
 
@@ -37,7 +37,7 @@ async function createLoginLinkController(req: any, res: any) {
     await user.save();
 
     if (process.env.IS_LOCAL === "true") {
-      logger.log("info", "bypassing auth");
+      await log("info", "bypassing auth");
       user.data.signedInWithToken = true;
       user.data.token = randomString(20);
       user.markModified("data");
@@ -49,7 +49,7 @@ async function createLoginLinkController(req: any, res: any) {
       return res.send("Success - please check your email");
     }
   } catch (e) {
-    logger.error(e);
+    await log("error", e);
     res.send("Failed");
   }
 }

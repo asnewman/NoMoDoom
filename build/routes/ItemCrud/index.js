@@ -47,16 +47,16 @@ function itemCrudController(req, res) {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    _c.trys.push([0, 11, , 12]);
+                    _c.trys.push([0, 13, , 15]);
                     _a = req.body, query = _a.query, data = _a.data;
                     _b = query;
                     switch (_b) {
                         case "ADD_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 1];
-                        case "REMOVE_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 3];
-                        case "ADD_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 5];
-                        case "REMOVE_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 7];
+                        case "REMOVE_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 4];
+                        case "ADD_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 6];
+                        case "REMOVE_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 9];
                     }
-                    return [3 /*break*/, 9];
+                    return [3 /*break*/, 11];
                 case 1:
                     newSubscriptionItemData = {
                         service: "reddit",
@@ -69,16 +69,18 @@ function itemCrudController(req, res) {
                         }).save()];
                 case 2:
                     _c.sent();
-                    logger_1.default.log("info", "New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit));
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit))];
+                case 3:
+                    _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 3: return [4 /*yield*/, mongoose_1.Item.deleteOne({
+                case 4: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,
                         "data.subservice": data.subreddit,
                     })];
-                case 4:
+                case 5:
                     _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 5:
+                case 6:
                     newSubscriptionItemData = {
                         service: "hackernews",
                         email: req.email,
@@ -87,24 +89,28 @@ function itemCrudController(req, res) {
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                             data: newSubscriptionItemData,
                         }).save()];
-                case 6:
+                case 7:
                     _c.sent();
-                    logger_1.default.log("info", "New hackernews subscription! ".concat(req.email));
-                    return [2 /*return*/, res.status(200).send()];
-                case 7: return [4 /*yield*/, mongoose_1.Item.deleteOne({
-                        "data.email": req.email,
-                        "data.service": "hackernews",
-                    })];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New hackernews subscription! ".concat(req.email))];
                 case 8:
                     _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 9: return [3 /*break*/, 10];
-                case 10: return [2 /*return*/, res.status(404).send("Query not found")];
-                case 11:
+                case 9: return [4 /*yield*/, mongoose_1.Item.deleteOne({
+                        "data.email": req.email,
+                        "data.service": "hackernews",
+                    })];
+                case 10:
+                    _c.sent();
+                    return [2 /*return*/, res.status(200).send()];
+                case 11: return [3 /*break*/, 12];
+                case 12: return [2 /*return*/, res.status(404).send("Query not found")];
+                case 13:
                     e_1 = _c.sent();
-                    logger_1.default.error(e_1);
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 14:
+                    _c.sent();
                     return [2 /*return*/, res.status(400).send(e_1)];
-                case 12: return [2 /*return*/];
+                case 15: return [2 /*return*/];
             }
         });
     });

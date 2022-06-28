@@ -1,12 +1,12 @@
-import logger from "../../helpers/logger";
+import log from "../../helpers/logger";
 
-function homeController(req: any, res: any) {
+async function homeController(req: any, res: any) {
   try {
     return res.render("Home", {
       email: req.email,
     });
   } catch (e) {
-    logger.error(e);
+    await log("error", e);
     return res.send(e);
   }
 }

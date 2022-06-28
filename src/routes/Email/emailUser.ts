@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import { Item, MongoArchive, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 import moment from "moment-timezone";
 import {generateHackernewsHtml, generateRedditHtml} from "./pure/emailHtmlGenerators";
-import logger from "../../helpers/logger";
+import log from "../../helpers/logger";
 
 async function emailUser(email: string) {
   const user = await Item.findOne({
@@ -10,7 +10,7 @@ async function emailUser(email: string) {
   });
 
   if (!user) {
-    logger.error("Email not found: ", email);
+    await log("error", `Email not found: ${email}`);
     return;
   }
 
@@ -80,7 +80,7 @@ async function emailUser(email: string) {
     html: emailText,
   });
 
-  logger.log("info", `Email sent to ${email}`)
+  await log("info", `Email sent to ${email}`)
 
   user.data.lastSent = Date.now();
   user.markModified("data");

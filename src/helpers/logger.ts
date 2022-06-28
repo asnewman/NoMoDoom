@@ -1,23 +1,24 @@
-import winston from 'winston';
-import LogzioWinstonTransport from 'winston-logzio';
+import axios from "axios";
 
-const logzioWinstonTransport = new LogzioWinstonTransport({
-  level: 'info',
-  name: 'winston_logzio',
-  token: process.env.LOGZIO_TOKEN || "",
-  host: 'listener.logz.io',
-});
-const transports: winston.transport[] = [new winston.transports.Console()]
-if (process.env.IS_LOCAL === "false") {
-  transports.push(logzioWinstonTransport)
+const log = async (level: "info" | "error", message: any) => {
+  try {
+    if (process.env.IS_LOCAL === "false") {
+      await axios.post(`https://listener.logz.io:8071/?token=${process.env.LOGZIO_TOKEN}&type=cyclic-server`, JSON.stringify({
+          message
+        }))
+    }
+  }
+  catch (e) {
+    console.error(e)
+  }
+  
+
+  if (level === "error") {
+    console.error(message)
+  }
+  else {
+    console.info(message)
+  }
 }
-const logger = winston.createLogger({
-    format: winston.format.simple(),
-    transports,
-});
 
-logger.on('finish', function () {
-  console.log("all logged")
-});
-
-export default logger;
+export default log

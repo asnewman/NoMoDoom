@@ -54,15 +54,16 @@ function emailUser(email) {
                     })];
                 case 1:
                     user = _a.sent();
-                    if (!user) {
-                        logger_1.default.error("Email not found: ", email);
-                        return [2 /*return*/];
-                    }
-                    return [4 /*yield*/, mongoose_1.Item.find({
-                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                            "data.email": email,
-                        })];
+                    if (!!user) return [3 /*break*/, 3];
+                    return [4 /*yield*/, (0, logger_1.default)("error", "Email not found: ".concat(email))];
                 case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+                case 3: return [4 /*yield*/, mongoose_1.Item.find({
+                        type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
+                        "data.email": email,
+                    })];
+                case 4:
                     subscriptions = _a.sent();
                     if (subscriptions.length === 0) {
                         return [2 /*return*/];
@@ -89,7 +90,7 @@ function emailUser(email) {
                                 $in: subreddits,
                             },
                         })];
-                case 3:
+                case 5:
                     subredditData = _a.sent();
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.ARCHIVE,
@@ -98,7 +99,7 @@ function emailUser(email) {
                                 $gt: user.data.lastSent,
                             }
                         }).sort({ "data.datetime": -1 }).limit(1)];
-                case 4:
+                case 6:
                     hackernewsData = (_a.sent())[0];
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     if (subredditData.length > 0) {
@@ -117,13 +118,15 @@ function emailUser(email) {
                                 .format("MMMM Do YYYY")),
                             html: emailText,
                         })];
-                case 5:
+                case 7:
                     _a.sent();
-                    logger_1.default.log("info", "Email sent to ".concat(email));
+                    return [4 /*yield*/, (0, logger_1.default)("info", "Email sent to ".concat(email))];
+                case 8:
+                    _a.sent();
                     user.data.lastSent = Date.now();
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 6:
+                case 9:
                     _a.sent();
                     return [2 /*return*/];
             }
