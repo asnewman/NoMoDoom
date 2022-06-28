@@ -110,6 +110,7 @@ function emailUser(email) {
                     if (isSubscribedToHackernews) {
                         emailText += (0, emailHtmlGenerators_1.generateHackernewsHtml)(hackernewsData);
                     }
+                    emailText += "<p>Adjust your email settings at <a href=\"https://nomodoom.com\">nomodoom.com</a></p>";
                     return [4 /*yield*/, transporter.sendMail({
                             from: '"nomodoom" <ash@kozukaihabit.com>',
                             to: email,

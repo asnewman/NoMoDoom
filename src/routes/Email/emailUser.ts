@@ -71,6 +71,8 @@ async function emailUser(email: string) {
     emailText += generateHackernewsHtml(hackernewsData);
   }
 
+  emailText += `<p>Adjust your email settings at <a href="https://nomodoom.com">nomodoom.com</a></p>`
+
   await transporter.sendMail({
     from: '"nomodoom" <ash@kozukaihabit.com>', // sender address
     to: email,
