@@ -56,6 +56,7 @@ var Hackernews_1 = __importDefault(require("./routes/Hackernews"));
 var Archive_1 = __importDefault(require("./routes/Archive"));
 var Email_1 = __importDefault(require("./routes/Email"));
 var logger_1 = __importDefault(require("./helpers/logger"));
+var path_1 = __importDefault(require("path"));
 if (!process.env.MONGO_URI) {
     console.error("error", "MONGO_URI not set");
     (0, process_1.exit)(1);
@@ -63,6 +64,7 @@ if (!process.env.MONGO_URI) {
 mongoose_1.default.connect(process.env.MONGO_URI);
 var app = (0, express_1.default)();
 var port = process.env.PORT || 3000;
+app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use((0, cookie_parser_1.default)());

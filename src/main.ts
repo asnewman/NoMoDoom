@@ -16,6 +16,7 @@ import hackernewsController from "./routes/Hackernews";
 import archiveController from "./routes/Archive";
 import emailController from "./routes/Email";
 import log from "./helpers/logger";
+import path from "path";
 
 if (!process.env.MONGO_URI) {
   console.error("error", "MONGO_URI not set");
@@ -26,6 +27,7 @@ mongoose.connect(process.env.MONGO_URI);
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
