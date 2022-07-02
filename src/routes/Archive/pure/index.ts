@@ -6,27 +6,24 @@ async function archiveSubscriptions(
   archiveHackernews: () => Promise<void>
 ) {
   const subreddits = subscriptions
-      .filter(
-        (subscriptions) =>
-          subscriptions.data.service === "reddit" &&
-          subscriptions.data.subservice
-      )
-      .map((subscription) => subscription.data.subservice) as string[];
-    const uniqueSubreddits = [...new Set(subreddits)];
+    .filter(
+      (subscriptions) =>
+        subscriptions.data.service === "reddit" && subscriptions.data.subservice
+    )
+    .map((subscription) => subscription.data.subservice) as string[];
+  const uniqueSubreddits = [...new Set(subreddits)];
 
-    const promises: Promise<any>[] = [];
+  const promises: Promise<any>[] = [];
 
-    uniqueSubreddits.forEach((subreddit) => {
-      if (subreddit) {
-        promises.push(archiveSubreddit(subreddit));
-      }
-    });
+  uniqueSubreddits.forEach((subreddit) => {
+    if (subreddit) {
+      promises.push(archiveSubreddit(subreddit));
+    }
+  });
 
-    promises.push(archiveHackernews());
+  promises.push(archiveHackernews());
 
-    await Promise.all(promises)
+  await Promise.all(promises);
 }
 
-export {
-  archiveSubscriptions
-}
+export { archiveSubscriptions };

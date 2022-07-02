@@ -4,10 +4,20 @@ const MONGO_TYPES = {
   USER: "USER",
   SUBSCRIPTION: "SUBSCRIPTION",
   ARCHIVE: "ARCHIVE",
+  EMAIL: "EMAIL",
 } as const;
 
 interface MongoBase {
   type: keyof typeof MONGO_TYPES;
+}
+
+interface MongoEmail extends MongoBase {
+  type: "EMAIL";
+  data: {
+    email: string;
+    content: string;
+    datetime: number;
+  };
 }
 
 interface MongoSubscription extends MongoBase {
@@ -69,6 +79,7 @@ const Item = mongoose.model("Item", ItemSchema);
 export {
   Item,
   MONGO_TYPES,
+  MongoEmail,
   MongoSubscription,
   MongoArchive,
   MongoArchiveHackernewsData,

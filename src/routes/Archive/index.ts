@@ -14,9 +14,9 @@ async function archiveController(_req: any, res: any) {
       subscriptions,
       archiveSubreddit,
       archiveHackernews
-    )
+    );
 
-    await log("info", "Archiving completed")
+    await log("info", "Archiving completed");
 
     res.send("Success");
   } catch (e) {

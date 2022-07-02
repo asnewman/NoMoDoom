@@ -17,7 +17,7 @@ async function emailController(_req: any, res: any) {
 
     res.send("Success");
   } catch (e) {
-    await log("error", e)
+    await log("error", e);
     res.status(400).send(`Error archiving: ${e}`);
   }
 }

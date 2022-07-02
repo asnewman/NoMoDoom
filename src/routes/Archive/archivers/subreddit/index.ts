@@ -12,7 +12,7 @@ import { getTopThreePosts } from "./pure";
 export default async function archiveSubreddit(subreddit: string) {
   try {
     const redditPostsData = await axios.get(
-    `https://www.reddit.com/r/${subreddit}/top.json`
+      `https://www.reddit.com/r/${subreddit}/top.json`
     );
 
     const topPosts: SubredditPost[] = getTopThreePosts(
@@ -22,16 +22,15 @@ export default async function archiveSubreddit(subreddit: string) {
       type: "subreddit",
       subreddit,
       datetime: new Date().getTime(),
-      topPosts
-    }
+      topPosts,
+    };
     const newArchiveItem: MongoArchive = {
       type: MONGO_TYPES.ARCHIVE,
       data: newArchiveItemData,
     };
 
     await new Item(newArchiveItem).save();
-  }
-  catch(e) {
-    log("error", e)
+  } catch (e) {
+    log("error", e);
   }
 }

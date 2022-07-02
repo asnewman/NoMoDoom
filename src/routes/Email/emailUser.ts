@@ -1,7 +1,16 @@
 import nodemailer from "nodemailer";
-import { Item, MongoArchive, MongoSubscription, MONGO_TYPES } from "../../mongoose";
+import {
+  Item,
+  MongoArchive,
+  MongoEmail,
+  MongoSubscription,
+  MONGO_TYPES,
+} from "../../mongoose";
 import moment from "moment-timezone";
-import {generateHackernewsHtml, generateRedditHtml} from "./pure/emailHtmlGenerators";
+import {
+  generateHackernewsHtml,
+  generateRedditHtml,
+} from "./pure/emailHtmlGenerators";
 import log from "../../helpers/logger";
 
 async function emailUser(email: string) {
@@ -14,11 +23,10 @@ async function emailUser(email: string) {
     return;
   }
 
-  const subscriptions: MongoSubscription[] =
-    await Item.find({
-      type: MONGO_TYPES.SUBSCRIPTION,
-      "data.email": email,
-    });
+  const subscriptions: MongoSubscription[] = await Item.find({
+    type: MONGO_TYPES.SUBSCRIPTION,
+    "data.email": email,
+  });
 
   if (subscriptions.length === 0) {
     return;
@@ -34,44 +42,48 @@ async function emailUser(email: string) {
     },
   });
 
-  const subreddits: string[] = 
-    subscriptions.filter(subscription => subscription.data.service === "reddit")
+  const subreddits: string[] = subscriptions
+    .filter((subscription) => subscription.data.service === "reddit")
     .map((subscription) => subscription.data.subservice)
     .filter((subservice) => subservice !== undefined) as string[];
 
   const subredditData: MongoArchive[] = await Item.find({
-        type: MONGO_TYPES.ARCHIVE,
-        "data.type": "subreddit",
-        "data.datetime": {
-          $gt: user.data.lastSent,
-        },
-        "data.subreddit": {
-          $in: subreddits,
-        },
-      })
- 
-  const hackernewsData =  (await Item.find({
-        type: MONGO_TYPES.ARCHIVE,
-        "data.type": "hackernews",
-        "data.datetime": {
-          $gt: user.data.lastSent,
-        }
-      }).sort({"data.datetime": -1}).limit(1))[0]
+    type: MONGO_TYPES.ARCHIVE,
+    "data.type": "subreddit",
+    "data.datetime": {
+      $gt: user.data.lastSent,
+    },
+    "data.subreddit": {
+      $in: subreddits,
+    },
+  });
 
+  const hackernewsData = (
+    await Item.find({
+      type: MONGO_TYPES.ARCHIVE,
+      "data.type": "hackernews",
+      "data.datetime": {
+        $gt: user.data.lastSent,
+      },
+    })
+      .sort({ "data.datetime": -1 })
+      .limit(1)
+  )[0];
 
   let emailText = "Here is your nomodoom email digest:<br/><br/>";
 
   if (subredditData.length > 0) {
-    emailText += generateRedditHtml(subredditData)
+    emailText += generateRedditHtml(subredditData);
   }
-  
-  const isSubscribedToHackernews = subscriptions
-    .find(subscription => subscription.data.service === "hackernews")
+
+  const isSubscribedToHackernews = subscriptions.find(
+    (subscription) => subscription.data.service === "hackernews"
+  );
   if (isSubscribedToHackernews) {
     emailText += generateHackernewsHtml(hackernewsData);
   }
 
-  emailText += `<p>Adjust your email settings at <a href="https://nomodoom.com">nomodoom.com</a></p>`
+  emailText += `<p>Adjust your email settings at <a href="https://nomodoom.com">nomodoom.com</a></p>`;
 
   await transporter.sendMail({
     from: '"nomodoom" <ash@kozukaihabit.com>', // sender address
@@ -82,7 +94,18 @@ async function emailUser(email: string) {
     html: emailText,
   });
 
-  await log("info", `Email sent to ${email}`)
+  await log("info", `Email sent to ${email}`);
+
+  const mongoEmail: MongoEmail = {
+    type: "EMAIL",
+    data: {
+      email,
+      content: emailText,
+      datetime: Date.now(),
+    },
+  };
+
+  await Item.create(mongoEmail);
 
   user.data.lastSent = Date.now();
   user.markModified("data");

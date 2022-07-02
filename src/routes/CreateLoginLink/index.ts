@@ -22,12 +22,12 @@ async function createLoginLinkController(req: any, res: any) {
           tokenExpiration: 0,
           frequency: 1,
           lastSent: 0,
-        }
+        },
       };
       user = new Item(mongoUser);
 
       await log("info", "New user signed up! " + email);
-      await sendPushover(`New user signed up! ${email}`)
+      await sendPushover(`New user signed up! ${email}`);
     }
 
     user.data.token = randomString(20);
