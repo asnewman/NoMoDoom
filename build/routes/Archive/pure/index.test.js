@@ -67,7 +67,7 @@ var dummySubscriptions = [
             service: "reddit",
             subservice: "javascript",
             email: "example@mail.com",
-        }
+        },
     },
     {
         type: "SUBSCRIPTION",
@@ -75,7 +75,7 @@ var dummySubscriptions = [
             service: "reddit",
             subservice: "javascript",
             email: "example@mail.com",
-        }
+        },
     },
     {
         type: "SUBSCRIPTION",
@@ -83,21 +83,21 @@ var dummySubscriptions = [
             service: "reddit",
             subservice: "photography",
             email: "example@mail.com",
-        }
+        },
     },
     {
         type: "SUBSCRIPTION",
         data: {
             service: "hackernews",
             email: "example@mail.com",
-        }
+        },
     },
     {
         type: "SUBSCRIPTION",
         data: {
             service: "hackernews",
             email: "example@mail.com",
-        }
+        },
     },
 ];
 //# sourceMappingURL=index.test.js.map

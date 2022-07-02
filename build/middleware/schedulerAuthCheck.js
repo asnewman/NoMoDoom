@@ -45,6 +45,7 @@ function default_1(req, res, next) {
                 next();
             }
             else {
+                console.error("".concat(password, " is incorrect"));
                 return [2 /*return*/, res.status(403).send()];
             }
             return [2 /*return*/];

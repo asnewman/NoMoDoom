@@ -68,7 +68,7 @@ function createLoginLinkController(req, res) {
                             tokenExpiration: 0,
                             frequency: 1,
                             lastSent: 0,
-                        }
+                        },
                     };
                     user = new mongoose_1.Item(mongoUser);
                     return [4 /*yield*/, (0, logger_1.default)("info", "New user signed up! " + email)];

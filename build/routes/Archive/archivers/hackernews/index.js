@@ -104,7 +104,7 @@ function archiveHackernews() {
                     }
                     archive = {
                         type: mongoose_1.MONGO_TYPES.ARCHIVE,
-                        data: archiveData
+                        data: archiveData,
                     };
                     return [4 /*yield*/, mongoose_1.Item.create(archive)];
                 case 6:

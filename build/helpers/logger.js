@@ -48,7 +48,7 @@ var log = function (level, message) { return __awaiter(void 0, void 0, void 0, f
                 _a.trys.push([0, 3, , 4]);
                 if (!(process.env.IS_LOCAL === "false")) return [3 /*break*/, 2];
                 return [4 /*yield*/, axios_1.default.post("https://listener.logz.io:8071/?token=".concat(process.env.LOGZIO_TOKEN, "&type=cyclic-server"), JSON.stringify({
-                        message: message
+                        message: message,
                     }))];
             case 1:
                 _a.sent();

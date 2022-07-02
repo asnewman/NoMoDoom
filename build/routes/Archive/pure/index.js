@@ -70,8 +70,7 @@ function archiveSubscriptions(subscriptions, archiveSubreddit, archiveHackernews
                 case 0:
                     subreddits = subscriptions
                         .filter(function (subscriptions) {
-                        return subscriptions.data.service === "reddit" &&
-                            subscriptions.data.subservice;
+                        return subscriptions.data.service === "reddit" && subscriptions.data.subservice;
                     })
                         .map(function (subscription) { return subscription.data.subservice; });
                     uniqueSubreddits = __spreadArray([], __read(new Set(subreddits)), false);

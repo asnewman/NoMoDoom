@@ -58,7 +58,7 @@ function archiveSubreddit(subreddit) {
                         type: "subreddit",
                         subreddit: subreddit,
                         datetime: new Date().getTime(),
-                        topPosts: topPosts
+                        topPosts: topPosts,
                     };
                     newArchiveItem = {
                         type: mongoose_1.MONGO_TYPES.ARCHIVE,

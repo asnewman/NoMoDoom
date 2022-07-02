@@ -47,7 +47,7 @@ function sendPushover(message) {
             axios_1.default.post("https://api.pushover.net/1/messages.json", {
                 token: process.env.PUSHOVER_TOKEN,
                 user: process.env.PUSHOVER_USER,
-                message: message
+                message: message,
             });
             return [2 /*return*/];
         });

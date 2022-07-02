@@ -29,6 +29,7 @@ var MONGO_TYPES = {
     USER: "USER",
     SUBSCRIPTION: "SUBSCRIPTION",
     ARCHIVE: "ARCHIVE",
+    EMAIL: "EMAIL",
 };
 exports.MONGO_TYPES = MONGO_TYPES;
 var ItemSchema = new mongoose_1.Schema({
