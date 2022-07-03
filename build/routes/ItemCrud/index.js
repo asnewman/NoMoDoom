@@ -43,11 +43,11 @@ var logger_1 = __importDefault(require("../../helpers/logger"));
 var mongoose_1 = require("../../mongoose");
 function itemCrudController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, query, data, _b, newSubscriptionItemData, newSubscriptionItemData, e_1;
+        var _a, query, data, _b, newSubscriptionItemData, newSubscriptionItemData, newSubscriptionItemData, e_1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    _c.trys.push([0, 13, , 15]);
+                    _c.trys.push([0, 18, , 20]);
                     _a = req.body, query = _a.query, data = _a.data;
                     _b = query;
                     switch (_b) {
@@ -55,8 +55,10 @@ function itemCrudController(req, res) {
                         case "REMOVE_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 4];
                         case "ADD_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 6];
                         case "REMOVE_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 9];
+                        case "ADD_NOMODOOM_SUBSCRIPTION": return [3 /*break*/, 11];
+                        case "REMOVE_NOMODOOM_SUBSCRIPTION": return [3 /*break*/, 14];
                     }
-                    return [3 /*break*/, 11];
+                    return [3 /*break*/, 16];
                 case 1:
                     newSubscriptionItemData = {
                         service: "reddit",
@@ -102,15 +104,37 @@ function itemCrudController(req, res) {
                 case 10:
                     _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 11: return [3 /*break*/, 12];
-                case 12: return [2 /*return*/, res.status(404).send("Query not found")];
+                case 11:
+                    newSubscriptionItemData = {
+                        service: "nomodoom",
+                        email: req.email,
+                    };
+                    return [4 /*yield*/, new mongoose_1.Item({
+                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
+                            data: newSubscriptionItemData,
+                        }).save()];
+                case 12:
+                    _c.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New hackernews subscription! ".concat(req.email))];
                 case 13:
+                    _c.sent();
+                    return [2 /*return*/, res.status(200).send()];
+                case 14: return [4 /*yield*/, mongoose_1.Item.deleteOne({
+                        "data.email": req.email,
+                        "data.service": "nomodoom",
+                    })];
+                case 15:
+                    _c.sent();
+                    return [2 /*return*/, res.status(200).send()];
+                case 16: return [3 /*break*/, 17];
+                case 17: return [2 /*return*/, res.status(404).send("Query not found")];
+                case 18:
                     e_1 = _c.sent();
                     return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 14:
+                case 19:
                     _c.sent();
                     return [2 /*return*/, res.status(400).send(e_1)];
-                case 15: return [2 /*return*/];
+                case 20: return [2 /*return*/];
             }
         });
     });

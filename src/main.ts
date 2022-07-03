@@ -17,6 +17,7 @@ import archiveController from "./routes/Archive";
 import emailController from "./routes/Email";
 import log from "./helpers/logger";
 import path from "path";
+import nomodoomController from "./routes/Nomodoom";
 
 if (!process.env.MONGO_URI) {
   console.error("error", "MONGO_URI not set");
@@ -40,6 +41,8 @@ app.get("/", authCheck, homeController);
 app.get("/reddit", authCheck, redditController);
 
 app.get("/hackernews", authCheck, hackernewsController);
+
+app.get("/nomodoom", authCheck, nomodoomController);
 
 app.get("/create-link", (_req: any, res: any) => {
   res.render("CreateLink");

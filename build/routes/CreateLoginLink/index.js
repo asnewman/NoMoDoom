@@ -46,11 +46,11 @@ var logger_1 = __importDefault(require("../../helpers/logger"));
 var pushover_1 = require("../../helpers/pushover");
 function createLoginLinkController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var email, user, mongoUser, e_1;
+        var email, user, mongoUser, nomodoomSubscription, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 11, , 13]);
+                    _a.trys.push([0, 12, , 14]);
                     email = req.body.email;
                     return [4 /*yield*/, mongoose_1.Item.findOne({
                             type: mongoose_1.MONGO_TYPES.USER,
@@ -58,7 +58,7 @@ function createLoginLinkController(req, res) {
                         })];
                 case 1:
                     user = _a.sent();
-                    if (!!user) return [3 /*break*/, 4];
+                    if (!!user) return [3 /*break*/, 5];
                     mongoUser = {
                         type: mongoose_1.MONGO_TYPES.USER,
                         data: {
@@ -77,40 +77,50 @@ function createLoginLinkController(req, res) {
                     return [4 /*yield*/, (0, pushover_1.sendPushover)("New user signed up! ".concat(email))];
                 case 3:
                     _a.sent();
-                    _a.label = 4;
+                    nomodoomSubscription = {
+                        type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
+                        data: {
+                            service: "nomodoom",
+                            email: email
+                        }
+                    };
+                    return [4 /*yield*/, mongoose_1.Item.create(nomodoomSubscription)];
                 case 4:
+                    _a.sent();
+                    _a.label = 5;
+                case 5:
                     user.data.token = (0, randomString_1.default)(20);
                     (user.data.tokenExpiration = Date.now() + 7200000),
                         (user.data.signedInWithToken = false);
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 5:
-                    _a.sent();
-                    if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 8];
-                    return [4 /*yield*/, (0, logger_1.default)("info", "bypassing auth")];
                 case 6:
+                    _a.sent();
+                    if (!(process.env.IS_LOCAL === "true")) return [3 /*break*/, 9];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "bypassing auth")];
+                case 7:
                     _a.sent();
                     user.data.signedInWithToken = true;
                     user.data.token = (0, randomString_1.default)(20);
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 7:
+                case 8:
                     _a.sent();
                     res.cookie("token", user.data.token);
                     return [2 /*return*/, res.redirect("/")];
-                case 8: return [4 /*yield*/, sendMail(email, user.data.token)];
-                case 9:
+                case 9: return [4 /*yield*/, sendMail(email, user.data.token)];
+                case 10:
                     _a.sent();
                     return [2 /*return*/, res.send("Success - please check your email")];
-                case 10: return [3 /*break*/, 13];
-                case 11:
+                case 11: return [3 /*break*/, 14];
+                case 12:
                     e_1 = _a.sent();
                     return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 12:
+                case 13:
                     _a.sent();
                     res.send("Failed");
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
+                    return [3 /*break*/, 14];
+                case 14: return [2 /*return*/];
             }
         });
     });

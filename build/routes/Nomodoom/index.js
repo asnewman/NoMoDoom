@@ -39,58 +39,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv/config");
-var express_1 = __importDefault(require("express"));
-var mongoose_1 = __importDefault(require("mongoose"));
-var process_1 = require("process");
-var body_parser_1 = __importDefault(require("body-parser"));
-var cookie_parser_1 = __importDefault(require("cookie-parser"));
-var CreateLoginLink_1 = __importDefault(require("./routes/CreateLoginLink"));
-var Login_1 = __importDefault(require("./routes/Login"));
-var authCheck_1 = __importDefault(require("./middleware/authCheck"));
-var schedulerAuthCheck_1 = __importDefault(require("./middleware/schedulerAuthCheck"));
-var Home_1 = __importDefault(require("./routes/Home"));
-var Reddit_1 = __importDefault(require("./routes/Reddit"));
-var ItemCrud_1 = __importDefault(require("./routes/ItemCrud"));
-var Hackernews_1 = __importDefault(require("./routes/Hackernews"));
-var Archive_1 = __importDefault(require("./routes/Archive"));
-var Email_1 = __importDefault(require("./routes/Email"));
-var logger_1 = __importDefault(require("./helpers/logger"));
-var path_1 = __importDefault(require("path"));
-var Nomodoom_1 = __importDefault(require("./routes/Nomodoom"));
-if (!process.env.MONGO_URI) {
-    console.error("error", "MONGO_URI not set");
-    (0, process_1.exit)(1);
-}
-mongoose_1.default.connect(process.env.MONGO_URI);
-var app = (0, express_1.default)();
-var port = process.env.PORT || 3000;
-app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
-app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use(body_parser_1.default.json());
-app.use((0, cookie_parser_1.default)());
-app.set("views", "./src/views");
-app.set("view engine", "pug");
-app.get("/", authCheck_1.default, Home_1.default);
-app.get("/reddit", authCheck_1.default, Reddit_1.default);
-app.get("/hackernews", authCheck_1.default, Hackernews_1.default);
-app.get("/nomodoom", authCheck_1.default, Nomodoom_1.default);
-app.get("/create-link", function (_req, res) {
-    res.render("CreateLink");
-});
-app.post("/create-link", CreateLoginLink_1.default);
-app.get("/login", Login_1.default);
-app.post("/api/item-crud", authCheck_1.default, ItemCrud_1.default);
-app.post("/api/schedule-archives", schedulerAuthCheck_1.default, Archive_1.default);
-app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.default);
-app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, logger_1.default)("info", "I am awake")];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
+var logger_1 = __importDefault(require("../../helpers/logger"));
+var mongoose_1 = require("../../mongoose");
+function nomodoomController(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var subscription, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 4]);
+                    return [4 /*yield*/, mongoose_1.Item.findOne({
+                            type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
+                            "data.email": req.email,
+                            "data.service": "nomodoom",
+                        })];
+                case 1:
+                    subscription = _a.sent();
+                    return [2 /*return*/, res.render("Nomodoom", {
+                            email: req.email,
+                            isSubscribed: Boolean(subscription),
+                        })];
+                case 2:
+                    e_1 = _a.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/, res.send(e_1)];
+                case 4: return [2 /*return*/];
+            }
+        });
     });
-}); });
-//# sourceMappingURL=main.js.map
+}
+exports.default = nomodoomController;
+//# sourceMappingURL=index.js.map

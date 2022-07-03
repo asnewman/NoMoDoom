@@ -23,7 +23,7 @@ interface MongoEmail extends MongoBase {
 interface MongoSubscription extends MongoBase {
   type: "SUBSCRIPTION";
   data: {
-    service: "reddit" | "hackernews";
+    service: "reddit" | "hackernews" | "nomodoom";
     subservice?: string;
     email: string;
   };

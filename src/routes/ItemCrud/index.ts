@@ -48,6 +48,25 @@ async function itemCrudController(req: any, res: any) {
         });
         return res.status(200).send();
       }
+      case "ADD_NOMODOOM_SUBSCRIPTION": {
+        const newSubscriptionItemData: MongoSubscription["data"] = {
+          service: "nomodoom",
+          email: req.email,
+        };
+        await new Item({
+          type: MONGO_TYPES.SUBSCRIPTION,
+          data: newSubscriptionItemData,
+        }).save();
+        await log("info", `New hackernews subscription! ${req.email}`);
+        return res.status(200).send();
+      }
+      case "REMOVE_NOMODOOM_SUBSCRIPTION": {
+        await Item.deleteOne({
+          "data.email": req.email,
+          "data.service": "nomodoom",
+        });
+        return res.status(200).send();
+      }
       default:
         break;
     }
