@@ -20,30 +20,33 @@ block content
 
       if (subdiv.textContent.includes(inputVal)) return
 
-      fetch("/api/item-crud", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: "ADD_SUBREDDIT_SUBSCRIPTION",
-          data: {
-            subreddit: inputVal
-          }
+      fetch(`https://www.reddit.com/r/${inputVal}/top.json`).then(() => {
+        fetch("/api/item-crud", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            query: "ADD_SUBREDDIT_SUBSCRIPTION",
+            data: {
+              subreddit: inputVal
+            }
+          })
+        }).then(() => {
+          const newSubredditContainer = document.createElement("div")
+          newSubredditContainer.setAttribute("id", `${inputVal}-div`)
+          const newSubredditNode = document.createElement("p")
+          newSubredditNode.appendChild(document.createTextNode(inputVal))
+          newSubredditContainer.appendChild(newSubredditNode)
+          const removeBtn = document.createElement("button")
+          removeBtn.setAttribute("onclick", `remove("${inputVal}")`)
+          removeBtn.appendChild(document.createTextNode("Remove"));
+          newSubredditContainer.appendChild(removeBtn)
+          subdiv.appendChild(newSubredditContainer)
+          document.querySelector("#newSubredditInput").value = ""
         })
-      }).then(() => {
-        const newSubredditContainer = document.createElement("div")
-        newSubredditContainer.setAttribute("id", `${inputVal}-div`)
-        const newSubredditNode = document.createElement("p")
-        newSubredditNode.appendChild(document.createTextNode(inputVal))
-        newSubredditContainer.appendChild(newSubredditNode)
-        const removeBtn = document.createElement("button")
-        removeBtn.setAttribute("onclick", `remove("${inputVal}")`)
-        removeBtn.appendChild(document.createTextNode("Remove"));
-        newSubredditContainer.appendChild(removeBtn)
-        subdiv.appendChild(newSubredditContainer)
-        document.querySelector("#newSubredditInput").value = ""
-      })
+      }).catch(() => alert("Invalid subreddit"));
+
     }
 
     function remove(subreddit) {
