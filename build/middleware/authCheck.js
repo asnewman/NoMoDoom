@@ -51,7 +51,7 @@ function default_1(req, res, next) {
                 case 1:
                     user = _a.sent();
                     if (user && user.data.tokenExpiration > Date.now()) {
-                        req.email = user.data.email;
+                        req.email = user.data.email.toLowerCase();
                         next();
                     }
                     else {

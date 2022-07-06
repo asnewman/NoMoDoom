@@ -8,7 +8,7 @@ export default async function (req: any, res: any, next: any) {
   });
 
   if (user && user.data.tokenExpiration > Date.now()) {
-    req.email = user.data.email;
+    req.email = user.data.email.toLowerCase();
     next();
   } else {
     return res.redirect("/create-link");

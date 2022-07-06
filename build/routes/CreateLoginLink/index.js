@@ -51,7 +51,7 @@ function createLoginLinkController(req, res) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 12, , 14]);
-                    email = req.body.email;
+                    email = req.body.email.toLowerCase();
                     return [4 /*yield*/, mongoose_1.Item.findOne({
                             type: mongoose_1.MONGO_TYPES.USER,
                             "data.email": email,

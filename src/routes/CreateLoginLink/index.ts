@@ -11,7 +11,7 @@ import { sendPushover } from "../../helpers/pushover";
 
 async function createLoginLinkController(req: any, res: any) {
   try {
-    const { email } = req.body;
+    const email = req.body.email.toLowerCase();
     let user = await Item.findOne({
       type: MONGO_TYPES.USER,
       "data.email": email,
