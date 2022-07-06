@@ -111,7 +111,7 @@ function emailUser(email) {
                     }
                     emailText += "<p>Adjust your email settings at <a href=\"https://nomodoom.com\">nomodoom.com</a></p>";
                     return [4 /*yield*/, transporter.sendMail({
-                            from: '"nomodoom" <ash@kozukaihabit.com>',
+                            from: '"nomodoom" <robot@nomodoom.com>',
                             to: email,
                             subject: "nomodoom digest ".concat((0, moment_timezone_1.default)()
                                 .tz("America/Los_Angeles")
