@@ -3,6 +3,7 @@ import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import emailUser from "./emailUser";
 
 async function emailController(_req: any, res: any) {
+  await log("info", `Starting emailing`)
   try {
     const users: MongoUser[] = await Item.find({
       type: MONGO_TYPES.USER,

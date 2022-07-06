@@ -62,9 +62,6 @@ async function emailUser(email: string) {
     await Item.find({
       type: MONGO_TYPES.ARCHIVE,
       "data.type": "hackernews",
-      "data.datetime": {
-        $gt: user.data.lastSent,
-      },
     })
       .sort({ "data.datetime": -1 })
       .limit(1)
@@ -73,7 +70,7 @@ async function emailUser(email: string) {
   let emailText = "Here is your nomodoom email digest:<br/><br/>";
 
   if (subredditData.length > 0) {
-    emailText += generateRedditHtml(subredditData);
+    emailText += generateRedditHtml(subredditData, false);
   }
 
   const isSubscribedToHackernews = subscriptions.find(

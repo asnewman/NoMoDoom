@@ -1,5 +1,10 @@
 import nodemailer from "nodemailer";
-import { Item, MongoSubscription, MongoUser, MONGO_TYPES } from "../../mongoose";
+import {
+  Item,
+  MongoSubscription,
+  MongoUser,
+  MONGO_TYPES,
+} from "../../mongoose";
 import randomString from "../../helpers/randomString";
 import log from "../../helpers/logger";
 import { sendPushover } from "../../helpers/pushover";
@@ -22,6 +27,7 @@ async function createLoginLinkController(req: any, res: any) {
           tokenExpiration: 0,
           frequency: 1,
           lastSent: 0,
+          isPremium: false,
         },
       };
       user = new Item(mongoUser);
@@ -33,9 +39,9 @@ async function createLoginLinkController(req: any, res: any) {
         type: MONGO_TYPES.SUBSCRIPTION,
         data: {
           service: "nomodoom",
-          email
-        }
-      }
+          email,
+        },
+      };
 
       await Item.create(nomodoomSubscription);
     }

@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,14 +57,28 @@ var pure_1 = require("./pure");
 function archiveSubreddit(subreddit) {
     return __awaiter(this, void 0, void 0, function () {
         var redditPostsData, topPosts, newArchiveItemData, newArchiveItem, e_1;
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 4, , 5]);
                     return [4 /*yield*/, axios_1.default.get("https://www.reddit.com/r/".concat(subreddit, "/top.json"))];
                 case 1:
                     redditPostsData = _a.sent();
-                    topPosts = (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children);
+                    return [4 /*yield*/, (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children, function (url) { return __awaiter(_this, void 0, void 0, function () {
+                            var data;
+                            var _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0: return [4 /*yield*/, axios_1.default.get(url)];
+                                    case 1:
+                                        data = (_b.sent()).data;
+                                        return [2 /*return*/, ((_a = data[1]) === null || _a === void 0 ? void 0 : _a.data.children.map(function (c) { return (__assign({}, c.data)); })) || []];
+                                }
+                            });
+                        }); })];
+                case 2:
+                    topPosts = _a.sent();
                     newArchiveItemData = {
                         type: "subreddit",
                         subreddit: subreddit,
@@ -65,14 +90,14 @@ function archiveSubreddit(subreddit) {
                         data: newArchiveItemData,
                     };
                     return [4 /*yield*/, new mongoose_1.Item(newArchiveItem).save()];
-                case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
                 case 3:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 4:
                     e_1 = _a.sent();
                     (0, logger_1.default)("error", e_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
             }
         });
     });

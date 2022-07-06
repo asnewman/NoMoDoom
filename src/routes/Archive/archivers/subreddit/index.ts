@@ -15,8 +15,12 @@ export default async function archiveSubreddit(subreddit: string) {
       `https://www.reddit.com/r/${subreddit}/top.json`
     );
 
-    const topPosts: SubredditPost[] = getTopThreePosts(
-      redditPostsData.data.data.children
+    const topPosts: SubredditPost[] = await getTopThreePosts(
+      redditPostsData.data.data.children,
+      async (url: string) => {
+        const { data } = (await axios.get(url)) as any;
+        return data[1]?.data.children.map((c: any) => ({ ...c.data })) || [];
+      }
     );
     const newArchiveItemData: MongoArchiveSubredditData = {
       type: "subreddit",

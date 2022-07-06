@@ -5,6 +5,7 @@ import archiveSubreddit from "./archivers/subreddit";
 import { archiveSubscriptions } from "./pure";
 
 async function archiveController(_req: any, res: any) {
+  await log("info", `Starting archiving`)
   try {
     const subscriptions: MongoSubscription[] = await Item.find({
       type: MONGO_TYPES.SUBSCRIPTION,

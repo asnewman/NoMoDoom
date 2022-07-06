@@ -38,6 +38,7 @@ interface MongoUser extends MongoBase {
     email: string;
     frequency: 1;
     lastSent: number;
+    isPremium: boolean;
   };
 }
 
@@ -67,6 +68,12 @@ interface SubredditPost {
   title: string;
   score: number;
   url: string;
+  topThreeComments: {
+    user: string;
+    score: number;
+    content: string;
+    link: string;
+  }[];
 }
 
 const ItemSchema = new Schema({

@@ -68,6 +68,7 @@ function createLoginLinkController(req, res) {
                             tokenExpiration: 0,
                             frequency: 1,
                             lastSent: 0,
+                            isPremium: false,
                         },
                     };
                     user = new mongoose_1.Item(mongoUser);
@@ -81,8 +82,8 @@ function createLoginLinkController(req, res) {
                         type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                         data: {
                             service: "nomodoom",
-                            email: email
-                        }
+                            email: email,
+                        },
                     };
                     return [4 /*yield*/, mongoose_1.Item.create(nomodoomSubscription)];
                 case 4:

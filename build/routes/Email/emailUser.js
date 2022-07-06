@@ -96,9 +96,6 @@ function emailUser(email) {
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.ARCHIVE,
                             "data.type": "hackernews",
-                            "data.datetime": {
-                                $gt: user.data.lastSent,
-                            },
                         })
                             .sort({ "data.datetime": -1 })
                             .limit(1)];
@@ -106,7 +103,7 @@ function emailUser(email) {
                     hackernewsData = (_a.sent())[0];
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     if (subredditData.length > 0) {
-                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData);
+                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData, false);
                     }
                     isSubscribedToHackernews = subscriptions.find(function (subscription) { return subscription.data.service === "hackernews"; });
                     if (isSubscribedToHackernews) {

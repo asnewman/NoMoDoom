@@ -38,14 +38,23 @@ function generateHackernewsHtml(archive) {
     return hackernewsText;
 }
 exports.generateHackernewsHtml = generateHackernewsHtml;
-function generateRedditHtml(archives) {
+function generateRedditHtml(archives, isUserPremium) {
     var redditText = "<h2>Reddit</h2>";
     archives.forEach(function (archive) {
         var subredditData = archive.data;
         redditText += "<b>/r/".concat(subredditData.subreddit, ":</b><br/><hr/>");
         subredditData.topPosts.forEach(function (post) {
             redditText += "<a href=".concat(post.url, ">").concat(post.title, "</a><br/>");
-            redditText += "Score: ".concat(post.score, "<br/><br/>");
+            redditText += "Score: ".concat(post.score, "<br/>");
+            if (isUserPremium) {
+                redditText += "<b>What users are saying:</b><br/>";
+                redditText += "<ul>";
+                post.topThreeComments.forEach(function (comment) {
+                    redditText += "<li><i>".concat(comment.content, "</i><span> <b>- ").concat(comment.user, "</b></li>");
+                });
+                redditText += "</ul>";
+            }
+            redditText += "<br/>";
         });
         redditText += "</br>";
     });

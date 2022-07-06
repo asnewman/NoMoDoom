@@ -49,29 +49,33 @@ function archiveController(_req, res) {
         var subscriptions, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 4, , 6]);
+                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "Starting archiving")];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 6, , 8]);
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                         })];
-                case 1:
+                case 3:
                     subscriptions = _a.sent();
                     return [4 /*yield*/, (0, pure_1.archiveSubscriptions)(subscriptions, subreddit_1.default, hackernews_1.default)];
-                case 2:
+                case 4:
                     _a.sent();
                     return [4 /*yield*/, (0, logger_1.default)("info", "Archiving completed")];
-                case 3:
-                    _a.sent();
-                    res.send("Success");
-                    return [3 /*break*/, 6];
-                case 4:
-                    e_1 = _a.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
                 case 5:
                     _a.sent();
+                    res.send("Success");
+                    return [3 /*break*/, 8];
+                case 6:
+                    e_1 = _a.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 7:
+                    _a.sent();
                     res.status(400).send("Error archiving: ".concat(e_1));
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });

@@ -19,7 +19,7 @@ function generateHackernewsHtml(archive: MongoArchive) {
   return hackernewsText;
 }
 
-function generateRedditHtml(archives: MongoArchive[]) {
+function generateRedditHtml(archives: MongoArchive[], isUserPremium: boolean) {
   let redditText = "<h2>Reddit</h2>";
   archives.forEach((archive) => {
     const subredditData: MongoArchiveSubredditData =
@@ -27,7 +27,16 @@ function generateRedditHtml(archives: MongoArchive[]) {
     redditText += `<b>/r/${subredditData.subreddit}:</b><br/><hr/>`;
     subredditData.topPosts.forEach((post) => {
       redditText += `<a href=${post.url}>${post.title}</a><br/>`;
-      redditText += `Score: ${post.score}<br/><br/>`;
+      redditText += `Score: ${post.score}<br/>`;
+      if (isUserPremium) {
+        redditText += `<b>What users are saying:</b><br/>`
+        redditText += `<ul>`
+        post.topThreeComments.forEach(comment => {
+          redditText += `<li><i>${comment.content}</i><span> <b>- ${comment.user}</b></li>`
+        });
+        redditText += `</ul>`
+      }
+      redditText += `<br/>`
     });
     redditText += "</br>";
   });

@@ -47,30 +47,34 @@ function emailController(_req, res) {
         var users, promises_1, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 5]);
+                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "Starting emailing")];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 5, , 7]);
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.USER,
                         })];
-                case 1:
+                case 3:
                     users = _a.sent();
                     promises_1 = [];
                     users.forEach(function (user) {
                         promises_1.push((0, emailUser_1.default)(user.data.email));
                     });
                     return [4 /*yield*/, Promise.all(promises_1)];
-                case 2:
-                    _a.sent();
-                    res.send("Success");
-                    return [3 /*break*/, 5];
-                case 3:
-                    e_1 = _a.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
                 case 4:
                     _a.sent();
+                    res.send("Success");
+                    return [3 /*break*/, 7];
+                case 5:
+                    e_1 = _a.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 6:
+                    _a.sent();
                     res.status(400).send("Error archiving: ".concat(e_1));
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
