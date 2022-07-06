@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express from "express";
-import mongoose from "mongoose";
 import { exit } from "process";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -18,12 +17,12 @@ import emailController from "./routes/Email";
 import log from "./helpers/logger";
 import path from "path";
 import nomodoomController from "./routes/Nomodoom";
+import { dbInit } from "./mongoose";
 
 if (!process.env.MONGO_URI) {
   console.error("error", "MONGO_URI not set");
   exit(1);
 }
-mongoose.connect(process.env.MONGO_URI);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -56,6 +55,8 @@ app.post("/api/item-crud", authCheck, itemCrudController);
 app.post("/api/schedule-archives", schedulerAuthCheck, archiveController);
 app.post("/api/schedule-emails", schedulerAuthCheck, emailController);
 
-app.listen(port, async () => {
-  await log("info", "I am awake");
-});
+dbInit().then(() => {
+  app.listen(port, async () => {
+    await log("info", "I am awake");
+  });
+})

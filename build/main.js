@@ -41,7 +41,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 var express_1 = __importDefault(require("express"));
-var mongoose_1 = __importDefault(require("mongoose"));
 var process_1 = require("process");
 var body_parser_1 = __importDefault(require("body-parser"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -58,11 +57,11 @@ var Email_1 = __importDefault(require("./routes/Email"));
 var logger_1 = __importDefault(require("./helpers/logger"));
 var path_1 = __importDefault(require("path"));
 var Nomodoom_1 = __importDefault(require("./routes/Nomodoom"));
+var mongoose_1 = require("./mongoose");
 if (!process.env.MONGO_URI) {
     console.error("error", "MONGO_URI not set");
     (0, process_1.exit)(1);
 }
-mongoose_1.default.connect(process.env.MONGO_URI);
 var app = (0, express_1.default)();
 var port = process.env.PORT || 3000;
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
@@ -83,14 +82,16 @@ app.get("/login", Login_1.default);
 app.post("/api/item-crud", authCheck_1.default, ItemCrud_1.default);
 app.post("/api/schedule-archives", schedulerAuthCheck_1.default, Archive_1.default);
 app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.default);
-app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, logger_1.default)("info", "I am awake")];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); });
+(0, mongoose_1.dbInit)().then(function () {
+    app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "I am awake")];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
 //# sourceMappingURL=main.js.map
