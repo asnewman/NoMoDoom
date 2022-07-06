@@ -52,7 +52,7 @@ function emailController(_req, res) {
                     _a.sent();
                     _a.label = 2;
                 case 2:
-                    _a.trys.push([2, 5, , 7]);
+                    _a.trys.push([2, 6, , 8]);
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.USER,
                         })];
@@ -65,16 +65,19 @@ function emailController(_req, res) {
                     return [4 /*yield*/, Promise.all(promises_1)];
                 case 4:
                     _a.sent();
-                    res.send("Success");
-                    return [3 /*break*/, 7];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "Finished emailing")];
                 case 5:
+                    _a.sent();
+                    res.send("Success");
+                    return [3 /*break*/, 8];
+                case 6:
                     e_1 = _a.sent();
                     return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 6:
+                case 7:
                     _a.sent();
                     res.status(400).send("Error archiving: ".concat(e_1));
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });

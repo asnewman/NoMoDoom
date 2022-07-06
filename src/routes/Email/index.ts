@@ -15,6 +15,7 @@ async function emailController(_req: any, res: any) {
     });
 
     await Promise.all(promises);
+    await log("info", `Finished emailing`)
 
     res.send("Success");
   } catch (e) {
