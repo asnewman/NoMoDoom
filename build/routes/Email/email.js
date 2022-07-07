@@ -64,6 +64,7 @@ var transporter = nodemailer_1.default.createTransport({
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASS,
     },
+    pool: true,
 });
 function saveEmailObjects(email) {
     return __awaiter(this, void 0, void 0, function () {
