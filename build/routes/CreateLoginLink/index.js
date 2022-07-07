@@ -142,7 +142,7 @@ function sendMail(email, token) {
                         },
                     });
                     return [4 /*yield*/, transporter.sendMail({
-                            from: '"nomodoom" <ash@kozukaihabit.com>',
+                            from: '"nomodoom" <robot@nomodoom.com>',
                             to: email,
                             subject: "Login link",
                             text: "Use this link to login in: ".concat(process.env.BASE_URL, "/login?token=").concat(token, ". Don't share this link with anyone."),

@@ -82,7 +82,7 @@ async function sendMail(email: string, token: string) {
   });
 
   await transporter.sendMail({
-    from: '"nomodoom" <ash@kozukaihabit.com>', // sender address
+    from: '"nomodoom" <robot@nomodoom.com>', // sender address
     to: email,
     subject: "Login link", // Subject line
     text: `Use this link to login in: ${process.env.BASE_URL}/login?token=${token}. Don't share this link with anyone.`,
