@@ -71,6 +71,7 @@ function emailUser(email) {
                 case 3: return [4 /*yield*/, mongoose_1.Item.find({
                         type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                         "data.email": email,
+                        "data.service": { $ne: "nomodoom" }
                     })];
                 case 4:
                     subscriptions = _a.sent();

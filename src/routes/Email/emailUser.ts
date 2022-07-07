@@ -36,6 +36,7 @@ async function emailUser(email: string) {
   const subscriptions: MongoSubscription[] = await Item.find({
     type: MONGO_TYPES.SUBSCRIPTION,
     "data.email": email,
+    "data.service": { $ne: "nomodoom" }
   });
 
   if (subscriptions.length === 0) {
