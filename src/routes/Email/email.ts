@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function emailUser(email: string) {
+async function saveEmailObjects(email: string) {
   const user = await Item.findOne({
     "data.email": email,
   });
@@ -36,7 +36,7 @@ async function emailUser(email: string) {
   const subscriptions: MongoSubscription[] = await Item.find({
     type: MONGO_TYPES.SUBSCRIPTION,
     "data.email": email,
-    "data.service": { $ne: "nomodoom" }
+    "data.service": { $ne: "nomodoom" },
   });
 
   if (subscriptions.length === 0) {
@@ -83,23 +83,13 @@ async function emailUser(email: string) {
 
   emailText += `<p>Adjust your email settings at <a href="https://nomodoom.com">nomodoom.com</a></p>`;
 
-  await transporter.sendMail({
-    from: '"nomodoom" <robot@nomodoom.com>', // sender address
-    to: email,
-    subject: `nomodoom digest ${moment()
-      .tz("America/Los_Angeles")
-      .format("MMMM Do YYYY")}`, // Subject line
-    html: emailText,
-  });
-
-  await log("info", `Email sent to ${email}`);
-
   const mongoEmail: MongoEmail = {
     type: "EMAIL",
     data: {
       email,
       content: emailText,
       datetime: Date.now(),
+      sent: false,
     },
   };
 
@@ -110,4 +100,30 @@ async function emailUser(email: string) {
   await user.save();
 }
 
-export default emailUser;
+async function emailUsers() {
+  const emailsToBeSent: MongoEmail[] = await Item.find({
+    type: "EMAIL",
+    "data.sent": false,
+  });
+
+  for (const emailToBeSent of emailsToBeSent) {
+    await transporter.sendMail({
+      from: '"nomodoom" <robot@nomodoom.com>', // sender address
+      to: emailToBeSent.data.email,
+      subject: `nomodoom digest ${moment()
+        .tz("America/Los_Angeles")
+        .format("MMMM Do YYYY")}`, // Subject line
+      html: emailToBeSent.data.content,
+    });
+
+    await log("info", `Email sent to ${emailToBeSent.data.email}`);
+
+    await Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true });
+
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(null), 100);
+    });
+  }
+}
+
+export { saveEmailObjects, emailUsers };

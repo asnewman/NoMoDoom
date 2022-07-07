@@ -39,9 +39,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.emailController = exports.emailAfterFailureController = void 0;
 var logger_1 = __importDefault(require("../../helpers/logger"));
 var mongoose_1 = require("../../mongoose");
-var emailUser_1 = __importDefault(require("./emailUser"));
+var email_1 = require("./email");
 function emailController(_req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var users, promises_1, e_1;
@@ -52,7 +53,7 @@ function emailController(_req, res) {
                     _a.sent();
                     _a.label = 2;
                 case 2:
-                    _a.trys.push([2, 6, , 8]);
+                    _a.trys.push([2, 7, , 9]);
                     return [4 /*yield*/, mongoose_1.Item.find({
                             type: mongoose_1.MONGO_TYPES.USER,
                         })];
@@ -60,27 +61,63 @@ function emailController(_req, res) {
                     users = _a.sent();
                     promises_1 = [];
                     users.forEach(function (user) {
-                        promises_1.push((0, emailUser_1.default)(user.data.email));
+                        promises_1.push((0, email_1.saveEmailObjects)(user.data.email));
                     });
                     return [4 /*yield*/, Promise.all(promises_1)];
                 case 4:
                     _a.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("info", "Finished emailing")];
+                    return [4 /*yield*/, (0, email_1.emailUsers)()];
                 case 5:
                     _a.sent();
-                    res.send("Success");
-                    return [3 /*break*/, 8];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "Finished emailing")];
                 case 6:
+                    _a.sent();
+                    res.send("Success");
+                    return [3 /*break*/, 9];
+                case 7:
                     e_1 = _a.sent();
                     return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 7:
+                case 8:
                     _a.sent();
                     res.status(400).send("Error archiving: ".concat(e_1));
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     });
 }
+exports.emailController = emailController;
+function emailAfterFailureController(_req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var e_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "Starting emailing")];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 5, , 7]);
+                    return [4 /*yield*/, (0, email_1.emailUsers)()];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("info", "Finished emailing")];
+                case 4:
+                    _a.sent();
+                    res.send("Success");
+                    return [3 /*break*/, 7];
+                case 5:
+                    e_2 = _a.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_2)];
+                case 6:
+                    _a.sent();
+                    res.status(400).send("Error archiving: ".concat(e_2));
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.emailAfterFailureController = emailAfterFailureController;
 exports.default = emailController;
 //# sourceMappingURL=index.js.map

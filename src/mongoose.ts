@@ -17,6 +17,7 @@ const MONGO_TYPES = {
 
 interface MongoBase {
   type: keyof typeof MONGO_TYPES;
+  _id?: Schema.Types.ObjectId;
 }
 
 interface MongoEmail extends MongoBase {
@@ -25,6 +26,7 @@ interface MongoEmail extends MongoBase {
     email: string;
     content: string;
     datetime: number;
+    sent: boolean;
   };
 }
 

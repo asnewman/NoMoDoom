@@ -13,7 +13,7 @@ import redditController from "./routes/Reddit";
 import itemCrudController from "./routes/ItemCrud";
 import hackernewsController from "./routes/Hackernews";
 import archiveController from "./routes/Archive";
-import emailController from "./routes/Email";
+import { emailController, emailAfterFailureController } from "./routes/Email";
 import log from "./helpers/logger";
 import path from "path";
 import nomodoomController from "./routes/Nomodoom";
@@ -54,6 +54,11 @@ app.post("/api/item-crud", authCheck, itemCrudController);
 
 app.post("/api/schedule-archives", schedulerAuthCheck, archiveController);
 app.post("/api/schedule-emails", schedulerAuthCheck, emailController);
+app.post(
+  "/api/schedule-emailsAfterFailure",
+  schedulerAuthCheck,
+  emailAfterFailureController
+);
 
 dbInit().then(() => {
   app.listen(port, async () => {

@@ -53,7 +53,7 @@ var Reddit_1 = __importDefault(require("./routes/Reddit"));
 var ItemCrud_1 = __importDefault(require("./routes/ItemCrud"));
 var Hackernews_1 = __importDefault(require("./routes/Hackernews"));
 var Archive_1 = __importDefault(require("./routes/Archive"));
-var Email_1 = __importDefault(require("./routes/Email"));
+var Email_1 = require("./routes/Email");
 var logger_1 = __importDefault(require("./helpers/logger"));
 var path_1 = __importDefault(require("path"));
 var Nomodoom_1 = __importDefault(require("./routes/Nomodoom"));
@@ -81,7 +81,8 @@ app.post("/create-link", CreateLoginLink_1.default);
 app.get("/login", Login_1.default);
 app.post("/api/item-crud", authCheck_1.default, ItemCrud_1.default);
 app.post("/api/schedule-archives", schedulerAuthCheck_1.default, Archive_1.default);
-app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.default);
+app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.emailController);
+app.post("/api/schedule-emailsAfterFailure", schedulerAuthCheck_1.default, Email_1.emailAfterFailureController);
 (0, mongoose_1.dbInit)().then(function () {
     app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {

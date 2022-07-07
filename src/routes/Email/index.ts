@@ -1,6 +1,6 @@
 import log from "../../helpers/logger";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
-import emailUser from "./emailUser";
+import { saveEmailObjects, emailUsers } from "./email";
 
 async function emailController(_req: any, res: any) {
   await log("info", `Starting emailing`);
@@ -11,10 +11,27 @@ async function emailController(_req: any, res: any) {
 
     const promises: Promise<any>[] = [];
     users.forEach((user) => {
-      promises.push(emailUser(user.data.email));
+      promises.push(saveEmailObjects(user.data.email));
     });
 
     await Promise.all(promises);
+
+    await emailUsers();
+
+    await log("info", `Finished emailing`);
+
+    res.send("Success");
+  } catch (e) {
+    await log("error", e);
+    res.status(400).send(`Error archiving: ${e}`);
+  }
+}
+
+async function emailAfterFailureController(_req: any, res: any) {
+  await log("info", `Starting emailing`);
+  try {
+    await emailUsers();
+
     await log("info", `Finished emailing`);
 
     res.send("Success");
@@ -25,3 +42,5 @@ async function emailController(_req: any, res: any) {
 }
 
 export default emailController;
+
+export { emailAfterFailureController, emailController };
