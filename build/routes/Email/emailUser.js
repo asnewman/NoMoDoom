@@ -44,9 +44,18 @@ var mongoose_1 = require("../../mongoose");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var emailHtmlGenerators_1 = require("./pure/emailHtmlGenerators");
 var logger_1 = __importDefault(require("../../helpers/logger"));
+var transporter = nodemailer_1.default.createTransport({
+    host: "mail.privateemail.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS,
+    },
+});
 function emailUser(email) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, subscriptions, transporter, subreddits, subredditData, hackernewsData, emailText, isSubscribedToHackernews, mongoEmail;
+        var user, subscriptions, subreddits, subredditData, hackernewsData, emailText, isSubscribedToHackernews, mongoEmail;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, mongoose_1.Item.findOne({
@@ -68,15 +77,6 @@ function emailUser(email) {
                     if (subscriptions.length === 0) {
                         return [2 /*return*/];
                     }
-                    transporter = nodemailer_1.default.createTransport({
-                        host: "mail.privateemail.com",
-                        port: 587,
-                        secure: false,
-                        auth: {
-                            user: process.env.EMAIL,
-                            pass: process.env.EMAIL_PASS,
-                        },
-                    });
                     subreddits = subscriptions
                         .filter(function (subscription) { return subscription.data.service === "reddit"; })
                         .map(function (subscription) { return subscription.data.subservice; })

@@ -13,6 +13,16 @@ import {
 } from "./pure/emailHtmlGenerators";
 import log from "../../helpers/logger";
 
+const transporter = nodemailer.createTransport({
+  host: "mail.privateemail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
 async function emailUser(email: string) {
   const user = await Item.findOne({
     "data.email": email,
@@ -31,16 +41,6 @@ async function emailUser(email: string) {
   if (subscriptions.length === 0) {
     return;
   }
-
-  const transporter = nodemailer.createTransport({
-    host: "mail.privateemail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   const subreddits: string[] = subscriptions
     .filter((subscription) => subscription.data.service === "reddit")

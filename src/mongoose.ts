@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
 export async function dbInit() {
-  const mongoDB = process.env.MONGO_URI || 'undefined process.env.MONGODB_URI';
+  const mongoDB = process.env.MONGO_URI || "undefined process.env.MONGODB_URI";
   await mongoose.connect(mongoDB);
 
   const db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  db.on("error", console.error.bind(console, "MongoDB connection error:"));
 }
 
 const MONGO_TYPES = {

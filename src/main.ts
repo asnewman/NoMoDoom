@@ -59,4 +59,4 @@ dbInit().then(() => {
   app.listen(port, async () => {
     await log("info", "I am awake");
   });
-})
+});

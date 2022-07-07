@@ -67,12 +67,12 @@ function dbInit() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    mongoDB = process.env.MONGO_URI || 'undefined process.env.MONGODB_URI';
+                    mongoDB = process.env.MONGO_URI || "undefined process.env.MONGODB_URI";
                     return [4 /*yield*/, mongoose_1.default.connect(mongoDB)];
                 case 1:
                     _a.sent();
                     db = mongoose_1.default.connection;
-                    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+                    db.on("error", console.error.bind(console, "MongoDB connection error:"));
                     return [2 /*return*/];
             }
         });

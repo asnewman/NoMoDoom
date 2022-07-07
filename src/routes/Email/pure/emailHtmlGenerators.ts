@@ -29,14 +29,14 @@ function generateRedditHtml(archives: MongoArchive[], isUserPremium: boolean) {
       redditText += `<a href=${post.url}>${post.title}</a><br/>`;
       redditText += `Score: ${post.score}<br/>`;
       if (isUserPremium) {
-        redditText += `<b>What users are saying:</b><br/>`
-        redditText += `<ul>`
-        post.topThreeComments.forEach(comment => {
-          redditText += `<li><i>${comment.content}</i><span> <b>- ${comment.user}</b></li>`
+        redditText += `<b>What users are saying:</b><br/>`;
+        redditText += `<ul>`;
+        post.topThreeComments.forEach((comment) => {
+          redditText += `<li><i>${comment.content}</i><span> <b>- ${comment.user}</b></li>`;
         });
-        redditText += `</ul>`
+        redditText += `</ul>`;
       }
-      redditText += `<br/>`
+      redditText += `<br/>`;
     });
     redditText += "</br>";
   });
