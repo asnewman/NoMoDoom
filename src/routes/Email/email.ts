@@ -122,7 +122,7 @@ async function emailUsers() {
     await Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true });
 
     await new Promise((resolve) => {
-      setTimeout(() => resolve(null), 100);
+      setTimeout(() => resolve(null), 25);
     });
   }
 }

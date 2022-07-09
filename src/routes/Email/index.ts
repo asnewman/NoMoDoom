@@ -2,7 +2,7 @@ import log from "../../helpers/logger";
 import { Item, MongoUser, MONGO_TYPES } from "../../mongoose";
 import { saveEmailObjects, emailUsers } from "./email";
 
-async function emailController(_req: any, res: any) {
+async function prepareEmailController(_req: any, res: any) {
   await log("info", `Starting emailing`);
   try {
     const users: MongoUser[] = await Item.find({
@@ -16,9 +16,7 @@ async function emailController(_req: any, res: any) {
 
     await Promise.all(promises);
 
-    await emailUsers();
-
-    await log("info", `Finished emailing`);
+    await log("info", `Finished creating and email objects`);
 
     res.send("Success");
   } catch (e) {
@@ -27,7 +25,7 @@ async function emailController(_req: any, res: any) {
   }
 }
 
-async function emailAfterFailureController(_req: any, res: any) {
+async function sendEmailController(_req: any, res: any) {
   await log("info", `Starting emailing`);
   try {
     await emailUsers();
@@ -41,6 +39,6 @@ async function emailAfterFailureController(_req: any, res: any) {
   }
 }
 
-export default emailController;
+export default prepareEmailController;
 
-export { emailAfterFailureController, emailController };
+export { sendEmailController, prepareEmailController };

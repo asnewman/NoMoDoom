@@ -80,9 +80,9 @@ app.get("/create-link", function (_req, res) {
 app.post("/create-link", CreateLoginLink_1.default);
 app.get("/login", Login_1.default);
 app.post("/api/item-crud", authCheck_1.default, ItemCrud_1.default);
-app.post("/api/schedule-archives", schedulerAuthCheck_1.default, Archive_1.default);
-app.post("/api/schedule-emails", schedulerAuthCheck_1.default, Email_1.emailController);
-app.post("/api/schedule-emailsAfterFailure", schedulerAuthCheck_1.default, Email_1.emailAfterFailureController);
+app.post("/api/create-archives", schedulerAuthCheck_1.default, Archive_1.default);
+app.post("/api/prepare-emails", schedulerAuthCheck_1.default, Email_1.prepareEmailController);
+app.post("/api/send-emails", schedulerAuthCheck_1.default, Email_1.sendEmailController);
 (0, mongoose_1.dbInit)().then(function () {
     app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {

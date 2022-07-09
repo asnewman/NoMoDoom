@@ -184,7 +184,7 @@ function emailUsers() {
                 case 6:
                     _b.sent();
                     return [4 /*yield*/, new Promise(function (resolve) {
-                            setTimeout(function () { return resolve(null); }, 100);
+                            setTimeout(function () { return resolve(null); }, 25);
                         })];
                 case 7:
                     _b.sent();
