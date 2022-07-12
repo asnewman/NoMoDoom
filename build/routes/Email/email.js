@@ -149,7 +149,7 @@ function saveEmailObjects(email) {
 exports.saveEmailObjects = saveEmailObjects;
 function emailUsers() {
     return __awaiter(this, void 0, void 0, function () {
-        var emailsToBeSent, emailsToBeSent_1, emailsToBeSent_1_1, emailToBeSent, e_1_1;
+        var emailsToBeSent, promises, emailsToBeSent_1, emailsToBeSent_1_1, emailToBeSent;
         var e_1, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
@@ -159,51 +159,33 @@ function emailUsers() {
                     })];
                 case 1:
                     emailsToBeSent = _b.sent();
-                    _b.label = 2;
-                case 2:
-                    _b.trys.push([2, 10, 11, 12]);
-                    emailsToBeSent_1 = __values(emailsToBeSent), emailsToBeSent_1_1 = emailsToBeSent_1.next();
-                    _b.label = 3;
-                case 3:
-                    if (!!emailsToBeSent_1_1.done) return [3 /*break*/, 9];
-                    emailToBeSent = emailsToBeSent_1_1.value;
-                    return [4 /*yield*/, transporter.sendMail({
-                            from: '"nomodoom" <robot@nomodoom.com>',
-                            to: emailToBeSent.data.email,
-                            subject: "nomodoom digest ".concat((0, moment_timezone_1.default)()
-                                .tz("America/Los_Angeles")
-                                .format("MMMM Do YYYY")),
-                            html: emailToBeSent.data.content,
-                        })];
-                case 4:
-                    _b.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("info", "Email sent to ".concat(emailToBeSent.data.email))];
-                case 5:
-                    _b.sent();
-                    return [4 /*yield*/, mongoose_1.Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true })];
-                case 6:
-                    _b.sent();
-                    return [4 /*yield*/, new Promise(function (resolve) {
-                            setTimeout(function () { return resolve(null); }, 25);
-                        })];
-                case 7:
-                    _b.sent();
-                    _b.label = 8;
-                case 8:
-                    emailsToBeSent_1_1 = emailsToBeSent_1.next();
-                    return [3 /*break*/, 3];
-                case 9: return [3 /*break*/, 12];
-                case 10:
-                    e_1_1 = _b.sent();
-                    e_1 = { error: e_1_1 };
-                    return [3 /*break*/, 12];
-                case 11:
+                    promises = [];
                     try {
-                        if (emailsToBeSent_1_1 && !emailsToBeSent_1_1.done && (_a = emailsToBeSent_1.return)) _a.call(emailsToBeSent_1);
+                        for (emailsToBeSent_1 = __values(emailsToBeSent), emailsToBeSent_1_1 = emailsToBeSent_1.next(); !emailsToBeSent_1_1.done; emailsToBeSent_1_1 = emailsToBeSent_1.next()) {
+                            emailToBeSent = emailsToBeSent_1_1.value;
+                            promises.push(transporter.sendMail({
+                                from: '"nomodoom" <robot@nomodoom.com>',
+                                to: emailToBeSent.data.email,
+                                subject: "nomodoom digest ".concat((0, moment_timezone_1.default)()
+                                    .tz("America/Los_Angeles")
+                                    .format("MMMM Do YYYY")),
+                                html: emailToBeSent.data.content,
+                            }));
+                            promises.push((0, logger_1.default)("info", "Email sent to ".concat(emailToBeSent.data.email)));
+                            promises.push(mongoose_1.Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true }));
+                        }
                     }
-                    finally { if (e_1) throw e_1.error; }
-                    return [7 /*endfinally*/];
-                case 12: return [2 /*return*/];
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (emailsToBeSent_1_1 && !emailsToBeSent_1_1.done && (_a = emailsToBeSent_1.return)) _a.call(emailsToBeSent_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                    return [4 /*yield*/, Promise.all(promises)];
+                case 2:
+                    _b.sent();
+                    return [2 /*return*/];
             }
         });
     });

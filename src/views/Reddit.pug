@@ -53,7 +53,7 @@ block content
           subdiv.appendChild(newSubredditContainer)
           document.querySelector("#newSubredditInput").value = ""
         })
-      }).catch(() => alert("Invalid subreddit"))
+      }).catch(() => alert("Invalid subreddit. If it is valid, please try to turn off your adblocker (it may be blocking the request to Reddit)."))
       .finally(() => {addButton.disabled = false});
 
     }

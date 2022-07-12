@@ -107,24 +107,24 @@ async function emailUsers() {
     "data.sent": false,
   });
 
+  const promises = [];
+
   for (const emailToBeSent of emailsToBeSent) {
-    await transporter.sendMail({
+    promises.push(transporter.sendMail({
       from: '"nomodoom" <robot@nomodoom.com>', // sender address
       to: emailToBeSent.data.email,
       subject: `nomodoom digest ${moment()
         .tz("America/Los_Angeles")
         .format("MMMM Do YYYY")}`, // Subject line
       html: emailToBeSent.data.content,
-    });
+    }));
 
-    await log("info", `Email sent to ${emailToBeSent.data.email}`);
+    promises.push(log("info", `Email sent to ${emailToBeSent.data.email}`));
 
-    await Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true });
-
-    await new Promise((resolve) => {
-      setTimeout(() => resolve(null), 25);
-    });
+    promises.push(Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true }));
   }
+
+  await Promise.all(promises);
 }
 
 export { saveEmailObjects, emailUsers };
