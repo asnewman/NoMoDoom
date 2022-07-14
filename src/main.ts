@@ -18,7 +18,7 @@ import log from "./helpers/logger";
 import path from "path";
 import nomodoomController from "./routes/Nomodoom";
 import { dbInit } from "./mongoose";
-import { stripeWebhook } from "./routes/Stripe";
+import { stripeWebhook } from "./routes/Stripe/stripe";
 
 if (!process.env.MONGO_URI) {
   console.error("error", "MONGO_URI not set");
@@ -28,7 +28,11 @@ if (!process.env.MONGO_URI) {
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.post('/stripe-webhook', express.raw({type: 'application/json'}), stripeWebhook);
+app.post(
+  "/stripe-webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,12 +61,7 @@ app.post("/api/item-crud", authCheck, itemCrudController);
 
 app.post("/api/create-archives", schedulerAuthCheck, archiveController);
 app.post("/api/prepare-emails", schedulerAuthCheck, prepareEmailController);
-app.post(
-  "/api/send-emails",
-  schedulerAuthCheck,
-  sendEmailController
-);
-
+app.post("/api/send-emails", schedulerAuthCheck, sendEmailController);
 
 dbInit().then(() => {
   app.listen(port, async () => {
