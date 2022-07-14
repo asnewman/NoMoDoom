@@ -3,7 +3,7 @@ import log from "../../helpers/logger";
 import { sendPushover } from "../../helpers/pushover";
 import { Item } from "../../mongoose";
 
-const stripe = new Stripe("", {
+const stripe = new Stripe(process.env.STRIPE_API_KEY || "", {
   apiVersion: "2020-08-27",
 });
 
