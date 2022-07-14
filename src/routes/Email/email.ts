@@ -110,18 +110,22 @@ async function emailUsers() {
   const promises = [];
 
   for (const emailToBeSent of emailsToBeSent) {
-    promises.push(transporter.sendMail({
-      from: '"nomodoom" <robot@nomodoom.com>', // sender address
-      to: emailToBeSent.data.email,
-      subject: `nomodoom digest ${moment()
-        .tz("America/Los_Angeles")
-        .format("MMMM Do YYYY")}`, // Subject line
-      html: emailToBeSent.data.content,
-    }));
+    promises.push(
+      transporter.sendMail({
+        from: '"nomodoom" <robot@nomodoom.com>', // sender address
+        to: emailToBeSent.data.email,
+        subject: `nomodoom digest ${moment()
+          .tz("America/Los_Angeles")
+          .format("MMMM Do YYYY")}`, // Subject line
+        html: emailToBeSent.data.content,
+      })
+    );
 
     promises.push(log("info", `Email sent to ${emailToBeSent.data.email}`));
 
-    promises.push(Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true }));
+    promises.push(
+      Item.updateOne({ _id: emailToBeSent._id }, { "data.sent": true })
+    );
   }
 
   await Promise.all(promises);
