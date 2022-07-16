@@ -35,84 +35,68 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __values = (this && this.__values) || function(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = __importDefault(require("axios"));
-var mongoose_1 = require("../../../../mongoose");
-var pure_1 = require("./pure");
-function archiveHackernews() {
+exports.stripeWebhook = void 0;
+var stripe_1 = __importDefault(require("stripe"));
+var logger_1 = __importDefault(require("../../helpers/logger"));
+var pushover_1 = require("../../helpers/pushover");
+var mongoose_1 = require("../../mongoose");
+var stripe = new stripe_1.default(process.env.STRIPE_API_KEY || "", {
+    apiVersion: "2020-08-27",
+});
+var endpointSecret = process.env.STRIPE_ENDPOINT_SECRET || "";
+function stripeWebhook(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var htmls, i, _a, _b, posts, archiveData, posts_1, posts_1_1, post, archive;
-        var e_1, _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var sig, event, err_1, _a, sessionData, userEmail;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    htmls = [];
-                    i = 1;
-                    _d.label = 1;
+                    sig = request.headers["stripe-signature"];
+                    if (!!sig) return [3 /*break*/, 2];
+                    return [4 /*yield*/, (0, logger_1.default)("error", "Bad sig")];
                 case 1:
-                    if (!(i <= 6)) return [3 /*break*/, 5];
-                    _b = (_a = htmls).push;
-                    return [4 /*yield*/, axios_1.default.get("https://news.ycombinator.com/best?p=".concat(i))];
+                    _b.sent();
+                    response.status(400).send("Bad sig");
+                    return [2 /*return*/];
                 case 2:
-                    _b.apply(_a, [(_d.sent()).data]);
-                    return [4 /*yield*/, new Promise(function (resolve) {
-                            setTimeout(function () { return resolve(null); }, 1000);
-                        })];
+                    _b.trys.push([2, 3, , 5]);
+                    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+                    return [3 /*break*/, 5];
                 case 3:
-                    _d.sent();
-                    _d.label = 4;
+                    err_1 = _b.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("error", "Webhook Error: ".concat(err_1.message))];
                 case 4:
-                    i++;
-                    return [3 /*break*/, 1];
+                    _b.sent();
+                    response.status(400).send("Webhook Error: ".concat(err_1.message));
+                    return [2 /*return*/];
                 case 5:
-                    posts = (0, pure_1.getTopPostsForDay)(htmls, Date.now());
-                    archiveData = {
-                        type: "hackernews",
-                        datetime: Date.now(),
-                        data: [],
-                    };
-                    try {
-                        for (posts_1 = __values(posts), posts_1_1 = posts_1.next(); !posts_1_1.done; posts_1_1 = posts_1.next()) {
-                            post = posts_1_1.value;
-                            archiveData.data.push({
-                                title: post.title,
-                                score: post.score,
-                                link: post.link,
-                            });
-                        }
+                    _a = event.type;
+                    switch (_a) {
+                        case "checkout.session.completed": return [3 /*break*/, 6];
                     }
-                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                    finally {
-                        try {
-                            if (posts_1_1 && !posts_1_1.done && (_c = posts_1.return)) _c.call(posts_1);
-                        }
-                        finally { if (e_1) throw e_1.error; }
-                    }
-                    archive = {
-                        type: mongoose_1.MONGO_TYPES.ARCHIVE,
-                        data: archiveData,
-                    };
-                    return [4 /*yield*/, mongoose_1.Item.create(archive)];
+                    return [3 /*break*/, 9];
                 case 6:
-                    _d.sent();
+                    sessionData = event.data;
+                    userEmail = sessionData.customer_email || sessionData.customer_details;
+                    return [4 /*yield*/, (0, pushover_1.sendPushover)("Received payment from " + userEmail)];
+                case 7:
+                    _b.sent();
+                    return [4 /*yield*/, mongoose_1.Item.updateOne({ type: "USER", "data.email": userEmail }, { $set: { "data.premiumSubscriptions.reddit": Date.now() + 31557600000 } })];
+                case 8:
+                    _b.sent();
+                    return [3 /*break*/, 10];
+                case 9:
+                    console.log("Unhandled event type ".concat(event.type));
+                    _b.label = 10;
+                case 10:
+                    response.send();
                     return [2 /*return*/];
             }
         });
     });
 }
-exports.default = archiveHackernews;
-//# sourceMappingURL=index.js.map
+exports.stripeWebhook = stripeWebhook;
+//# sourceMappingURL=stripe.js.map

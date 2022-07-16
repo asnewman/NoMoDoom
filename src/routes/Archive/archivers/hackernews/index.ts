@@ -10,7 +10,7 @@ import { getTopPostsForDay } from "./pure";
 export default async function archiveHackernews() {
   const htmls: string[] = [];
 
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 1; i <= 6; i++) {
     htmls.push(
       (await axios.get(`https://news.ycombinator.com/best?p=${i}`)).data
     );

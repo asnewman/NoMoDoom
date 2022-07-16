@@ -58,12 +58,14 @@ var logger_1 = __importDefault(require("./helpers/logger"));
 var path_1 = __importDefault(require("path"));
 var Nomodoom_1 = __importDefault(require("./routes/Nomodoom"));
 var mongoose_1 = require("./mongoose");
+var stripe_1 = require("./routes/Stripe/stripe");
 if (!process.env.MONGO_URI) {
     console.error("error", "MONGO_URI not set");
     (0, process_1.exit)(1);
 }
 var app = (0, express_1.default)();
 var port = process.env.PORT || 3000;
+app.post("/stripe-webhook", express_1.default.raw({ type: "application/json" }), stripe_1.stripeWebhook);
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());

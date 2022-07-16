@@ -68,7 +68,7 @@ function createLoginLinkController(req, res) {
                             tokenExpiration: 0,
                             frequency: 1,
                             lastSent: 0,
-                            isPremium: false,
+                            premiumSubscriptions: {},
                         },
                     };
                     user = new mongoose_1.Item(mongoUser);
