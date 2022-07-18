@@ -39,6 +39,7 @@ export async function stripeWebhook(request: any, response: any) {
         { type: "USER", "data.email": userEmail },
         { $set: { "data.premiumSubscriptions.reddit": Date.now() + 31557600000 } }
       );
+      await sendPushover("New user signed up for Reddit premium! " + userEmail);
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
