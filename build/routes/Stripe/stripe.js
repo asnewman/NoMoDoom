@@ -77,27 +77,24 @@ function stripeWebhook(request, response) {
                     switch (_a) {
                         case "checkout.session.completed": return [3 /*break*/, 6];
                     }
-                    return [3 /*break*/, 11];
+                    return [3 /*break*/, 10];
                 case 6:
                     sessionData = event.data.object;
-                    return [4 /*yield*/, (0, logger_1.default)("info", sessionData)];
-                case 7:
-                    _b.sent();
                     userEmail = sessionData.customer_details.email;
                     return [4 /*yield*/, (0, pushover_1.sendPushover)("Received payment from " + userEmail)];
-                case 8:
+                case 7:
                     _b.sent();
                     return [4 /*yield*/, mongoose_1.Item.updateOne({ type: "USER", "data.email": userEmail }, { $set: { "data.premiumSubscriptions.reddit": Date.now() + 31557600000 } })];
-                case 9:
+                case 8:
                     _b.sent();
                     return [4 /*yield*/, (0, pushover_1.sendPushover)("New user signed up for Reddit premium! " + userEmail)];
-                case 10:
+                case 9:
                     _b.sent();
-                    return [3 /*break*/, 12];
-                case 11:
+                    return [3 /*break*/, 11];
+                case 10:
                     console.log("Unhandled event type ".concat(event.type));
-                    _b.label = 12;
-                case 12:
+                    _b.label = 11;
+                case 11:
                     response.send();
                     return [2 /*return*/];
             }
