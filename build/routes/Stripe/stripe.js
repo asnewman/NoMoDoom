@@ -79,11 +79,11 @@ function stripeWebhook(request, response) {
                     }
                     return [3 /*break*/, 11];
                 case 6:
-                    sessionData = event.data;
+                    sessionData = event.data.object;
                     return [4 /*yield*/, (0, logger_1.default)("info", sessionData)];
                 case 7:
                     _b.sent();
-                    userEmail = sessionData.customer_email || sessionData.customer_details;
+                    userEmail = sessionData.customer_details.email;
                     return [4 /*yield*/, (0, pushover_1.sendPushover)("Received payment from " + userEmail)];
                 case 8:
                     _b.sent();
