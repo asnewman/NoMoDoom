@@ -31,6 +31,7 @@ export async function stripeWebhook(request: any, response: any) {
   switch (event.type) {
     case "checkout.session.completed":
       const sessionData = event.data as any;
+      await log("info", sessionData)
       const userEmail =
         sessionData.customer_email || sessionData.customer_details;
       await sendPushover("Received payment from " + userEmail);
