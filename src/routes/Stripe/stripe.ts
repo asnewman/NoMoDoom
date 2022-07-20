@@ -36,7 +36,11 @@ export async function stripeWebhook(request: any, response: any) {
 
       await Item.updateOne(
         { type: "USER", "data.email": userEmail },
-        { $set: { "data.premiumSubscriptions.reddit": Date.now() + 31557600000 } }
+        {
+          $set: {
+            "data.premiumSubscriptions.reddit": Date.now() + 31557600000,
+          },
+        }
       );
       await sendPushover("New user signed up for Reddit premium! " + userEmail);
       break;
