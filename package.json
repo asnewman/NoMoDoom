@@ -8,7 +8,7 @@
     "build": "tsc --outDir build",
     "dev": "nodemon src/main.ts",
     "lint": "prettier src --write",
-    "test": "jest ./src",
+    "test": "jest ./src --coverage",
     "heroku": "node build/main.js"
   },
   "author": "",
