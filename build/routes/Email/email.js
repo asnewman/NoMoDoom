@@ -117,7 +117,7 @@ function saveEmailObjects(email) {
                     hackernewsData = (_a.sent())[0];
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     if (subredditData.length > 0) {
-                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData, false);
+                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData, Date.now() < (user.data.premiumSubscriptions.reddit || -1));
                     }
                     isSubscribedToHackernews = subscriptions.find(function (subscription) { return subscription.data.service === "hackernews"; });
                     if (isSubscribedToHackernews) {

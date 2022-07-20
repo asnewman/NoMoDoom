@@ -84,7 +84,11 @@ function stripeWebhook(request, response) {
                     return [4 /*yield*/, (0, pushover_1.sendPushover)("Received payment from " + userEmail)];
                 case 7:
                     _b.sent();
-                    return [4 /*yield*/, mongoose_1.Item.updateOne({ type: "USER", "data.email": userEmail }, { $set: { "data.premiumSubscriptions.reddit": Date.now() + 31557600000 } })];
+                    return [4 /*yield*/, mongoose_1.Item.updateOne({ type: "USER", "data.email": userEmail }, {
+                            $set: {
+                                "data.premiumSubscriptions.reddit": Date.now() + 31557600000,
+                            },
+                        })];
                 case 8:
                     _b.sent();
                     return [4 /*yield*/, (0, pushover_1.sendPushover)("New user signed up for Reddit premium! " + userEmail)];
