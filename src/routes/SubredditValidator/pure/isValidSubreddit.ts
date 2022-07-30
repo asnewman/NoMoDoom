@@ -3,18 +3,20 @@ interface SubredditQueryResult {
     data: {
       children: {
         data: {
-          subreddit_type?: "public" | "private"
-        }
-      }[]
-    }
-  }
+          subreddit_type?: "public" | "private";
+        };
+      }[];
+    };
+  };
 }
 
-async function isValidSubreddit(getSubreddit: () => Promise<SubredditQueryResult>) {
+async function isValidSubreddit(
+  getSubreddit: () => Promise<SubredditQueryResult>
+) {
   try {
     const res = await getSubreddit();
     return res.data.data.children[0]?.data.subreddit_type === "public";
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 }

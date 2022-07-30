@@ -47,7 +47,11 @@ app.get("/", authCheck, homeController);
 
 app.get("/reddit", authCheck, redditController);
 
-app.get("/api/validate-subreddit/:subreddit", authCheck, subredditValidatorController);
+app.get(
+  "/api/validate-subreddit/:subreddit",
+  authCheck,
+  subredditValidatorController
+);
 
 app.get("/hackernews", authCheck, hackernewsController);
 

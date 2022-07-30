@@ -1,5 +1,5 @@
 import axios from "axios";
-import {isValidSubreddit} from "./pure/isValidSubreddit";
+import { isValidSubreddit } from "./pure/isValidSubreddit";
 
 async function subredditValidatorController(req: any, res: any) {
   const { subreddit } = req.params;
