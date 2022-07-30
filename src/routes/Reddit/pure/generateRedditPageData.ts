@@ -19,7 +19,7 @@ const generateRedditPageData = async (
     subreddits: subscriptions.map(
       (s: MongoSubscription) => s.data.subservice || "unknown subreddit"
     ),
-    isPremium: nowTimestamp < (user.data.premiumSubscriptions.reddit || -1),
+    isPremium: nowTimestamp < (user.data.premiumSubscriptions?.reddit || -1),
   };
 };
 

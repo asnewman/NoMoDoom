@@ -38,21 +38,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var generateRedditPageData = function (email, getUser, getRedditSubscriptions, nowTimestamp) { return __awaiter(void 0, void 0, void 0, function () {
     var user, subscriptions;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0: return [4 /*yield*/, getUser(email)];
             case 1:
-                user = _a.sent();
+                user = _b.sent();
                 if (!user) {
                     throw Error("User not found (".concat(email, "). Cannot generate Reddit page."));
                 }
                 return [4 /*yield*/, getRedditSubscriptions(user.data.email)];
             case 2:
-                subscriptions = _a.sent();
+                subscriptions = _b.sent();
                 return [2 /*return*/, {
                         email: email,
                         subreddits: subscriptions.map(function (s) { return s.data.subservice || "unknown subreddit"; }),
-                        isPremium: nowTimestamp < (user.data.premiumSubscriptions.reddit || -1),
+                        isPremium: nowTimestamp < (((_a = user.data.premiumSubscriptions) === null || _a === void 0 ? void 0 : _a.reddit) || -1),
                     }];
         }
     });
