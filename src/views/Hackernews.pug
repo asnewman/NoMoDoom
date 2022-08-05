@@ -1,10 +1,10 @@
 extends Base
 block content
   unless isSubscribed
-    h2 You are not subscribe to Hacker News
+    h2 You are not subscribed to Hacker News
     button(class="hackernewsSubscriptionToggle" onclick="subscribe()") Subscribe
   unless !isSubscribed
-    h2 You are subscribe to Hacker News
+    h2 You are subscribed to Hacker News
     button(class="hackernewsSubscriptionToggle" onclick="unsubscribe()") Unsubscribe
   script.
     function subscribe() {

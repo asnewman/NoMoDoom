@@ -2,10 +2,10 @@ extends Base
 block content
   p This subscription will sign you up for any updates to nomodoom
   unless isSubscribed
-    h2 You are not subscribe to nomodoom updates
+    h2 You are not subscribed to nomodoom updates
     button(class="nomodoomSubscriptionToggle" onclick="subscribe()") Subscribe
   unless !isSubscribed
-    h2 You are subscribe to nomodoom updates
+    h2 You are subscribed to nomodoom updates
     button(class="nomodoomSubscriptionToggle" onclick="unsubscribe()") Unsubscribe
   script.
     function subscribe() {
