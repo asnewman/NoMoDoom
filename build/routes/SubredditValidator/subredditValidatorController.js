@@ -39,54 +39,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var logger_1 = __importDefault(require("../../helpers/logger"));
-var mongoose_1 = require("../../mongoose");
-var generateRedditPageData_1 = __importDefault(require("./pure/generateRedditPageData"));
-function redditController(req, res) {
+var axios_1 = __importDefault(require("axios"));
+var isValidSubreddit_1 = require("./pure/isValidSubreddit");
+function subredditValidatorController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var getUser, getSubscriptions, _a, _b, _c, e_1;
-        var _this = this;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var subreddit, isValid;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _d.trys.push([0, 2, , 4]);
-                    getUser = function (email) { return __awaiter(_this, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, mongoose_1.Item.findOne({
-                                        type: mongoose_1.MONGO_TYPES.USER,
-                                        "data.email": email,
-                                    })];
-                                case 1: return [2 /*return*/, _a.sent()];
-                            }
-                        });
-                    }); };
-                    getSubscriptions = function (email) { return __awaiter(_this, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, mongoose_1.Item.find({
-                                        type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                                        "data.email": email,
-                                        "data.service": "reddit",
-                                    })];
-                                case 1: return [2 /*return*/, _a.sent()];
-                            }
-                        });
-                    }); };
-                    _b = (_a = res).render;
-                    _c = ["Reddit"];
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(req.email, getUser, getSubscriptions, Date.now())];
-                case 1: return [2 /*return*/, _b.apply(_a, _c.concat([_d.sent()]))];
-                case 2:
-                    e_1 = _d.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 3:
-                    _d.sent();
-                    return [2 /*return*/, res.send(e_1)];
-                case 4: return [2 /*return*/];
+                    subreddit = req.params.subreddit;
+                    if (!subreddit) {
+                        return [2 /*return*/, res.status(400).send("Must include subreddit in body")];
+                    }
+                    return [4 /*yield*/, (0, isValidSubreddit_1.isValidSubreddit)(function () {
+                            return axios_1.default.get("https://www.reddit.com/r/".concat(subreddit, "/top.json"));
+                        })];
+                case 1:
+                    isValid = _a.sent();
+                    if (!isValid) {
+                        return [2 /*return*/, res.status(400).send("Subreddit is not valid")];
+                    }
+                    return [2 /*return*/, res.status(200).send()];
             }
         });
     });
 }
-exports.default = redditController;
-//# sourceMappingURL=index.js.map
+exports.default = subredditValidatorController;
+//# sourceMappingURL=subredditValidatorController.js.map

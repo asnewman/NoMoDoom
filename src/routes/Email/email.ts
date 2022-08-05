@@ -72,7 +72,10 @@ async function saveEmailObjects(email: string) {
   let emailText = "Here is your nomodoom email digest:<br/><br/>";
 
   if (subredditData.length > 0) {
-    emailText += generateRedditHtml(subredditData, false);
+    emailText += generateRedditHtml(
+      subredditData,
+      Date.now() < (user.data.premiumSubscriptions?.reddit || -1)
+    );
   }
 
   const isSubscribedToHackernews = subscriptions.find(

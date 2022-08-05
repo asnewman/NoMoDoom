@@ -48,7 +48,7 @@ interface MongoUser extends MongoBase {
     email: string;
     frequency: 1;
     lastSent: number;
-    premiumSubscriptions: {
+    premiumSubscriptions?: {
       reddit?: number;
     };
   };

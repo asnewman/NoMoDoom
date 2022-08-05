@@ -35,58 +35,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var logger_1 = __importDefault(require("../../helpers/logger"));
-var mongoose_1 = require("../../mongoose");
-var generateRedditPageData_1 = __importDefault(require("./pure/generateRedditPageData"));
-function redditController(req, res) {
+exports.isValidSubreddit = void 0;
+function isValidSubreddit(getSubreddit) {
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var getUser, getSubscriptions, _a, _b, _c, e_1;
-        var _this = this;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var res, e_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _d.trys.push([0, 2, , 4]);
-                    getUser = function (email) { return __awaiter(_this, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, mongoose_1.Item.findOne({
-                                        type: mongoose_1.MONGO_TYPES.USER,
-                                        "data.email": email,
-                                    })];
-                                case 1: return [2 /*return*/, _a.sent()];
-                            }
-                        });
-                    }); };
-                    getSubscriptions = function (email) { return __awaiter(_this, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, mongoose_1.Item.find({
-                                        type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
-                                        "data.email": email,
-                                        "data.service": "reddit",
-                                    })];
-                                case 1: return [2 /*return*/, _a.sent()];
-                            }
-                        });
-                    }); };
-                    _b = (_a = res).render;
-                    _c = ["Reddit"];
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(req.email, getUser, getSubscriptions, Date.now())];
-                case 1: return [2 /*return*/, _b.apply(_a, _c.concat([_d.sent()]))];
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, getSubreddit()];
+                case 1:
+                    res = _b.sent();
+                    return [2 /*return*/, ((_a = res.data.data.children[0]) === null || _a === void 0 ? void 0 : _a.data.subreddit_type) === "public"];
                 case 2:
-                    e_1 = _d.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 3:
-                    _d.sent();
-                    return [2 /*return*/, res.send(e_1)];
-                case 4: return [2 /*return*/];
+                    e_1 = _b.sent();
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
             }
         });
     });
 }
-exports.default = redditController;
-//# sourceMappingURL=index.js.map
+exports.isValidSubreddit = isValidSubreddit;
+//# sourceMappingURL=isValidSubreddit.js.map

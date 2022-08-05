@@ -30,15 +30,19 @@ export async function stripeWebhook(request: any, response: any) {
 
   switch (event.type) {
     case "checkout.session.completed":
-      const sessionData = event.data as any;
-      const userEmail =
-        sessionData.customer_email || sessionData.customer_details;
+      const sessionData = event.data.object as any;
+      const userEmail = sessionData.customer_details.email;
       await sendPushover("Received payment from " + userEmail);
 
       await Item.updateOne(
         { type: "USER", "data.email": userEmail },
-        { $set: { "data.premiumSubscriptions.reddit": Date.now() + 31557600000 } }
+        {
+          $set: {
+            "data.premiumSubscriptions.reddit": Date.now() + 31557600000,
+          },
+        }
       );
+      await sendPushover("New user signed up for Reddit premium! " + userEmail);
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);

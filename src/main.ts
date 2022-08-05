@@ -19,6 +19,7 @@ import path from "path";
 import nomodoomController from "./routes/Nomodoom";
 import { dbInit } from "./mongoose";
 import { stripeWebhook } from "./routes/Stripe/stripe";
+import subredditValidatorController from "./routes/SubredditValidator/subredditValidatorController";
 
 if (!process.env.MONGO_URI) {
   console.error("error", "MONGO_URI not set");
@@ -45,6 +46,12 @@ app.set("view engine", "pug");
 app.get("/", authCheck, homeController);
 
 app.get("/reddit", authCheck, redditController);
+
+app.get(
+  "/api/validate-subreddit/:subreddit",
+  authCheck,
+  subredditValidatorController
+);
 
 app.get("/hackernews", authCheck, hackernewsController);
 

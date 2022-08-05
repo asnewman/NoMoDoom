@@ -59,6 +59,7 @@ var path_1 = __importDefault(require("path"));
 var Nomodoom_1 = __importDefault(require("./routes/Nomodoom"));
 var mongoose_1 = require("./mongoose");
 var stripe_1 = require("./routes/Stripe/stripe");
+var subredditValidatorController_1 = __importDefault(require("./routes/SubredditValidator/subredditValidatorController"));
 if (!process.env.MONGO_URI) {
     console.error("error", "MONGO_URI not set");
     (0, process_1.exit)(1);
@@ -74,6 +75,7 @@ app.set("views", "./src/views");
 app.set("view engine", "pug");
 app.get("/", authCheck_1.default, Home_1.default);
 app.get("/reddit", authCheck_1.default, Reddit_1.default);
+app.get("/api/validate-subreddit/:subreddit", authCheck_1.default, subredditValidatorController_1.default);
 app.get("/hackernews", authCheck_1.default, Hackernews_1.default);
 app.get("/nomodoom", authCheck_1.default, Nomodoom_1.default);
 app.get("/create-link", function (_req, res) {
