@@ -61,7 +61,7 @@ function archiveSubreddit(subreddit) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
+                    _a.trys.push([0, 5, , 8]);
                     return [4 /*yield*/, axios_1.default.get("https://www.reddit.com/r/".concat(subreddit, "/top.json"))];
                 case 1:
                     redditPostsData = _a.sent();
@@ -92,12 +92,20 @@ function archiveSubreddit(subreddit) {
                     return [4 /*yield*/, new mongoose_1.Item(newArchiveItem).save()];
                 case 3:
                     _a.sent();
-                    return [3 /*break*/, 5];
+                    return [4 /*yield*/, (0, logger_1.default)("info", "Successfully archived ".concat(subreddit))];
                 case 4:
+                    _a.sent();
+                    return [3 /*break*/, 8];
+                case 5:
                     e_1 = _a.sent();
-                    (0, logger_1.default)("error", e_1);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [4 /*yield*/, (0, logger_1.default)("error", "Failed to archived ".concat(subreddit))];
+                case 6:
+                    _a.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
+                case 7:
+                    _a.sent();
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });

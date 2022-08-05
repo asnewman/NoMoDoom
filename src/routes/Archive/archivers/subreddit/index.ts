@@ -34,7 +34,9 @@ export default async function archiveSubreddit(subreddit: string) {
     };
 
     await new Item(newArchiveItem).save();
+    await log("info", `Successfully archived ${subreddit}`)
   } catch (e) {
-    log("error", e);
+    await log("error", `Failed to archived ${subreddit}`)
+    await log("error", e);
   }
 }
