@@ -108,13 +108,18 @@ function saveEmailObjects(email) {
                         })];
                 case 5:
                     subredditData = _b.sent();
-                    return [4 /*yield*/, mongoose_1.Item.find({
-                            type: mongoose_1.MONGO_TYPES.ARCHIVE,
-                            "data.type": "hackernews",
-                        })
-                            .sort({ "data.datetime": -1 })
-                            .limit(1)];
+                    if (!(subreddits.length !== subredditData.length)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, (0, logger_1.default)("error", "Failed ".concat(email, " did not get all subreddits subscriptions in their email"))];
                 case 6:
+                    _b.sent();
+                    _b.label = 7;
+                case 7: return [4 /*yield*/, mongoose_1.Item.find({
+                        type: mongoose_1.MONGO_TYPES.ARCHIVE,
+                        "data.type": "hackernews",
+                    })
+                        .sort({ "data.datetime": -1 })
+                        .limit(1)];
+                case 8:
                     hackernewsData = (_b.sent())[0];
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     if (subredditData.length > 0) {
@@ -135,12 +140,12 @@ function saveEmailObjects(email) {
                         },
                     };
                     return [4 /*yield*/, mongoose_1.Item.create(mongoEmail)];
-                case 7:
+                case 9:
                     _b.sent();
                     user.data.lastSent = Date.now();
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
-                case 8:
+                case 10:
                     _b.sent();
                     return [2 /*return*/];
             }
