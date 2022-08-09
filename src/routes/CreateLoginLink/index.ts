@@ -7,11 +7,10 @@ import {
 } from "../../mongoose";
 import randomString from "../../helpers/randomString";
 import log from "../../helpers/logger";
-import { sendPushover } from "../../helpers/pushover";
 
 async function createLoginLinkController(req: any, res: any) {
   try {
-    const email = req.body.email.toLowerCase();
+    const email = req.body.email.toLowerCase().replace(/\s/g, "");
     let user = await Item.findOne({
       type: MONGO_TYPES.USER,
       "data.email": email,
@@ -33,7 +32,6 @@ async function createLoginLinkController(req: any, res: any) {
       user = new Item(mongoUser);
 
       await log("info", "New user signed up! " + email);
-      await sendPushover(`New user signed up! ${email}`);
 
       const nomodoomSubscription: MongoSubscription = {
         type: MONGO_TYPES.SUBSCRIPTION,
