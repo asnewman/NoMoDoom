@@ -61,7 +61,10 @@ async function saveEmailObjects(email: string) {
   });
 
   if (subreddits.length !== subredditData.length) {
-    await log("error", `Failed ${email} did not get all subreddits subscriptions in their email`)
+    await log(
+      "error",
+      `Failed ${email} did not get all subreddits subscriptions in their email`
+    );
   }
 
   const hackernewsData = (
