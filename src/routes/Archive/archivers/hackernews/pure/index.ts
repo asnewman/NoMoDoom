@@ -39,4 +39,25 @@ function getTopPostsForDay(bestPages: string[], currentDatetime: number) {
     .sort((a, b) => b.score - a.score);
 }
 
-export { getTopPostsForDay };
+export interface HnItem {
+  by: string;
+  kids: number[];
+  text?: string;
+}
+
+async function getTopCommentsForPost(
+  postId: number, 
+  getHackerNewsItem: (id: number) => Promise<HnItem>) 
+{
+  const res: {user: string; content: string}[] = []
+  const post = (await getHackerNewsItem(postId)) as unknown as HnItem;
+
+  for (let cmtIdx = 0; cmtIdx < 3; cmtIdx++) {
+    const comment = (await getHackerNewsItem(post.kids[cmtIdx])) as unknown as HnItem;
+    res.push({user: comment.by, content: comment.text || ""})
+  }
+
+  return res;
+}
+
+export { getTopPostsForDay, getTopCommentsForPost };

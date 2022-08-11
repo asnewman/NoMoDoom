@@ -1,8 +1,8 @@
-import { getTopPostsForDay } from ".";
+import { getTopCommentsForPost, getTopPostsForDay, HnItem } from ".";
 
 describe("getTopPostsForDay", () => {
   it("gets correctly", () => {
-    expect(getTopPostsForDay([html1, html2], 1655073357596).toString()).toBe(
+    expect(getTopPostsForDay([postsHtml1, postsHtml2], 1655073357596).toString()).toBe(
       [
         {
           title: "US moves closer to recalling Tesla’s self-driving software",
@@ -47,7 +47,44 @@ describe("getTopPostsForDay", () => {
   });
 });
 
-const html1 = `<html op="best" lang="en"><head>
+describe("getTopCommentsForPost", () => {
+  it("gets correctly", async () => {
+    const dummyGetHackerNewsItem = (id: number): Promise<HnItem> => {
+      if (id === 1) {
+        return new Promise((resolve) => resolve({
+          by: "ash",
+          kids: [2, 3, 4],
+        }))
+      }
+      else if (id === 2) {
+        return new Promise((resolve) => resolve({
+          by: "bob",
+          kids: [],
+          text: "hello"
+        }))
+      }
+      else if (id === 3) {
+        return new Promise((resolve) => resolve({
+          by: "charlie",
+          kids: [],
+          text: "world"
+        }))
+      }
+      else {
+        return new Promise((resolve) => resolve({
+          by: "dean",
+          kids: [],
+          text: "foo"
+        }))
+      }
+    }
+    const res = await getTopCommentsForPost(1, dummyGetHackerNewsItem);
+    expect(res).toEqual([
+        { user: "bob", content: `hello`}, {user: "charlie", content: `world`} , {user: "dean", content: `foo`}])
+  })
+})
+
+const postsHtml1 = `<html op="best" lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="1_files/news.css">
         <link rel="shortcut icon" href="https://news.ycombinator.com/favicon.ico">
         <title>Top Links | Hacker News</title></head><body cz-shortcut-listen="true"><center><table id="hnmain" width="85%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f6f6ef">
@@ -195,7 +232,7 @@ const html1 = `<html op="best" lang="en"><head>
       </tbody></table></center><script type="text/javascript" src="1_files/hn.js"></script>
 </body></html>`;
 
-const html2 = `<html op="best" lang="en"><head>
+const postsHtml2 = `<html op="best" lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="2_files/news.css">
         <link rel="shortcut icon" href="https://news.ycombinator.com/favicon.ico">
         <title>Top Links | Hacker News</title></head><body cz-shortcut-listen="true"><center><table id="hnmain" width="85%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f6f6ef">
