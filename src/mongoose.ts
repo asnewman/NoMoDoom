@@ -66,6 +66,10 @@ interface MongoArchiveHackernewsData {
     title: string;
     score: number;
     link: string;
+    comments: {
+      content: string;
+      user: string;
+    }[]
   }[];
 }
 
