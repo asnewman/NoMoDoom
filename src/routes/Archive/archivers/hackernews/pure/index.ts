@@ -31,28 +31,36 @@ async function getTopPostsForDay(
 
     let idx = 0;
     for (const title of titles) {
-      const regexRes = /(?:id=)(.*)/g.exec(links[idx]);
-      const postId = regexRes ? parseInt(regexRes[1]) : null;
-      let comments: Comment[] = [];
-
-      if (postId) {
-        comments = await getTopCommentsForPost(postId, getHackerNewsItem);
-      }
-
       posts.push({
         title,
         score: parseInt(scores[idx]),
         link: `https://news.ycombinator.com/${links[idx]}`,
         date: new Date(dates[idx]),
-        comments,
+        comments: [],
       });
       idx++;
     }
   }
 
-  return posts
-    .filter((a) => a.date.getTime() > currentDatetime - DAY)
-    .sort((a, b) => b.score - a.score);
+  const filteredSortedPosts = posts
+  .filter((a) => a.date.getTime() > currentDatetime - DAY)
+  .sort((a, b) => b.score - a.score)
+
+  const commentsPromises: Promise<any>[] = []
+  filteredSortedPosts.forEach(post => {
+    const regexRes = /(?:id=)(.*)/g.exec(post.link);
+    const postId = regexRes ? parseInt(regexRes[1]) : null;
+
+    if (postId) {
+      commentsPromises.push(getTopCommentsForPost(postId, getHackerNewsItem).then(comments => {
+        post.comments = comments
+      }));
+    }
+  })
+
+  await Promise.all(commentsPromises)
+
+  return filteredSortedPosts;
 }
 
 export interface HnItem {
