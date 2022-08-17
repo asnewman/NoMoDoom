@@ -1,32 +1,100 @@
 import { getTopCommentsForPost, getTopPostsForDay, HnItem } from ".";
 
 describe("getTopPostsForDay", () => {
-  it("gets correctly", () => {
-    expect(getTopPostsForDay([postsHtml1, postsHtml2], 1655073357596).toString()).toBe(
+  it("gets top posts for the day correctly", async () => {
+    const dummyGetHackerNewsItem = (id: number): Promise<HnItem> => {
+      if (id === 31706955) {
+        return new Promise((resolve) =>
+          resolve({
+            by: "ash",
+            kids: [2, 3, 4],
+          })
+        );
+      } else if (id === 2) {
+        return new Promise((resolve) =>
+          resolve({
+            by: "bob",
+            kids: [],
+            text: "hello",
+          })
+        );
+      } else if (id === 3) {
+        return new Promise((resolve) =>
+          resolve({
+            by: "charlie",
+            kids: [],
+            text: "world",
+          })
+        );
+      } else if (id === 4) {
+        return new Promise((resolve) =>
+          resolve({
+            by: "allie",
+            kids: [],
+            text: "foo",
+          })
+        );
+      } else {
+        return new Promise((resolve) =>
+          resolve({
+            by: "dean",
+            kids: [],
+            text: "foo",
+          })
+        );
+      }
+    };
+
+    const res = await getTopPostsForDay(
+      [postsHtml1, postsHtml2],
+      1655073357596,
+      dummyGetHackerNewsItem
+    )
+
+    expect(
+      res
+    ).toEqual(
       [
         {
           title: "US moves closer to recalling Tesla’s self-driving software",
           score: 498,
           link: "https://news.ycombinator.com/item?id=31706955",
           date: new Date("2022-06-12T01:39:48.000Z"),
+          comments: [
+            {
+              content: "hello",
+              user: "bob"
+            },
+            {
+              content: "world",
+              user: "charlie",
+            },
+            {
+              content: "foo",
+              user: "allie"
+            }
+          ]
         },
         {
           title: "Shortsightedness has become an epidemic",
           score: 465,
           link: "https://news.ycombinator.com/item?id=31711990",
           date: new Date("2022-06-12T13:17:34.000Z"),
+          comments: [],
         },
         {
           title: "AirPlay and Touch Bar = Network Disaster",
           score: 411,
           link: "https://news.ycombinator.com/item?id=31706283",
           date: new Date("2022-06-12T00:31:03.000Z"),
+          comments: [],
         },
         {
           title: "Ask HN: What's the coolest website you know?",
           score: 388,
           link: "https://news.ycombinator.com/item?id=31708366",
           date: new Date("2022-06-12T04:02:16.000Z"),
+          comments: [],
         },
         {
           title:
@@ -34,6 +102,7 @@ describe("getTopPostsForDay", () => {
           score: 372,
           link: "https://news.ycombinator.com/item?id=31706835",
           date: new Date("2022-06-12T01:28:18.000Z"),
+          comments: [],
         },
         {
           title:
@@ -41,8 +110,9 @@ describe("getTopPostsForDay", () => {
           score: 296,
           link: "https://news.ycombinator.com/item?id=31715067",
           date: new Date("2022-06-12T22:10:35.000Z"),
+          comments: [],
         },
-      ].toString()
+      ]
     );
   });
 });
@@ -51,38 +121,46 @@ describe("getTopCommentsForPost", () => {
   it("gets correctly", async () => {
     const dummyGetHackerNewsItem = (id: number): Promise<HnItem> => {
       if (id === 1) {
-        return new Promise((resolve) => resolve({
-          by: "ash",
-          kids: [2, 3, 4],
-        }))
+        return new Promise((resolve) =>
+          resolve({
+            by: "ash",
+            kids: [2, 3, 4],
+          })
+        );
+      } else if (id === 2) {
+        return new Promise((resolve) =>
+          resolve({
+            by: "bob",
+            kids: [],
+            text: "hello",
+          })
+        );
+      } else if (id === 3) {
+        return new Promise((resolve) =>
+          resolve({
+            by: "charlie",
+            kids: [],
+            text: "world",
+          })
+        );
+      } else {
+        return new Promise((resolve) =>
+          resolve({
+            by: "dean",
+            kids: [],
+            text: "foo",
+          })
+        );
       }
-      else if (id === 2) {
-        return new Promise((resolve) => resolve({
-          by: "bob",
-          kids: [],
-          text: "hello"
-        }))
-      }
-      else if (id === 3) {
-        return new Promise((resolve) => resolve({
-          by: "charlie",
-          kids: [],
-          text: "world"
-        }))
-      }
-      else {
-        return new Promise((resolve) => resolve({
-          by: "dean",
-          kids: [],
-          text: "foo"
-        }))
-      }
-    }
+    };
     const res = await getTopCommentsForPost(1, dummyGetHackerNewsItem);
     expect(res).toEqual([
-        { user: "bob", content: `hello`}, {user: "charlie", content: `world`} , {user: "dean", content: `foo`}])
-  })
-})
+      { user: "bob", content: `hello` },
+      { user: "charlie", content: `world` },
+      { user: "dean", content: `foo` },
+    ]);
+  });
+});
 
 const postsHtml1 = `<html op="best" lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="1_files/news.css">

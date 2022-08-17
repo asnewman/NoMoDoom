@@ -2,12 +2,17 @@ import parse from "node-html-parser";
 
 const DAY = 24 * 1000 * 60 * 60;
 
-function getTopPostsForDay(bestPages: string[], currentDatetime: number) {
+async function getTopPostsForDay(
+  bestPages: string[],
+  currentDatetime: number,
+  getHackerNewsItem: (id: number) => Promise<HnItem>
+) {
   interface Post {
     title: string;
     score: number;
     link: string;
     date: Date;
+    comments: Comment[];
   }
   const posts: Post[] = [];
 
@@ -24,14 +29,25 @@ function getTopPostsForDay(bestPages: string[], currentDatetime: number) {
     const datesHtml = root.querySelectorAll(".age");
     const dates = datesHtml.map((date) => date.attributes.title);
 
-    titles.forEach((title, idx) => {
+    let idx = 0;
+    for (const title of titles) {
+      const regexRes = /(?:id=)(.*)/g.exec(links[idx]);
+      const postId = regexRes ? parseInt(regexRes[1]) : null;
+      let comments: Comment[] = [];
+
+      if (postId) {
+        comments = await getTopCommentsForPost(postId, getHackerNewsItem);
+      }
+
       posts.push({
         title,
         score: parseInt(scores[idx]),
-        link: `https://news.ycombinator.com/${links[idx]}`,
+        link: links[idx],
         date: new Date(dates[idx]),
+        comments,
       });
-    });
+      idx++;
+    }
   }
 
   return posts
@@ -45,16 +61,25 @@ export interface HnItem {
   text?: string;
 }
 
+interface Comment {
+  user: string;
+  content: string;
+}
+
 async function getTopCommentsForPost(
-  postId: number, 
-  getHackerNewsItem: (id: number) => Promise<HnItem>) 
-{
-  const res: {user: string; content: string}[] = []
+  postId: number,
+  getHackerNewsItem: (id: number) => Promise<HnItem>
+): Promise<Comment[]> {
+  const res: { user: string; content: string }[] = [];
   const post = (await getHackerNewsItem(postId)) as unknown as HnItem;
 
   for (let cmtIdx = 0; cmtIdx < 3; cmtIdx++) {
-    const comment = (await getHackerNewsItem(post.kids[cmtIdx])) as unknown as HnItem;
-    res.push({user: comment.by, content: comment.text || ""})
+    if (post.kids[cmtIdx]) {
+      const comment = (await getHackerNewsItem(
+        post.kids[cmtIdx]
+      )) as unknown as HnItem;
+      res.push({ user: comment.by, content: comment.text || "" });
+    }
   }
 
   return res;
