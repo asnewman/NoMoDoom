@@ -26,6 +26,7 @@ const transporter = nodemailer.createTransport({
 
 async function saveEmailObjects(email: string) {
   const user = await Item.findOne({
+    type: "USER",
     "data.email": email,
   });
 
@@ -89,7 +90,7 @@ async function saveEmailObjects(email: string) {
     (subscription) => subscription.data.service === "hackernews"
   );
   if (isSubscribedToHackernews) {
-    emailText += generateHackernewsHtml(hackernewsData);
+    emailText += generateHackernewsHtml(hackernewsData, email);
   }
 
   emailText += `<p>Adjust your email settings at <a href="https://nomodoom.com">nomodoom.com</a></p>`;

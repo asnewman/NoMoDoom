@@ -4,7 +4,7 @@ import {
   MongoArchiveSubredditData,
 } from "../../../mongoose";
 
-function generateHackernewsHtml(archive: MongoArchive) {
+function generateHackernewsHtml(archive: MongoArchive, email: string) {
   let hackernewsText = "<h2>Hacker News</h2>";
   const hackernewsData: MongoArchiveHackernewsData =
     archive.data as MongoArchiveHackernewsData;
@@ -12,8 +12,16 @@ function generateHackernewsHtml(archive: MongoArchive) {
   [...Array(3).keys()].forEach((idx) => {
     const post = hackernewsData.data[idx];
     hackernewsText += `<a href=${post.link}>${post.title}</a><br/>`;
-    hackernewsText += `Score: ${post.score}<br/><br/>`;
-    hackernewsText += "</br>";
+    hackernewsText += `Score: ${post.score}<br/>`;
+    if (email === "ashleynewman@protonmail.com") {
+      hackernewsText += `<b>What users are saying:</b><br/>`;
+      hackernewsText += `<ul>`;
+      post.comments.forEach((comment) => {
+        hackernewsText += `<li><i>${comment.content}</i><span> <b>- ${comment.user}</b></li>`;
+      });
+      hackernewsText += `</ul>`;
+    }
+    hackernewsText += "<br/><br/>";
   });
 
   return hackernewsText;
