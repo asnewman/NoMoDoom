@@ -9,7 +9,7 @@ import {
 import { getTopPostsForDay } from "./pure";
 
 export default async function archiveHackernews() {
-  await log("info", "Archiving Hacker News")
+  await log("info", "Archiving Hacker News");
   const htmls: string[] = [];
 
   for (let i = 1; i <= 6; i++) {
@@ -21,9 +21,15 @@ export default async function archiveHackernews() {
     });
   }
 
-  const posts = await getTopPostsForDay(htmls, Date.now(), async (id: number) => {
-    return (await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)).data
-  });
+  const posts = await getTopPostsForDay(
+    htmls,
+    Date.now(),
+    async (id: number) => {
+      return (
+        await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+      ).data;
+    }
+  );
 
   const archiveData: MongoArchiveHackernewsData = {
     type: "hackernews",
@@ -35,7 +41,7 @@ export default async function archiveHackernews() {
       title: post.title,
       score: post.score,
       link: post.link,
-      comments: post.comments
+      comments: post.comments,
     });
   }
 
@@ -45,5 +51,5 @@ export default async function archiveHackernews() {
   };
 
   await Item.create(archive);
-  await log("info", "Finished archiving Hacker News")
+  await log("info", "Finished archiving Hacker News");
 }

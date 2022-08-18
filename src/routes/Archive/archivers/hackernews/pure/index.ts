@@ -43,22 +43,24 @@ async function getTopPostsForDay(
   }
 
   const filteredSortedPosts = posts
-  .filter((a) => a.date.getTime() > currentDatetime - DAY)
-  .sort((a, b) => b.score - a.score)
+    .filter((a) => a.date.getTime() > currentDatetime - DAY)
+    .sort((a, b) => b.score - a.score);
 
-  const commentsPromises: Promise<any>[] = []
-  filteredSortedPosts.forEach(post => {
+  const commentsPromises: Promise<any>[] = [];
+  filteredSortedPosts.forEach((post) => {
     const regexRes = /(?:id=)(.*)/g.exec(post.link);
     const postId = regexRes ? parseInt(regexRes[1]) : null;
 
     if (postId) {
-      commentsPromises.push(getTopCommentsForPost(postId, getHackerNewsItem).then(comments => {
-        post.comments = comments
-      }));
+      commentsPromises.push(
+        getTopCommentsForPost(postId, getHackerNewsItem).then((comments) => {
+          post.comments = comments;
+        })
+      );
     }
-  })
+  });
 
-  await Promise.all(commentsPromises)
+  await Promise.all(commentsPromises);
 
   return filteredSortedPosts;
 }

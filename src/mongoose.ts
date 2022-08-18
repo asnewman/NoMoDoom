@@ -69,7 +69,7 @@ interface MongoArchiveHackernewsData {
     comments: {
       content: string;
       user: string;
-    }[]
+    }[];
   }[];
 }
 
