@@ -25,7 +25,6 @@ async function redditController(req: any, res: any) {
         req.email,
         getUser,
         getSubscriptions,
-        Date.now()
       )
     );
   } catch (e) {

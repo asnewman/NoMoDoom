@@ -1,18 +1,5 @@
 extends Base
 block content
-  unless isPremium
-    div(class="premiumBanner")
-      h2 Enhance your Reddit digest with premium!
-      p Support nomodoom! For only $3/year add the following to your Reddit digest:
-      ul
-        li Add the top three comments per post
-        li More to come!
-      a(href="https://buy.stripe.com/3cseW75dc7ZZ5xK8wx") Click here to sign up
-      br
-      b Important: Enter the same email as your nomodoom account on the payment form.
-      br
-  unless !isPremium
-    p You have premium for Reddit! Thanks :)
   h2 Your subreddit subscriptions:
   p You'll receive the top 3 posts of each subreddit daily.
   input(id="newSubredditInput" type="text" placeholder="Subreddit name (e.g. askreddit)")

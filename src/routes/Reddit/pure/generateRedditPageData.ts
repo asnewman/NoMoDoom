@@ -4,8 +4,7 @@ const generateRedditPageData = async (
   email: string,
   getUser: (email: string) => Promise<MongoUser | undefined>,
   getRedditSubscriptions: (email: string) => Promise<MongoSubscription[]>,
-  nowTimestamp: number
-): Promise<{ email: string; subreddits: string[]; isPremium: boolean }> => {
+): Promise<{ email: string; subreddits: string[] }> => {
   const user = await getUser(email);
 
   if (!user) {
@@ -19,7 +18,6 @@ const generateRedditPageData = async (
     subreddits: subscriptions.map(
       (s: MongoSubscription) => s.data.subservice || "unknown subreddit"
     ),
-    isPremium: nowTimestamp < (user.data.premiumSubscriptions?.reddit || -1),
   };
 };
 
