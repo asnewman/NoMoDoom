@@ -1,3 +1,5 @@
+import axios from "axios";
+import { isValidSubreddit } from "../../helpers/isValidSubreddit";
 import log from "../../helpers/logger";
 import { Item, MongoSubscription, MONGO_TYPES } from "../../mongoose";
 
@@ -7,6 +9,12 @@ async function itemCrudController(req: any, res: any) {
 
     switch (query) {
       case "ADD_SUBREDDIT_SUBSCRIPTION": {
+        const isValid = await isValidSubreddit(() => axios.get(`https://www.reddit.com/r/${data.subreddit}/top.json`));
+
+        if (!isValid) {
+          return res.status(400).send("Invalid subreddit.")
+        }
+
         const newSubscriptionItemData: MongoSubscription["data"] = {
           service: "reddit",
           subservice: data.subreddit,

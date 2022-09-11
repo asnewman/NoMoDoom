@@ -34,7 +34,10 @@ block content
 
       const subdiv = document.querySelector("#subscriptions")
 
-      if (subdiv.textContent.includes(inputVal)) return
+      if (subdiv.textContent.includes(inputVal)) {
+        addButton.disabled = false;
+        return
+      }
 
       fetch(`/api/validate-subreddit/${inputVal}`)
         .then((res) => {
@@ -56,7 +59,12 @@ block content
                 subreddit: inputVal
               }
             })
-        }).then(() => {
+        }).then((res) => {
+          if (!res.ok) {
+            alert("Invalid subreddit.")
+            return
+          }
+
           const newSubredditContainer = document.createElement("div")
           newSubredditContainer.setAttribute("id", `${inputVal}-div`)
           const newSubredditNode = document.createElement("p")
