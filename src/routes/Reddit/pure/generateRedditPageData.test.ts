@@ -13,7 +13,6 @@ describe("generateRedditPageDataTests", () => {
         tokenExpiration: 1656060077717,
         frequency: 1,
         lastSent: 1657667357179,
-        premiumSubscriptions: {},
       },
     };
 
@@ -38,13 +37,11 @@ describe("generateRedditPageDataTests", () => {
       email,
       dummyGetUser,
       dummyGetSubscriptions,
-      0
     );
 
     expect(result).toEqual({
       email,
       subreddits: ["programming"],
-      isPremium: false,
     });
   });
   it("generates free user data with invalid subreddit data correctly", async () => {
@@ -58,7 +55,6 @@ describe("generateRedditPageDataTests", () => {
         tokenExpiration: 1656060077717,
         frequency: 1,
         lastSent: 1657667357179,
-        premiumSubscriptions: {},
       },
     };
 
@@ -87,13 +83,11 @@ describe("generateRedditPageDataTests", () => {
       email,
       dummyGetUser,
       dummyGetSubscriptions,
-      0
     );
 
     expect(result).toEqual({
       email,
       subreddits: ["programming", "unknown subreddit"],
-      isPremium: false,
     });
   });
   it("generates expired user data correctly", async () => {
@@ -107,9 +101,6 @@ describe("generateRedditPageDataTests", () => {
         tokenExpiration: 1656060077717,
         frequency: 1,
         lastSent: 1657667357179,
-        premiumSubscriptions: {
-          reddit: 0,
-        },
       },
     };
 
@@ -134,13 +125,11 @@ describe("generateRedditPageDataTests", () => {
       email,
       dummyGetUser,
       dummyGetSubscriptions,
-      1
     );
 
     expect(result).toEqual({
       email,
       subreddits: ["programming"],
-      isPremium: false,
     });
   });
   it("generates premium user data correctly", async () => {
@@ -154,9 +143,6 @@ describe("generateRedditPageDataTests", () => {
         tokenExpiration: 1656060077717,
         frequency: 1,
         lastSent: 1657667357179,
-        premiumSubscriptions: {
-          reddit: 100,
-        },
       },
     };
 
@@ -181,13 +167,11 @@ describe("generateRedditPageDataTests", () => {
       email,
       dummyGetUser,
       dummyGetSubscriptions,
-      1
     );
 
     expect(result).toEqual({
       email,
       subreddits: ["programming"],
-      isPremium: true,
     });
   });
   it("throws missing user", async () => {
@@ -215,7 +199,6 @@ describe("generateRedditPageDataTests", () => {
         email,
         dummyGetUser,
         dummyGetSubscriptions,
-        1
       );
       expect(false).toBe(true);
     } catch (_e) {
