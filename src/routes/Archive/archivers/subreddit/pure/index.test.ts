@@ -41,6 +41,7 @@ describe("Subreddit pure tests", () => {
           title: "foo",
           score: 4,
           permalink: "/r/javascript",
+          selftext: "hello world"
         },
       },
     ];
@@ -50,6 +51,7 @@ describe("Subreddit pure tests", () => {
         title: "foo",
         score: 4,
         url: "https://www.reddit.com/r/javascript",
+        selftext: "hello world",
         topThreeComments: [
           {
             content: "helloworld2",

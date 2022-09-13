@@ -74,6 +74,7 @@ interface MongoArchiveSubredditData {
   type: "subreddit";
   subreddit: string;
   datetime: number; // epoch
+  selftext?: string;
   topPosts: SubredditPost[];
 }
 
