@@ -47,7 +47,6 @@ interface MongoUser extends MongoBase {
     signedInWithToken: boolean;
     email: string;
     frequency: 1;
-    lastSent: number;
   };
 }
 

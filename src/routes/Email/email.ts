@@ -54,7 +54,7 @@ async function saveEmailObjects(email: string) {
     type: MONGO_TYPES.ARCHIVE,
     "data.type": "subreddit",
     "data.datetime": {
-      $gt: user.data.lastSent,
+      $gt: Date.now() - 3600000, // Minus an hour
     },
     "data.subreddit": {
       $in: subreddits,
@@ -104,7 +104,6 @@ async function saveEmailObjects(email: string) {
 
   await Item.create(mongoEmail);
 
-  user.data.lastSent = Date.now();
   user.markModified("data");
   await user.save();
 }

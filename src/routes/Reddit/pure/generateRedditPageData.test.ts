@@ -12,7 +12,6 @@ describe("generateRedditPageDataTests", () => {
         token: "SmmnABX7MYzy0zLOZDHA",
         tokenExpiration: 1656060077717,
         frequency: 1,
-        lastSent: 1657667357179,
       },
     };
 
@@ -54,7 +53,6 @@ describe("generateRedditPageDataTests", () => {
         token: "SmmnABX7MYzy0zLOZDHA",
         tokenExpiration: 1656060077717,
         frequency: 1,
-        lastSent: 1657667357179,
       },
     };
 
@@ -100,7 +98,6 @@ describe("generateRedditPageDataTests", () => {
         token: "SmmnABX7MYzy0zLOZDHA",
         tokenExpiration: 1656060077717,
         frequency: 1,
-        lastSent: 1657667357179,
       },
     };
 
@@ -142,7 +139,6 @@ describe("generateRedditPageDataTests", () => {
         token: "SmmnABX7MYzy0zLOZDHA",
         tokenExpiration: 1656060077717,
         frequency: 1,
-        lastSent: 1657667357179,
       },
     };
 
