@@ -29,7 +29,7 @@ export async function getTopThreePosts(
       title: entry.data["title"] as string,
       score: entry.data["score"] as number,
       url: `https://www.reddit.com${entry.data["permalink"]}`,
-      selftext: entry.data["selftext"] || undefined,
+      selftext: entry.data["selftext"] as string || undefined,
       topThreeComments,
     });
 

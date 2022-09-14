@@ -73,7 +73,6 @@ interface MongoArchiveSubredditData {
   type: "subreddit";
   subreddit: string;
   datetime: number; // epoch
-  selftext?: string;
   topPosts: SubredditPost[];
 }
 
@@ -81,6 +80,7 @@ interface SubredditPost {
   title: string;
   score: number;
   url: string;
+  selftext?: string;
   topThreeComments: {
     user: string;
     score: number;
