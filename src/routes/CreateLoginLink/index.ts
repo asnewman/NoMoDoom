@@ -25,7 +25,6 @@ async function createLoginLinkController(req: any, res: any) {
           token: "",
           tokenExpiration: 0,
           frequency: 1,
-          lastSent: 0,
         },
       };
       user = new Item(mongoUser);
