@@ -80,6 +80,7 @@ interface SubredditPost {
   title: string;
   score: number;
   url: string;
+  selftext?: string;
   topThreeComments: {
     user: string;
     score: number;

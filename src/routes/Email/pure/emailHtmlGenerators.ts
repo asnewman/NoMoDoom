@@ -34,7 +34,11 @@ function generateRedditHtml(archives: MongoArchive[]) {
     subredditData.topPosts.forEach((post) => {
       redditText += `<a href=${post.url}>${post.title}</a><br/>`;
       redditText += `Score: ${post.score}<br/>`;
-      redditText += `<b>What users are saying:</b><br/>`;
+      if (post.selftext) {
+        redditText += `<b>Selftext: </b>`
+        redditText += `<i>${post.selftext}</i><br/>`
+      }
+      redditText += `<b>What users are saying:</b>`;
       redditText += `<ul>`;
       post.topThreeComments.forEach((comment) => {
         redditText += `<li><i>${comment.content}</i><span> <b>- ${comment.user}</b></li>`;
