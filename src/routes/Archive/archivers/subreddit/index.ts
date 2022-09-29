@@ -18,8 +18,13 @@ export default async function archiveSubreddit(subreddit: string) {
     const topPosts: SubredditPost[] = await getTopThreePosts(
       redditPostsData.data.data.children,
       async (url: string) => {
-        const { data } = (await axios.get(url)) as any;
-        return data[1]?.data.children.map((c: any) => ({ ...c.data })) || [];
+        try {
+          const { data } = (await axios.get(url)) as any;
+          return data[1]?.data.children.map((c: any) => ({ ...c.data })) || [];
+        } catch (e) {
+          await log("error", "Failed " + url);
+          return [];
+        }
       }
     );
     const newArchiveItemData: MongoArchiveSubredditData = {

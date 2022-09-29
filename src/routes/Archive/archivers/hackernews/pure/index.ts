@@ -18,7 +18,7 @@ async function getTopPostsForDay(
 
   for (const bestPage of bestPages) {
     const root = parse(bestPage);
-    const titlesHtml = root.querySelectorAll(".titlelink");
+    const titlesHtml = root.querySelectorAll(".titleline");
     const titles = titlesHtml.map((title) => title.textContent);
     const scoresHtml = root.querySelectorAll(".score");
     const scores = scoresHtml.map((score) => score.textContent);
