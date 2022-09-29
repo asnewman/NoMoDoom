@@ -32,13 +32,19 @@ function generateHackernewsHtml(archive) {
     __spreadArray([], __read(Array(3).keys()), false).forEach(function (idx) {
         var post = hackernewsData.data[idx];
         hackernewsText += "<a href=".concat(post.link, ">").concat(post.title, "</a><br/>");
-        hackernewsText += "Score: ".concat(post.score, "<br/><br/>");
-        hackernewsText += "</br>";
+        hackernewsText += "Score: ".concat(post.score, "<br/>");
+        hackernewsText += "<b>What users are saying:</b><br/>";
+        hackernewsText += "<ul>";
+        post.comments.forEach(function (comment) {
+            hackernewsText += "<li><i>".concat(comment.content, "</i><span> <b>- ").concat(comment.user, "</b></li>");
+        });
+        hackernewsText += "</ul>";
+        hackernewsText += "<br/><br/>";
     });
     return hackernewsText;
 }
 exports.generateHackernewsHtml = generateHackernewsHtml;
-function generateRedditHtml(archives, isUserPremium) {
+function generateRedditHtml(archives) {
     var redditText = "<h2>Reddit</h2>";
     archives.forEach(function (archive) {
         var subredditData = archive.data;
@@ -46,14 +52,16 @@ function generateRedditHtml(archives, isUserPremium) {
         subredditData.topPosts.forEach(function (post) {
             redditText += "<a href=".concat(post.url, ">").concat(post.title, "</a><br/>");
             redditText += "Score: ".concat(post.score, "<br/>");
-            if (isUserPremium) {
-                redditText += "<b>What users are saying:</b><br/>";
-                redditText += "<ul>";
-                post.topThreeComments.forEach(function (comment) {
-                    redditText += "<li><i>".concat(comment.content, "</i><span> <b>- ").concat(comment.user, "</b></li>");
-                });
-                redditText += "</ul>";
+            if (post.selftext) {
+                redditText += "<b>Selftext: </b>";
+                redditText += "<i>".concat(post.selftext, "</i><br/>");
             }
+            redditText += "<b>What users are saying:</b>";
+            redditText += "<ul>";
+            post.topThreeComments.forEach(function (comment) {
+                redditText += "<li><i>".concat(comment.content, "</i><span> <b>- ").concat(comment.user, "</b></li>");
+            });
+            redditText += "</ul>";
             redditText += "<br/>";
         });
         redditText += "</br>";

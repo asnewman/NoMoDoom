@@ -67,20 +67,20 @@ var transporter = nodemailer_1.default.createTransport({
     pool: true,
 });
 function saveEmailObjects(email) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
         var user, subscriptions, subreddits, subredditData, hackernewsData, emailText, isSubscribedToHackernews, mongoEmail;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0: return [4 /*yield*/, mongoose_1.Item.findOne({
+                        type: "USER",
                         "data.email": email,
                     })];
                 case 1:
-                    user = _b.sent();
+                    user = _a.sent();
                     if (!!user) return [3 /*break*/, 3];
                     return [4 /*yield*/, (0, logger_1.default)("error", "Email not found: ".concat(email))];
                 case 2:
-                    _b.sent();
+                    _a.sent();
                     return [2 /*return*/];
                 case 3: return [4 /*yield*/, mongoose_1.Item.find({
                         type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
@@ -88,7 +88,7 @@ function saveEmailObjects(email) {
                         "data.service": { $ne: "nomodoom" },
                     })];
                 case 4:
-                    subscriptions = _b.sent();
+                    subscriptions = _a.sent();
                     if (subscriptions.length === 0) {
                         return [2 /*return*/];
                     }
@@ -100,19 +100,19 @@ function saveEmailObjects(email) {
                             type: mongoose_1.MONGO_TYPES.ARCHIVE,
                             "data.type": "subreddit",
                             "data.datetime": {
-                                $gt: user.data.lastSent,
+                                $gt: Date.now() - 3600000, // Minus an hour
                             },
                             "data.subreddit": {
                                 $in: subreddits,
                             },
                         })];
                 case 5:
-                    subredditData = _b.sent();
+                    subredditData = _a.sent();
                     if (!(subreddits.length !== subredditData.length)) return [3 /*break*/, 7];
                     return [4 /*yield*/, (0, logger_1.default)("error", "Failed ".concat(email, " did not get all subreddits subscriptions in their email"))];
                 case 6:
-                    _b.sent();
-                    _b.label = 7;
+                    _a.sent();
+                    _a.label = 7;
                 case 7: return [4 /*yield*/, mongoose_1.Item.find({
                         type: mongoose_1.MONGO_TYPES.ARCHIVE,
                         "data.type": "hackernews",
@@ -120,10 +120,10 @@ function saveEmailObjects(email) {
                         .sort({ "data.datetime": -1 })
                         .limit(1)];
                 case 8:
-                    hackernewsData = (_b.sent())[0];
+                    hackernewsData = (_a.sent())[0];
                     emailText = "Here is your nomodoom email digest:<br/><br/>";
                     if (subredditData.length > 0) {
-                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData, Date.now() < (((_a = user.data.premiumSubscriptions) === null || _a === void 0 ? void 0 : _a.reddit) || -1));
+                        emailText += (0, emailHtmlGenerators_1.generateRedditHtml)(subredditData);
                     }
                     isSubscribedToHackernews = subscriptions.find(function (subscription) { return subscription.data.service === "hackernews"; });
                     if (isSubscribedToHackernews) {
@@ -141,12 +141,11 @@ function saveEmailObjects(email) {
                     };
                     return [4 /*yield*/, mongoose_1.Item.create(mongoEmail)];
                 case 9:
-                    _b.sent();
-                    user.data.lastSent = Date.now();
+                    _a.sent();
                     user.markModified("data");
                     return [4 /*yield*/, user.save()];
                 case 10:
-                    _b.sent();
+                    _a.sent();
                     return [2 /*return*/];
             }
         });

@@ -75,7 +75,7 @@ function redditController(req, res) {
                     }); };
                     _b = (_a = res).render;
                     _c = ["Reddit"];
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(req.email, getUser, getSubscriptions, Date.now())];
+                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(req.email, getUser, getSubscriptions)];
                 case 1: return [2 /*return*/, _b.apply(_a, _c.concat([_d.sent()]))];
                 case 2:
                     e_1 = _d.sent();

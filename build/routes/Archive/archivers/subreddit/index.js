@@ -66,14 +66,23 @@ function archiveSubreddit(subreddit) {
                 case 1:
                     redditPostsData = _a.sent();
                     return [4 /*yield*/, (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children, function (url) { return __awaiter(_this, void 0, void 0, function () {
-                            var data;
+                            var data, e_2;
                             var _a;
                             return __generator(this, function (_b) {
                                 switch (_b.label) {
-                                    case 0: return [4 /*yield*/, axios_1.default.get(url)];
+                                    case 0:
+                                        _b.trys.push([0, 2, , 4]);
+                                        return [4 /*yield*/, axios_1.default.get(url)];
                                     case 1:
                                         data = (_b.sent()).data;
                                         return [2 /*return*/, ((_a = data[1]) === null || _a === void 0 ? void 0 : _a.data.children.map(function (c) { return (__assign({}, c.data)); })) || []];
+                                    case 2:
+                                        e_2 = _b.sent();
+                                        return [4 /*yield*/, (0, logger_1.default)("error", "Failed " + url)];
+                                    case 3:
+                                        _b.sent();
+                                        return [2 /*return*/, []];
+                                    case 4: return [2 /*return*/];
                                 }
                             });
                         }); })];

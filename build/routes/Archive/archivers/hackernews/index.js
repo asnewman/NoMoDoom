@@ -51,35 +51,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var logger_1 = __importDefault(require("../../../../helpers/logger"));
 var mongoose_1 = require("../../../../mongoose");
 var pure_1 = require("./pure");
 function archiveHackernews() {
     return __awaiter(this, void 0, void 0, function () {
         var htmls, i, _a, _b, posts, archiveData, posts_1, posts_1_1, post, archive;
         var e_1, _c;
+        var _this = this;
         return __generator(this, function (_d) {
             switch (_d.label) {
-                case 0:
+                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "Archiving Hacker News")];
+                case 1:
+                    _d.sent();
                     htmls = [];
                     i = 1;
-                    _d.label = 1;
-                case 1:
-                    if (!(i <= 6)) return [3 /*break*/, 5];
+                    _d.label = 2;
+                case 2:
+                    if (!(i <= 6)) return [3 /*break*/, 6];
                     _b = (_a = htmls).push;
                     return [4 /*yield*/, axios_1.default.get("https://news.ycombinator.com/best?p=".concat(i))];
-                case 2:
+                case 3:
                     _b.apply(_a, [(_d.sent()).data]);
                     return [4 /*yield*/, new Promise(function (resolve) {
                             setTimeout(function () { return resolve(null); }, 1000);
                         })];
-                case 3:
-                    _d.sent();
-                    _d.label = 4;
                 case 4:
-                    i++;
-                    return [3 /*break*/, 1];
+                    _d.sent();
+                    _d.label = 5;
                 case 5:
-                    posts = (0, pure_1.getTopPostsForDay)(htmls, Date.now());
+                    i++;
+                    return [3 /*break*/, 2];
+                case 6: return [4 /*yield*/, (0, pure_1.getTopPostsForDay)(htmls, Date.now(), function (id) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, axios_1.default.get("https://hacker-news.firebaseio.com/v0/item/".concat(id, ".json"))];
+                                case 1: return [2 /*return*/, (_a.sent()).data];
+                            }
+                        });
+                    }); })];
+                case 7:
+                    posts = _d.sent();
                     archiveData = {
                         type: "hackernews",
                         datetime: Date.now(),
@@ -92,6 +104,7 @@ function archiveHackernews() {
                                 title: post.title,
                                 score: post.score,
                                 link: post.link,
+                                comments: post.comments,
                             });
                         }
                     }
@@ -107,7 +120,10 @@ function archiveHackernews() {
                         data: archiveData,
                     };
                     return [4 /*yield*/, mongoose_1.Item.create(archive)];
-                case 6:
+                case 8:
+                    _d.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("info", "Finished archiving Hacker News")];
+                case 9:
                     _d.sent();
                     return [2 /*return*/];
             }

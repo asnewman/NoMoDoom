@@ -39,50 +39,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var axios_1 = __importDefault(require("axios"));
+var isValidSubreddit_1 = require("../../helpers/isValidSubreddit");
 var logger_1 = __importDefault(require("../../helpers/logger"));
 var mongoose_1 = require("../../mongoose");
 function itemCrudController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, query, data, _b, newSubscriptionItemData, newSubscriptionItemData, newSubscriptionItemData, e_1;
+        var _a, query, data_1, _b, isValid, newSubscriptionItemData, newSubscriptionItemData, newSubscriptionItemData, e_1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    _c.trys.push([0, 18, , 20]);
-                    _a = req.body, query = _a.query, data = _a.data;
+                    _c.trys.push([0, 19, , 21]);
+                    _a = req.body, query = _a.query, data_1 = _a.data;
                     _b = query;
                     switch (_b) {
                         case "ADD_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 1];
-                        case "REMOVE_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 4];
-                        case "ADD_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 6];
-                        case "REMOVE_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 9];
-                        case "ADD_NOMODOOM_SUBSCRIPTION": return [3 /*break*/, 11];
-                        case "REMOVE_NOMODOOM_SUBSCRIPTION": return [3 /*break*/, 14];
+                        case "REMOVE_SUBREDDIT_SUBSCRIPTION": return [3 /*break*/, 5];
+                        case "ADD_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 7];
+                        case "REMOVE_HACKERNEWS_SUBSCRIPTION": return [3 /*break*/, 10];
+                        case "ADD_NOMODOOM_SUBSCRIPTION": return [3 /*break*/, 12];
+                        case "REMOVE_NOMODOOM_SUBSCRIPTION": return [3 /*break*/, 15];
                     }
-                    return [3 /*break*/, 16];
-                case 1:
+                    return [3 /*break*/, 17];
+                case 1: return [4 /*yield*/, (0, isValidSubreddit_1.isValidSubreddit)(function () { return axios_1.default.get("https://www.reddit.com/r/".concat(data_1.subreddit, "/top.json")); })];
+                case 2:
+                    isValid = _c.sent();
+                    if (!isValid) {
+                        return [2 /*return*/, res.status(400).send("Invalid subreddit.")];
+                    }
                     newSubscriptionItemData = {
                         service: "reddit",
-                        subservice: data.subreddit,
+                        subservice: data_1.subreddit,
                         email: req.email,
                     };
                     return [4 /*yield*/, new mongoose_1.Item({
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                             data: newSubscriptionItemData,
                         }).save()];
-                case 2:
-                    _c.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("info", "New subreddit subscription! ".concat(req.email, " ").concat(data.subreddit))];
                 case 3:
                     _c.sent();
-                    return [2 /*return*/, res.status(200).send()];
-                case 4: return [4 /*yield*/, mongoose_1.Item.deleteOne({
-                        "data.email": req.email,
-                        "data.subservice": data.subreddit,
-                    })];
-                case 5:
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New subreddit subscription! ".concat(req.email, " ").concat(data_1.subreddit))];
+                case 4:
                     _c.sent();
                     return [2 /*return*/, res.status(200).send()];
+                case 5: return [4 /*yield*/, mongoose_1.Item.deleteOne({
+                        "data.email": req.email,
+                        "data.subservice": data_1.subreddit,
+                    })];
                 case 6:
+                    _c.sent();
+                    return [2 /*return*/, res.status(200).send()];
+                case 7:
                     newSubscriptionItemData = {
                         service: "hackernews",
                         email: req.email,
@@ -91,20 +98,20 @@ function itemCrudController(req, res) {
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                             data: newSubscriptionItemData,
                         }).save()];
-                case 7:
-                    _c.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("info", "New hackernews subscription! ".concat(req.email))];
                 case 8:
                     _c.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New hackernews subscription! ".concat(req.email))];
+                case 9:
+                    _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 9: return [4 /*yield*/, mongoose_1.Item.deleteOne({
+                case 10: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,
                         "data.service": "hackernews",
                     })];
-                case 10:
+                case 11:
                     _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 11:
+                case 12:
                     newSubscriptionItemData = {
                         service: "nomodoom",
                         email: req.email,
@@ -113,28 +120,28 @@ function itemCrudController(req, res) {
                             type: mongoose_1.MONGO_TYPES.SUBSCRIPTION,
                             data: newSubscriptionItemData,
                         }).save()];
-                case 12:
-                    _c.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("info", "New hackernews subscription! ".concat(req.email))];
                 case 13:
                     _c.sent();
+                    return [4 /*yield*/, (0, logger_1.default)("info", "New hackernews subscription! ".concat(req.email))];
+                case 14:
+                    _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 14: return [4 /*yield*/, mongoose_1.Item.deleteOne({
+                case 15: return [4 /*yield*/, mongoose_1.Item.deleteOne({
                         "data.email": req.email,
                         "data.service": "nomodoom",
                     })];
-                case 15:
+                case 16:
                     _c.sent();
                     return [2 /*return*/, res.status(200).send()];
-                case 16: return [3 /*break*/, 17];
-                case 17: return [2 /*return*/, res.status(404).send("Query not found")];
-                case 18:
+                case 17: return [3 /*break*/, 18];
+                case 18: return [2 /*return*/, res.status(404).send("Query not found")];
+                case 19:
                     e_1 = _c.sent();
                     return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 19:
+                case 20:
                     _c.sent();
                     return [2 /*return*/, res.status(400).send(e_1)];
-                case 20: return [2 /*return*/];
+                case 21: return [2 /*return*/];
             }
         });
     });

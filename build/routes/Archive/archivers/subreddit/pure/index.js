@@ -80,6 +80,7 @@ function getTopThreePosts(redditPostsData, getPostComments) {
                         title: entry.data["title"],
                         score: entry.data["score"],
                         url: "https://www.reddit.com".concat(entry.data["permalink"]),
+                        selftext: entry.data["selftext"] || undefined,
                         topThreeComments: topThreeComments,
                     });
                     if (res.length === 3)

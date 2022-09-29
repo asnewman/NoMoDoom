@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
-var isValidSubreddit_1 = require("./pure/isValidSubreddit");
+var isValidSubreddit_1 = require("../../helpers/isValidSubreddit");
 function subredditValidatorController(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var subreddit, isValid;

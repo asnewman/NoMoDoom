@@ -55,8 +55,6 @@ describe("generateRedditPageDataTests", function () {
                             token: "SmmnABX7MYzy0zLOZDHA",
                             tokenExpiration: 1656060077717,
                             frequency: 1,
-                            lastSent: 1657667357179,
-                            premiumSubscriptions: {},
                         },
                     };
                     dummyGetUser = function (_email) {
@@ -74,13 +72,12 @@ describe("generateRedditPageDataTests", function () {
                             ]);
                         });
                     };
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions, 0)];
+                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions)];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
                         email: email,
                         subreddits: ["programming"],
-                        isPremium: false,
                     });
                     return [2 /*return*/];
             }
@@ -100,8 +97,6 @@ describe("generateRedditPageDataTests", function () {
                             token: "SmmnABX7MYzy0zLOZDHA",
                             tokenExpiration: 1656060077717,
                             frequency: 1,
-                            lastSent: 1657667357179,
-                            premiumSubscriptions: {},
                         },
                     };
                     dummyGetUser = function (_email) {
@@ -123,13 +118,12 @@ describe("generateRedditPageDataTests", function () {
                             ]);
                         });
                     };
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions, 0)];
+                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions)];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
                         email: email,
                         subreddits: ["programming", "unknown subreddit"],
-                        isPremium: false,
                     });
                     return [2 /*return*/];
             }
@@ -149,10 +143,6 @@ describe("generateRedditPageDataTests", function () {
                             token: "SmmnABX7MYzy0zLOZDHA",
                             tokenExpiration: 1656060077717,
                             frequency: 1,
-                            lastSent: 1657667357179,
-                            premiumSubscriptions: {
-                                reddit: 0,
-                            },
                         },
                     };
                     dummyGetUser = function (_email) {
@@ -170,13 +160,12 @@ describe("generateRedditPageDataTests", function () {
                             ]);
                         });
                     };
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions, 1)];
+                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions)];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
                         email: email,
                         subreddits: ["programming"],
-                        isPremium: false,
                     });
                     return [2 /*return*/];
             }
@@ -196,10 +185,6 @@ describe("generateRedditPageDataTests", function () {
                             token: "SmmnABX7MYzy0zLOZDHA",
                             tokenExpiration: 1656060077717,
                             frequency: 1,
-                            lastSent: 1657667357179,
-                            premiumSubscriptions: {
-                                reddit: 100,
-                            },
                         },
                     };
                     dummyGetUser = function (_email) {
@@ -217,13 +202,12 @@ describe("generateRedditPageDataTests", function () {
                             ]);
                         });
                     };
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions, 1)];
+                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions)];
                 case 1:
                     result = _a.sent();
                     expect(result).toEqual({
                         email: email,
                         subreddits: ["programming"],
-                        isPremium: true,
                     });
                     return [2 /*return*/];
             }
@@ -253,7 +237,7 @@ describe("generateRedditPageDataTests", function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions, 1)];
+                    return [4 /*yield*/, (0, generateRedditPageData_1.default)(email, dummyGetUser, dummyGetSubscriptions)];
                 case 2:
                     _a.sent();
                     expect(false).toBe(true);

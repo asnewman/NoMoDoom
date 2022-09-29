@@ -36,25 +36,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var generateRedditPageData = function (email, getUser, getRedditSubscriptions) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, subscriptions;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, getUser(email)];
-            case 1:
-                user = _a.sent();
-                if (!user) {
-                    throw Error("User not found (".concat(email, "). Cannot generate Reddit page."));
-                }
-                return [4 /*yield*/, getRedditSubscriptions(user.data.email)];
-            case 2:
-                subscriptions = _a.sent();
-                return [2 /*return*/, {
-                        email: email,
-                        subreddits: subscriptions.map(function (s) { return s.data.subservice || "unknown subreddit"; }),
-                    }];
-        }
+exports.isValidSubreddit = void 0;
+function isValidSubreddit(getSubreddit) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function () {
+        var res, e_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, getSubreddit()];
+                case 1:
+                    res = _b.sent();
+                    return [2 /*return*/, ((_a = res.data.data.children[0]) === null || _a === void 0 ? void 0 : _a.data.subreddit_type) === "public"];
+                case 2:
+                    e_1 = _b.sent();
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
     });
-}); };
-exports.default = generateRedditPageData;
-//# sourceMappingURL=generateRedditPageData.js.map
+}
+exports.isValidSubreddit = isValidSubreddit;
+//# sourceMappingURL=isValidSubreddit.js.map
