@@ -9,7 +9,7 @@ import {
 import { getTopPostsForDay } from "./pure";
 
 export default async function archiveHackernews() {
-  await log("info", "Archiving Hacker News");
+  await log("info", "Archiving Hacker News (at least trying to...)");
   const htmls: string[] = [];
 
   for (let i = 1; i <= 6; i++) {

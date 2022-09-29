@@ -61,7 +61,7 @@ function archiveHackernews() {
         var _this = this;
         return __generator(this, function (_d) {
             switch (_d.label) {
-                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "Archiving Hacker News")];
+                case 0: return [4 /*yield*/, (0, logger_1.default)("info", "Archiving Hacker News (at least trying to...)")];
                 case 1:
                     _d.sent();
                     htmls = [];
