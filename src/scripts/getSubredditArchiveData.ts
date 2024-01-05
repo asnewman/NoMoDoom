@@ -21,6 +21,6 @@ async function getSubredditArchiveData(subreddit: string) {
   );
 }
 
-getSubredditArchiveData("birding").then(result => {
+getSubredditArchiveData("birding").then((result) => {
   console.log(JSON.stringify(result, null, 2))
 })
