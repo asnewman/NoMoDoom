@@ -51,6 +51,7 @@ function isValidSubreddit(getSubreddit) {
                     return [2 /*return*/, ((_a = res.data.data.children[0]) === null || _a === void 0 ? void 0 : _a.data.subreddit_type) === "public"];
                 case 2:
                     e_1 = _b.sent();
+                    console.error(e_1);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }

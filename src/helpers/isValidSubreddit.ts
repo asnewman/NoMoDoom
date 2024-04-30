@@ -17,6 +17,7 @@ async function isValidSubreddit(
     const res = await getSubreddit();
     return res.data.data.children[0]?.data.subreddit_type === "public";
   } catch (e) {
+    console.error(e);
     return false;
   }
 }
