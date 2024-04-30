@@ -44,6 +44,9 @@ var axios_1 = __importDefault(require("axios"));
 function sendPushover(message) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
+            if (!process.env.PUSHOVER_TOKEN || !process.env.PUSHOVER_USER) {
+                throw new Error("Pushover config not set. Check environment variables.");
+            }
             axios_1.default.post("https://api.pushover.net/1/messages.json", {
                 token: process.env.PUSHOVER_TOKEN,
                 user: process.env.PUSHOVER_USER,

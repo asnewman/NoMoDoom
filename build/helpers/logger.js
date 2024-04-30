@@ -1,4 +1,5 @@
 "use strict";
+// import axios from "axios";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,38 +36,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = __importDefault(require("axios"));
 var log = function (level, message) { return __awaiter(void 0, void 0, void 0, function () {
-    var e_1;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 3, , 4]);
-                if (!(process.env.IS_LOCAL === "false")) return [3 /*break*/, 2];
-                return [4 /*yield*/, axios_1.default.post("https://listener.logz.io:8071/?token=".concat(process.env.LOGZIO_TOKEN, "&type=cyclic-server"), JSON.stringify({
-                        message: message,
-                    }))];
-            case 1:
-                _a.sent();
-                _a.label = 2;
-            case 2: return [3 /*break*/, 4];
-            case 3:
-                e_1 = _a.sent();
-                console.error(e_1);
-                return [3 /*break*/, 4];
-            case 4:
-                if (level === "error") {
-                    console.error(message);
-                }
-                else {
-                    console.info(message);
-                }
-                return [2 /*return*/];
+        // try {
+        //   if (process.env.IS_LOCAL === "false") {
+        //     await axios.post(
+        //       `https://listener.logz.io:8071/?token=${process.env.LOGZIO_TOKEN}&type=cyclic-server`,
+        //       JSON.stringify({
+        //         message,
+        //       })
+        //     );
+        //   }
+        // } catch (e) {
+        //   console.error(e);
+        // }
+        if (level === "error") {
+            console.error(message);
         }
+        else {
+            console.info(message);
+        }
+        return [2 /*return*/];
     });
 }); };
 exports.default = log;

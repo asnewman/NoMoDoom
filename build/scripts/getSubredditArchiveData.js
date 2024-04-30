@@ -50,28 +50,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var pure_1 = require("../routes/Archive/archivers/subreddit/pure");
 var axios_1 = __importDefault(require("axios"));
-var logger_1 = __importDefault(require("../../../../helpers/logger"));
-var mongoose_1 = require("../../../../mongoose");
-var pure_1 = require("./pure");
-var pushover_1 = require("../../../../helpers/pushover");
-function archiveSubreddit(subreddit) {
+var logger_1 = __importDefault(require("../helpers/logger"));
+function getSubredditArchiveData(subreddit) {
     return __awaiter(this, void 0, void 0, function () {
-        var redditPostsData, topPosts, newArchiveItemData, newArchiveItem, e_1;
+        var redditPostsData;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, pushover_1.sendPushover)("Attempting to archive subreddits")];
+                case 0: return [4 /*yield*/, axios_1.default.get("https://www.reddit.com/r/".concat(subreddit, "/top.json"))];
                 case 1:
-                    _a.sent();
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 8, , 13]);
-                    return [4 /*yield*/, axios_1.default.get("https://www.reddit.com/r/".concat(subreddit, "/top.json"))];
-                case 3:
                     redditPostsData = _a.sent();
-                    return [4 /*yield*/, (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children, function (url) { return __awaiter(_this, void 0, void 0, function () {
-                            var data, e_2;
+                    return [2 /*return*/, (0, pure_1.getTopThreePosts)(redditPostsData.data.data.children, function (url) { return __awaiter(_this, void 0, void 0, function () {
+                            var data, e_1;
                             var _a;
                             return __generator(this, function (_b) {
                                 switch (_b.label) {
@@ -82,7 +74,7 @@ function archiveSubreddit(subreddit) {
                                         data = (_b.sent()).data;
                                         return [2 /*return*/, ((_a = data[1]) === null || _a === void 0 ? void 0 : _a.data.children.map(function (c) { return (__assign({}, c.data)); })) || []];
                                     case 2:
-                                        e_2 = _b.sent();
+                                        e_1 = _b.sent();
                                         return [4 /*yield*/, (0, logger_1.default)("error", "Failed " + url)];
                                     case 3:
                                         _b.sent();
@@ -91,47 +83,11 @@ function archiveSubreddit(subreddit) {
                                 }
                             });
                         }); })];
-                case 4:
-                    topPosts = _a.sent();
-                    newArchiveItemData = {
-                        type: "subreddit",
-                        subreddit: subreddit,
-                        datetime: new Date().getTime(),
-                        topPosts: topPosts,
-                    };
-                    newArchiveItem = {
-                        type: mongoose_1.MONGO_TYPES.ARCHIVE,
-                        data: newArchiveItemData,
-                    };
-                    return [4 /*yield*/, new mongoose_1.Item(newArchiveItem).save()];
-                case 5:
-                    _a.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("info", "Successfully archived ".concat(subreddit))];
-                case 6:
-                    _a.sent();
-                    return [4 /*yield*/, (0, pushover_1.sendPushover)("Successfully archived ".concat(subreddit))];
-                case 7:
-                    _a.sent();
-                    return [3 /*break*/, 13];
-                case 8:
-                    e_1 = _a.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("error", "Failed to archived ".concat(subreddit))];
-                case 9:
-                    _a.sent();
-                    return [4 /*yield*/, (0, logger_1.default)("error", e_1)];
-                case 10:
-                    _a.sent();
-                    return [4 /*yield*/, (0, pushover_1.sendPushover)("Failed to archived ".concat(subreddit))];
-                case 11:
-                    _a.sent();
-                    return [4 /*yield*/, (0, pushover_1.sendPushover)(e_1.toString())];
-                case 12:
-                    _a.sent();
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
             }
         });
     });
 }
-exports.default = archiveSubreddit;
-//# sourceMappingURL=index.js.map
+getSubredditArchiveData("birding").then(function (result) {
+    console.log(JSON.stringify(result, null, 2));
+});
+//# sourceMappingURL=getSubredditArchiveData.js.map
