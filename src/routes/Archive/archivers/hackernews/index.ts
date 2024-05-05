@@ -13,9 +13,15 @@ export default async function archiveHackernews() {
   const htmls: string[] = [];
 
   for (let i = 1; i <= 6; i++) {
-    htmls.push(
-      (await axios.get(`https://news.ycombinator.com/best?p=${i}`)).data
-    );
+    try {
+      htmls.push(
+        (await axios.get(`https://news.ycombinator.com/best?p=${i}`)).data
+      );
+    }
+    catch (e) {
+      console.log("failed to https://news.ycombinator.com/best?p=${i}")
+      console.error(e)
+    }
     await new Promise((resolve) => {
       setTimeout(() => resolve(null), 1000);
     });
@@ -26,7 +32,13 @@ export default async function archiveHackernews() {
     Date.now(),
     async (id: number) => {
       return (
-        await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+        try {
+          await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+        }
+        catch(e) {
+          console.log("failed to https://hacker-news.firebaseio.com/v0/item/${id}.json")
+          console.error(e)
+        }
       ).data;
     }
   );
