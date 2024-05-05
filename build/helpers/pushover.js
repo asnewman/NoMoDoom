@@ -47,11 +47,17 @@ function sendPushover(message) {
             if (!process.env.PUSHOVER_TOKEN || !process.env.PUSHOVER_USER) {
                 throw new Error("Pushover config not set. Check environment variables.");
             }
-            axios_1.default.post("https://api.pushover.net/1/messages.json", {
-                token: process.env.PUSHOVER_TOKEN,
-                user: process.env.PUSHOVER_USER,
-                message: message,
-            });
+            try {
+                axios_1.default.post("https://api.pushover.net/1/messages.json", {
+                    token: process.env.PUSHOVER_TOKEN,
+                    user: process.env.PUSHOVER_USER,
+                    message: message,
+                });
+            }
+            catch (e) {
+                console.error("Failed to send pushover", e);
+                console.error(e);
+            }
             return [2 /*return*/];
         });
     });
