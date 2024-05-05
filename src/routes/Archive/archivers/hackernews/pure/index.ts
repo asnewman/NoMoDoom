@@ -5,7 +5,7 @@ const DAY = 24 * 1000 * 60 * 60;
 async function getTopPostsForDay(
   bestPages: string[],
   currentDatetime: number,
-  getHackerNewsItem: (id: number) => Promise<HnItem>
+  getHackerNewsItem: (id: number) => Promise<HnItem>,
 ) {
   interface Post {
     title: string;
@@ -24,7 +24,7 @@ async function getTopPostsForDay(
     const scores = scoresHtml.map((score) => score.textContent);
     const subtextsHtml = root.querySelectorAll(".subtext");
     const links = subtextsHtml.map(
-      (subtext) => subtext.querySelectorAll("a")[1]?.attributes.href
+      (subtext) => subtext.querySelectorAll("a")[1]?.attributes.href,
     );
     const datesHtml = root.querySelectorAll(".age");
     const dates = datesHtml.map((date) => date.attributes.title);
@@ -55,12 +55,16 @@ async function getTopPostsForDay(
       commentsPromises.push(
         getTopCommentsForPost(postId, getHackerNewsItem).then((comments) => {
           post.comments = comments;
-        })
+        }),
       );
     }
   });
 
-  await Promise.all(commentsPromises);
+  try {
+    await Promise.all(commentsPromises);
+  } catch (e) {
+    console.error("failed to get commentsPromises", e);
+  }
 
   return filteredSortedPosts;
 }
@@ -78,18 +82,23 @@ interface Comment {
 
 async function getTopCommentsForPost(
   postId: number,
-  getHackerNewsItem: (id: number) => Promise<HnItem>
+  getHackerNewsItem: (id: number) => Promise<HnItem>,
 ): Promise<Comment[]> {
   const res: { user: string; content: string }[] = [];
-  const post = (await getHackerNewsItem(postId)) as unknown as HnItem;
+  try {
+    const post = (await getHackerNewsItem(postId)) as unknown as HnItem;
 
-  for (let cmtIdx = 0; cmtIdx < 3; cmtIdx++) {
-    if (post.kids[cmtIdx]) {
-      const comment = (await getHackerNewsItem(
-        post.kids[cmtIdx]
-      )) as unknown as HnItem;
-      res.push({ user: comment.by, content: comment.text || "" });
+    for (let cmtIdx = 0; cmtIdx < 3; cmtIdx++) {
+      if (post.kids[cmtIdx]) {
+        const comment = (await getHackerNewsItem(
+          post.kids[cmtIdx],
+        )) as unknown as HnItem;
+        res.push({ user: comment.by, content: comment.text || "" });
+      }
     }
+  } catch (e) {
+    console.error("failed to getTopCommentsForPosts");
+    console.error(e)
   }
 
   return res;
