@@ -55,8 +55,8 @@ var node_html_parser_1 = __importDefault(require("node-html-parser"));
 var DAY = 24 * 1000 * 60 * 60;
 function getTopPostsForDay(bestPages, currentDatetime, getHackerNewsItem) {
     return __awaiter(this, void 0, void 0, function () {
-        var posts, bestPages_1, bestPages_1_1, bestPage, root, titlesHtml, titles, scoresHtml, scores, subtextsHtml, links, datesHtml, dates, idx, titles_1, titles_1_1, title, filteredSortedPosts, commentsPromises;
-        var e_1, _a, e_2, _b;
+        var posts, bestPages_1, bestPages_1_1, bestPage, root, titlesHtml, titles, scoresHtml, scores, subtextsHtml, links, datesHtml, dates, idx, titles_1, titles_1_1, title, filteredSortedPosts, commentsPromises, e_1;
+        var e_2, _a, e_3, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -75,7 +75,7 @@ function getTopPostsForDay(bestPages, currentDatetime, getHackerNewsItem) {
                             dates = datesHtml.map(function (date) { return date.attributes.title; });
                             idx = 0;
                             try {
-                                for (titles_1 = (e_2 = void 0, __values(titles)), titles_1_1 = titles_1.next(); !titles_1_1.done; titles_1_1 = titles_1.next()) {
+                                for (titles_1 = (e_3 = void 0, __values(titles)), titles_1_1 = titles_1.next(); !titles_1_1.done; titles_1_1 = titles_1.next()) {
                                     title = titles_1_1.value;
                                     posts.push({
                                         title: title,
@@ -87,21 +87,21 @@ function getTopPostsForDay(bestPages, currentDatetime, getHackerNewsItem) {
                                     idx++;
                                 }
                             }
-                            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                            catch (e_3_1) { e_3 = { error: e_3_1 }; }
                             finally {
                                 try {
                                     if (titles_1_1 && !titles_1_1.done && (_b = titles_1.return)) _b.call(titles_1);
                                 }
-                                finally { if (e_2) throw e_2.error; }
+                                finally { if (e_3) throw e_3.error; }
                             }
                         }
                     }
-                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
                     finally {
                         try {
                             if (bestPages_1_1 && !bestPages_1_1.done && (_a = bestPages_1.return)) _a.call(bestPages_1);
                         }
-                        finally { if (e_1) throw e_1.error; }
+                        finally { if (e_2) throw e_2.error; }
                     }
                     filteredSortedPosts = posts
                         .filter(function (a) { return a.date.getTime() > currentDatetime - DAY; })
@@ -116,10 +116,18 @@ function getTopPostsForDay(bestPages, currentDatetime, getHackerNewsItem) {
                             }));
                         }
                     });
-                    return [4 /*yield*/, Promise.all(commentsPromises)];
+                    _c.label = 1;
                 case 1:
+                    _c.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, Promise.all(commentsPromises)];
+                case 2:
                     _c.sent();
-                    return [2 /*return*/, filteredSortedPosts];
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _c.sent();
+                    console.error("failed to get commentsPromises", e_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/, filteredSortedPosts];
             }
         });
     });
@@ -127,28 +135,37 @@ function getTopPostsForDay(bestPages, currentDatetime, getHackerNewsItem) {
 exports.getTopPostsForDay = getTopPostsForDay;
 function getTopCommentsForPost(postId, getHackerNewsItem) {
     return __awaiter(this, void 0, void 0, function () {
-        var res, post, cmtIdx, comment;
+        var res, post, cmtIdx, comment, e_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     res = [];
-                    return [4 /*yield*/, getHackerNewsItem(postId)];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 7, , 8]);
+                    return [4 /*yield*/, getHackerNewsItem(postId)];
+                case 2:
                     post = (_a.sent());
                     cmtIdx = 0;
-                    _a.label = 2;
-                case 2:
-                    if (!(cmtIdx < 3)) return [3 /*break*/, 5];
-                    if (!post.kids[cmtIdx]) return [3 /*break*/, 4];
-                    return [4 /*yield*/, getHackerNewsItem(post.kids[cmtIdx])];
+                    _a.label = 3;
                 case 3:
+                    if (!(cmtIdx < 3)) return [3 /*break*/, 6];
+                    if (!post.kids[cmtIdx]) return [3 /*break*/, 5];
+                    return [4 /*yield*/, getHackerNewsItem(post.kids[cmtIdx])];
+                case 4:
                     comment = (_a.sent());
                     res.push({ user: comment.by, content: comment.text || "" });
-                    _a.label = 4;
-                case 4:
+                    _a.label = 5;
+                case 5:
                     cmtIdx++;
-                    return [3 /*break*/, 2];
-                case 5: return [2 /*return*/, res];
+                    return [3 /*break*/, 3];
+                case 6: return [3 /*break*/, 8];
+                case 7:
+                    e_4 = _a.sent();
+                    console.error("failed to getTopCommentsForPosts");
+                    console.error(e_4);
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/, res];
             }
         });
     });

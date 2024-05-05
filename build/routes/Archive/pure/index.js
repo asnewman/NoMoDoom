@@ -62,7 +62,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.archiveSubscriptions = void 0;
-function archiveSubscriptions(subscriptions, archiveSubreddit, archiveHackernews) {
+function archiveSubscriptions(subscriptions, _archiveSubreddit, archiveHackernews) {
     return __awaiter(this, void 0, void 0, function () {
         var subreddits, uniqueSubreddits, promises;
         return __generator(this, function (_a) {
@@ -77,7 +77,7 @@ function archiveSubscriptions(subscriptions, archiveSubreddit, archiveHackernews
                     promises = [];
                     uniqueSubreddits.forEach(function (subreddit) {
                         if (subreddit) {
-                            promises.push(archiveSubreddit(subreddit));
+                            //promises.push(archiveSubreddit(subreddit));
                         }
                     });
                     promises.push(archiveHackernews());

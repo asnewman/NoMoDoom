@@ -2,7 +2,7 @@ import { MongoSubscription } from "../../../mongoose";
 
 async function archiveSubscriptions(
   subscriptions: MongoSubscription[],
-  archiveSubreddit: (subreddit: string) => Promise<void>,
+  _archiveSubreddit: (subreddit: string) => Promise<void>,
   archiveHackernews: () => Promise<void>
 ) {
   const subreddits = subscriptions
@@ -17,7 +17,7 @@ async function archiveSubscriptions(
 
   uniqueSubreddits.forEach((subreddit) => {
     if (subreddit) {
-      promises.push(archiveSubreddit(subreddit));
+      //promises.push(archiveSubreddit(subreddit));
     }
   });
 
