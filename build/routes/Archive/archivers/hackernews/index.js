@@ -56,8 +56,8 @@ var mongoose_1 = require("../../../../mongoose");
 var pure_1 = require("./pure");
 function archiveHackernews() {
     return __awaiter(this, void 0, void 0, function () {
-        var htmls, i, _a, _b, posts, archiveData, posts_1, posts_1_1, post, archive;
-        var e_1, _c;
+        var htmls, i, _a, _b, e_1, posts, archiveData, posts_1, posts_1_1, post, archive;
+        var e_2, _c;
         var _this = this;
         return __generator(this, function (_d) {
             switch (_d.label) {
@@ -68,29 +68,47 @@ function archiveHackernews() {
                     i = 1;
                     _d.label = 2;
                 case 2:
-                    if (!(i <= 6)) return [3 /*break*/, 6];
+                    if (!(i <= 6)) return [3 /*break*/, 9];
+                    _d.label = 3;
+                case 3:
+                    _d.trys.push([3, 5, , 6]);
                     _b = (_a = htmls).push;
                     return [4 /*yield*/, axios_1.default.get("https://news.ycombinator.com/best?p=".concat(i))];
-                case 3:
-                    _b.apply(_a, [(_d.sent()).data]);
-                    return [4 /*yield*/, new Promise(function (resolve) {
-                            setTimeout(function () { return resolve(null); }, 1000);
-                        })];
                 case 4:
-                    _d.sent();
-                    _d.label = 5;
+                    _b.apply(_a, [(_d.sent()).data]);
+                    return [3 /*break*/, 6];
                 case 5:
+                    e_1 = _d.sent();
+                    console.log("failed to https://news.ycombinator.com/best?p=${i}");
+                    console.error(e_1);
+                    return [3 /*break*/, 6];
+                case 6: return [4 /*yield*/, new Promise(function (resolve) {
+                        setTimeout(function () { return resolve(null); }, 1000);
+                    })];
+                case 7:
+                    _d.sent();
+                    _d.label = 8;
+                case 8:
                     i++;
                     return [3 /*break*/, 2];
-                case 6: return [4 /*yield*/, (0, pure_1.getTopPostsForDay)(htmls, Date.now(), function (id) { return __awaiter(_this, void 0, void 0, function () {
+                case 9: return [4 /*yield*/, (0, pure_1.getTopPostsForDay)(htmls, Date.now(), function (id) { return __awaiter(_this, void 0, void 0, function () {
+                        var e_3;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, axios_1.default.get("https://hacker-news.firebaseio.com/v0/item/".concat(id, ".json"))];
+                                case 0:
+                                    _a.trys.push([0, 2, , 3]);
+                                    return [4 /*yield*/, axios_1.default.get("https://hacker-news.firebaseio.com/v0/item/".concat(id, ".json"))];
                                 case 1: return [2 /*return*/, (_a.sent()).data];
+                                case 2:
+                                    e_3 = _a.sent();
+                                    console.log("failed to https://hacker-news.firebaseio.com/v0/item/${id}.json");
+                                    console.error(e_3);
+                                    return [3 /*break*/, 3];
+                                case 3: return [2 /*return*/];
                             }
                         });
                     }); })];
-                case 7:
+                case 10:
                     posts = _d.sent();
                     archiveData = {
                         type: "hackernews",
@@ -108,22 +126,22 @@ function archiveHackernews() {
                             });
                         }
                     }
-                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
                     finally {
                         try {
                             if (posts_1_1 && !posts_1_1.done && (_c = posts_1.return)) _c.call(posts_1);
                         }
-                        finally { if (e_1) throw e_1.error; }
+                        finally { if (e_2) throw e_2.error; }
                     }
                     archive = {
                         type: mongoose_1.MONGO_TYPES.ARCHIVE,
                         data: archiveData,
                     };
                     return [4 /*yield*/, mongoose_1.Item.create(archive)];
-                case 8:
+                case 11:
                     _d.sent();
                     return [4 /*yield*/, (0, logger_1.default)("info", "Finished archiving Hacker News")];
-                case 9:
+                case 12:
                     _d.sent();
                     return [2 /*return*/];
             }

@@ -15,12 +15,11 @@ export default async function archiveHackernews() {
   for (let i = 1; i <= 6; i++) {
     try {
       htmls.push(
-        (await axios.get(`https://news.ycombinator.com/best?p=${i}`)).data
+        (await axios.get(`https://news.ycombinator.com/best?p=${i}`)).data,
       );
-    }
-    catch (e) {
-      console.log("failed to https://news.ycombinator.com/best?p=${i}")
-      console.error(e)
+    } catch (e) {
+      console.log("failed to https://news.ycombinator.com/best?p=${i}");
+      console.error(e);
     }
     await new Promise((resolve) => {
       setTimeout(() => resolve(null), 1000);
@@ -31,16 +30,19 @@ export default async function archiveHackernews() {
     htmls,
     Date.now(),
     async (id: number) => {
-      return (
-        try {
-          await axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
-        }
-        catch(e) {
-          console.log("failed to https://hacker-news.firebaseio.com/v0/item/${id}.json")
-          console.error(e)
-        }
-      ).data;
-    }
+      try {
+        return (
+          await axios.get(
+            `https://hacker-news.firebaseio.com/v0/item/${id}.json`,
+          )
+        ).data;
+      } catch (e) {
+        console.log(
+          "failed to https://hacker-news.firebaseio.com/v0/item/${id}.json",
+        );
+        console.error(e);
+      }
+    },
   );
 
   const archiveData: MongoArchiveHackernewsData = {
