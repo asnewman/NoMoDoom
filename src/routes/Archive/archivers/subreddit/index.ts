@@ -24,7 +24,7 @@ export default async function archiveSubreddit(subreddit: string) {
           const { data } = (await axios.get(encodeURI(url))) as any;
           return data[1]?.data.children.map((c: any) => ({ ...c.data })) || [];
         } catch (e) {
-          await log("error", "Failed " + url);
+          await log("error", "Unsuccessful " + url);
           return [];
         }
       }
