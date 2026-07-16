@@ -25,7 +25,7 @@ function generateHackernewsHtml(archive: MongoArchive) {
   return hackernewsText;
 }
 
-function generateRedditHtml(archives: MongoArchive[]) {
+function generateReddotHtml(archives: MongoArchive[]) {
   let redditText = "<h2>Reddit</h2>";
   archives.forEach((archive) => {
     const subredditData: MongoArchiveSubredditData =
@@ -35,7 +35,7 @@ function generateRedditHtml(archives: MongoArchive[]) {
       redditText += `<a href=${post.url}>${post.title}</a><br/>`;
       redditText += `Score: ${post.score}<br/>`;
       if (post.selftext) {
-        redditText += `<b>Selftext: </b>`
+        redditText += `Content:`
         redditText += `<i>${post.selftext}</i><br/>`
       }
       redditText += `<b>What users are saying:</b>`;
