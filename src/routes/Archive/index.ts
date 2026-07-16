@@ -19,7 +19,7 @@ async function archiveController(_req: any, res: any) {
 
     await log("info", "Archiving completed");
 
-    res.send("Success");
+    res.send("Success!");
   } catch (e) {
     await log("error", e);
     res.status(400).send(`Error archiving: ${e}`);
