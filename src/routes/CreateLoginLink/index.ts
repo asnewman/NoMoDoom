@@ -62,7 +62,7 @@ async function createLoginLinkController(req: any, res: any) {
     }
   } catch (e) {
     await log("error", e);
-    res.send("Failed");
+    res.send("Failed :(");
   }
 }
 
