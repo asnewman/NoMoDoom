@@ -78,7 +78,7 @@ async function itemCrudController(req: any, res: any) {
       default:
         break;
     }
-    return res.status(404).send("Query not found");
+    return res.status(404).send("Query is not found");
   } catch (e) {
     await log("error", e);
     return res.status(400).send(e);
