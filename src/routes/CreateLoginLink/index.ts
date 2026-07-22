@@ -58,11 +58,11 @@ async function createLoginLinkController(req: any, res: any) {
       return res.redirect("/");
     } else {
       await sendMail(email, user.data.token);
-      return res.send("Success - please check your email");
+      return res.send("Success - please check your email!");
     }
   } catch (e) {
     await log("error", e);
-    res.send("Failed");
+    res.send("Failed :(");
   }
 }
 
